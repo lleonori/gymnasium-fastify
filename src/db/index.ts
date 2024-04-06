@@ -1,18 +1,23 @@
-
-type Post = {
+type Booking = {
   id: number;
-  title: string;
-  content: string;
-}
+  name: string;
+  surname: string;
+  bookingDate: string;
+};
 
-const posts: Post[] = [{
-  id: 1,
-  title: 'Hello World',
-  content: 'This is my first post!',
-}, {
-  id: 2,
-  title: 'Second Post',
-  content: 'This is my second post!',
-}];
+const bookings: Booking[] = [
+  {
+    id: 1,
+    name: "Lorenzo",
+    surname: "Leonori",
+    bookingDate: "1993/06/27",
+  },
+  {
+    id: 2,
+    name: "Ambra",
+    surname: "Garofalo",
+    bookingDate: "1994/04/13",
+  },
+];
 
-export default {posts};
+export default { bookings };
