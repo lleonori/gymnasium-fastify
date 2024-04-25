@@ -1,5 +1,4 @@
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
-import db from "../../../db/index.ts";
 import { BookingSchemas } from "../../../schemas/index.ts";
 
 const routes: FastifyPluginAsyncTypebox = async (app) => {
@@ -13,13 +12,17 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
         },
       },
     },
-    async (request) => {
-      const { bookingId } = request.params;
-      const booking = db.bookings.find((b) => b.id === bookingId);
+    async ({ params: { bookingId } }, reply) => {
+      const booking = await app.db
+        .deleteFrom("bookings")
+        .where("id", "=", bookingId)
+        .returningAll()
+        .executeTakeFirst();
+
       if (!booking) {
-        throw app.httpErrors.notFound();
+        return reply.status(204).send();
       }
-      db.bookings = db.bookings.filter((b) => b.id !== bookingId);
+
       return booking;
     }
   );

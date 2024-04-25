@@ -4,7 +4,9 @@ import CommonSchemas from "../commons/index.ts";
 export const CreateBooking = Type.Object({
   name: Type.String(),
   surname: Type.String(),
-  bookingDate: Type.String(),
+  booking_date: Type.String(),
+  // created_at: Type.Date(),
+  // updated_at: Type.Date(),
 });
 
 export const UpdateBooking = Type.Partial(CreateBooking);

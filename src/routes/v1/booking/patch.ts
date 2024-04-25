@@ -1,7 +1,6 @@
-import { FastifyInstance } from "fastify";
-import db from "../../../db/index.ts";
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import { BookingSchemas } from "../../../schemas/index.ts";
+import { sql } from "kysely";
 
 const routes: FastifyPluginAsyncTypebox = async (app) => {
   app.patch(
@@ -17,23 +16,21 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
     },
     async (request) => {
       const { bookingId } = request.params;
-      const booking = db.bookings.find((b) => b.id === bookingId);
+      const booking = await app.db
+        .updateTable("bookings")
+        .set({
+          ...request.body,
+          updated_at: () => sql`CURRENT_TIMESTAMP`,
+        })
+        .where("id", "=", bookingId)
+        .returningAll()
+        .executeTakeFirst();
+
       if (!booking) {
         throw app.httpErrors.notFound();
       }
 
-      const updatedBooking = {
-        ...booking,
-        ...request.body,
-        id: booking.id,
-      };
-      db.bookings = db.bookings.map((b) => {
-        if (b.id === bookingId) {
-          return updatedBooking;
-        }
-        return b;
-      });
-      return updatedBooking;
+      return booking;
     }
   );
 };

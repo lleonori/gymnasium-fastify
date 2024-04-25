@@ -1,7 +1,6 @@
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
-import db from "../../../db/index.ts";
-import CommonSchemas from "../../../schemas/commons/index.ts";
 import { BookingSchemas } from "../../../schemas/index.ts";
+import CommonSchemas from "../../../schemas/commons/index.ts";
 
 const routes: FastifyPluginAsyncTypebox = async (app) => {
   app.get(
@@ -16,10 +15,16 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
     },
     async (request) => {
       const { bookingId } = request.params;
-      const booking = db.bookings.find((b) => b.id === bookingId);
+      const booking = await app.db
+        .selectFrom("bookings")
+        .where("bookings.id", "=", bookingId)
+        .selectAll()
+        .executeTakeFirst();
+
       if (!booking) {
         throw app.httpErrors.notFound();
       }
+
       return booking;
     }
   );
@@ -34,10 +39,27 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
         },
       },
     },
-    ({ query: { offset, limit } }) => ({
-      count: db.bookings.length,
-      data: db.bookings.slice(offset, offset + limit),
-    })
+    async ({ query: { offset, limit } }) => {
+      const countQuery = app.db
+        .selectFrom("bookings")
+        .select(({ fn }) => [fn.count<number>("id").as("count")])
+        .executeTakeFirst();
+      const bookingQuery = app.db
+        .selectFrom("bookings")
+        .offset(offset)
+        .limit(limit)
+        .selectAll()
+        .orderBy("created_at", "asc")
+        .execute();
+      const [countResult, bookingResult] = await Promise.all([
+        countQuery,
+        bookingQuery,
+      ]);
+      return {
+        count: countResult?.count ?? 0,
+        data: bookingResult,
+      };
+    }
   );
 };
 

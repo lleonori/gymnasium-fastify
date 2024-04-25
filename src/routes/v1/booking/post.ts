@@ -1,6 +1,6 @@
-import db from "../../../db/index.ts";
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import { BookingSchemas } from "../../../schemas/index.ts";
+import { sql } from "kysely";
 
 const routes: FastifyPluginAsyncTypebox = async (app) => {
   app.post(
@@ -14,16 +14,17 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
       },
     },
     async (request, reply) => {
-      const { name, surname, bookingDate } = request.body;
-      const booking = {
-        id: db.bookings.length + 1,
-        name,
-        surname,
-        bookingDate,
-      };
-      db.bookings.push(booking);
+      const booking = await app.db
+        .insertInto("bookings")
+        .values({
+          ...request.body,
+          created_at: () => sql`CURRENT_TIMESTAMP`,
+        })
+        .returningAll()
+        .executeTakeFirst();
 
-      reply.status(201);
+      reply.status(201).send(booking);
+
       return booking;
     }
   );
