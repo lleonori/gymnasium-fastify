@@ -1,12 +1,10 @@
-import { Type } from "@sinclair/typebox";
+import { Null, Type } from "@sinclair/typebox";
 import CommonSchemas from "../commons/index.ts";
 
 export const CreateBooking = Type.Object({
   name: Type.String(),
   surname: Type.String(),
-  booking_date: Type.String(),
-  // created_at: Type.Date(),
-  // updated_at: Type.Date(),
+  booking_at: Type.String(),
 });
 
 export const UpdateBooking = Type.Partial(CreateBooking);

@@ -12,19 +12,7 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
         },
       },
     },
-    async ({ params: { bookingId } }, reply) => {
-      const booking = await app.db
-        .deleteFrom("bookings")
-        .where("id", "=", bookingId)
-        .returningAll()
-        .executeTakeFirst();
-
-      if (!booking) {
-        return reply.status(204).send();
-      }
-
-      return booking;
-    }
+    ({ params: { bookingId } }) => app.bookingsService.delete(bookingId)
   );
 };
 
