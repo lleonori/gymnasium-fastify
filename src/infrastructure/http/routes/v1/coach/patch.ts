@@ -14,24 +14,8 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
         },
       },
     },
-    async (request) => {
-      const { coachId } = request.params;
-      const coach = await app.db
-        .updateTable("coachs")
-        .set({
-          ...request.body,
-          updated_at: () => sql`CURRENT_TIMESTAMP`,
-        })
-        .where("id", "=", coachId)
-        .returningAll()
-        .executeTakeFirst();
-
-      if (!coach) {
-        throw app.httpErrors.notFound();
-      }
-
-      return coach;
-    }
+    async (request) =>
+      app.coachsService.update(request.params.coachId, request.body)
   );
 };
 

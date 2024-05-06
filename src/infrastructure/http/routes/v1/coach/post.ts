@@ -1,6 +1,5 @@
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import { CoachSchemas } from "../../../schemas/index.ts";
-import { sql } from "kysely";
 
 const routes: FastifyPluginAsyncTypebox = async (app) => {
   app.post(
@@ -14,18 +13,8 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
       },
     },
     async (request, reply) => {
-      const coach = await app.db
-        .insertInto("coachs")
-        .values({
-          ...request.body,
-          created_at: () => sql`CURRENT_TIMESTAMP`,
-        })
-        .returningAll()
-        .executeTakeFirst();
-
-      reply.status(201).send(coach);
-
-      return coach;
+      const newPost = await app.coachsService.create(request.body);
+      return reply.status(201).send(newPost);
     }
   );
 };
