@@ -8,12 +8,16 @@ import { CoachService } from "../../application/coach/coachService.ts";
 import { ITimetableRepository } from "../../application/timetable/timetableRepository.ts";
 import { TimetableDao } from "../dao/timetableDao.ts";
 import { TimetableService } from "../../application/timetable/timetableService.ts";
+import { ICalendarRepository } from "../../application/calendar/calendarRepository.ts";
+import { CalendarDao } from "../dao/calendarDao.ts";
+import { CalendarService } from "../../application/calendar/calendarService.ts";
 
 declare module "fastify" {
   interface FastifyInstance {
     bookingsService: BookingService;
     coachsService: CoachService;
     timetablesService: TimetableService;
+    calendarsService: CalendarService;
   }
 }
 
@@ -31,4 +35,8 @@ export default fp(async (fastify) => {
   );
   const timetablesService = new TimetableService(timetablesRepository);
   fastify.decorate("timetablesService", timetablesService);
+
+  const calendarsRepository: ICalendarRepository = new CalendarDao(fastify.db);
+  const calendarsService = new CalendarService(calendarsRepository);
+  fastify.decorate("calendarsService", calendarsService);
 });
