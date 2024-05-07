@@ -6,6 +6,7 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
     "/",
     {
       schema: {
+        tags: ["Coach"],
         body: CoachSchemas.Bodies.CreateCoach,
         response: {
           201: CoachSchemas.Bodies.Coach,

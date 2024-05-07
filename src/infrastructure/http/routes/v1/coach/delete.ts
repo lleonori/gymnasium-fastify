@@ -6,6 +6,7 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
     "/:coachId",
     {
       schema: {
+        tags: ["Coach"],
         params: CoachSchemas.Params.CoachId,
         response: {
           200: CoachSchemas.Bodies.Coach,

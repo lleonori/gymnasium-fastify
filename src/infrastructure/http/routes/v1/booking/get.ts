@@ -7,6 +7,7 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
     "/:bookingId",
     {
       schema: {
+        tags: ["Booking"],
         params: BookingSchemas.Params.BookingId,
         response: {
           200: BookingSchemas.Bodies.Booking,
@@ -20,6 +21,7 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
     "/",
     {
       schema: {
+        tags: ["Booking"],
         querystring: BookingSchemas.Queries.BookingsQuery,
         response: {
           200: BookingSchemas.Bodies.BookingsPaginated,

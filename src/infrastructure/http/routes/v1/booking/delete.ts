@@ -6,6 +6,7 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
     "/:bookingId",
     {
       schema: {
+        tags: ["Booking"],
         params: BookingSchemas.Params.BookingId,
         response: {
           200: BookingSchemas.Bodies.Booking,

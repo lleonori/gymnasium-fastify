@@ -7,6 +7,7 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
     "/",
     {
       schema: {
+        tags: ["Coach"],
         querystring: CoachSchemas.Queries.CoachsQuery,
         response: {
           200: CoachSchemas.Bodies.CoachsPaginated,

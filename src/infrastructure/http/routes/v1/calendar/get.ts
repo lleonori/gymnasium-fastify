@@ -6,6 +6,7 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
     "/",
     {
       schema: {
+        tags: ["Calendar"],
         response: {
           200: CalendarSchemas.Bodies.Calendar,
         },
