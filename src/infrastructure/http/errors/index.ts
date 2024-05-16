@@ -1,5 +1,8 @@
 import { FastifyInstance } from "fastify";
-import { NotFoundException } from "../../../application/commons/exceptions.ts";
+import {
+  NotFoundException,
+  UnauthorizedException,
+} from "../../../application/commons/exceptions.ts";
 
 export const errorHandler: FastifyInstance["errorHandler"] = function (
   error,
@@ -11,6 +14,10 @@ export const errorHandler: FastifyInstance["errorHandler"] = function (
       return reply.code(204).send();
     }
     return reply.notFound(error.message);
+  }
+
+  if (error instanceof UnauthorizedException) {
+    return reply.unauthorized(error.message);
   }
 
   reply.log.error(

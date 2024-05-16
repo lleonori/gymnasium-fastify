@@ -1,4 +1,3 @@
-import { PaginatedResult } from "../commons/models.ts";
 import { ICalendarRepository } from "./calendarRepository.ts";
 import { Calendar } from "./models.ts";
 
