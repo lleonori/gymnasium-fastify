@@ -18,8 +18,8 @@ export default async function (app: FastifyInstance) {
     routePrefix: "/documentation",
   });
   app.register(fastifyAuth0Verifiy, {
-    domain: process.env.DOMAIN,
-    secret: process.env.SECRET,
+    // domain: process.env.DOMAIN,
+    // secret: process.env.SECRET,
   });
   app.register(autoLoad, {
     dir: join(__dirname, "plugins"),
