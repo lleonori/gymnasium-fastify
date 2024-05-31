@@ -12,14 +12,15 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 export default async function (app: FastifyInstance) {
+  app.register(import("@fastify/cors"));
   app.register(import("@fastify/sensible"));
   app.register(import("@fastify/swagger"));
   app.register(import("@fastify/swagger-ui"), {
     routePrefix: "/documentation",
   });
   app.register(fastifyAuth0Verifiy, {
-    // domain: process.env.DOMAIN,
-    // secret: process.env.SECRET,
+    domain: process.env.DOMAIN,
+    secret: process.env.SECRET,
   });
   app.register(autoLoad, {
     dir: join(__dirname, "plugins"),
@@ -40,7 +41,7 @@ export default async function (app: FastifyInstance) {
   });
   app.addHook("onRequest", async (request, reply) => {
     try {
-      await request.jwtVerify();
+      // await request.jwtVerify();
     } catch (err) {
       throw new UnauthorizedException(`User unauthorized`);
     }
