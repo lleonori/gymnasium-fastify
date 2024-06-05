@@ -1,7 +1,7 @@
 export type CreateBooking = {
-  name: string;
-  surname: string;
-  booking_at: string;
+  mail: string;
+  day: string;
+  hour: string;
 };
 
 export type UpdateBooking = Partial<CreateBooking>;

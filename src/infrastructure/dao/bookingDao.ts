@@ -16,9 +16,9 @@ import { buildSortBy } from "./utils.ts";
 export class BookingDao implements IBookingRepository {
   protected readonly DEFAULT_SELECT_FIELDS = [
     "id",
-    "name",
-    "surname",
-    "booking_at",
+    "mail",
+    "day",
+    "hour",
     "created_at as createdAt",
     "updated_at as updatedAt",
   ] satisfies ReadonlyArray<SelectExpression<DB, "bookings">>;
