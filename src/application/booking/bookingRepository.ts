@@ -7,10 +7,10 @@ export interface IBookingRepository {
     pagination: Pagination,
     sortBy: SortBy<Booking>
   ): Promise<PaginatedResult<Booking>>;
-  findById(id: Booking["id"]): Promise<Booking | undefined>;
+  findByMail(mail: Booking["mail"]): Promise<Booking | undefined>;
   update(
-    id: Booking["id"],
+    mail: Booking["mail"],
     booking: UpdateBooking
   ): Promise<Booking | undefined>;
-  delete(id: Booking["id"]): Promise<Booking | undefined>;
+  delete(mail: Booking["mail"]): Promise<Booking | undefined>;
 }

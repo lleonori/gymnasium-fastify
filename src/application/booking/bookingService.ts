@@ -17,29 +17,32 @@ export class BookingService {
     return this.bookingRepository.findAll(pagination, sortBy);
   }
 
-  async findById(id: Booking["id"]): Promise<Booking> {
-    const booking = await this.bookingRepository.findById(id);
-    this.handleNotFound(booking, id);
+  async findByMail(mail: Booking["mail"]): Promise<Booking> {
+    const booking = await this.bookingRepository.findByMail(mail);
+    this.handleNotFound(booking, mail);
     return booking;
   }
 
-  async update(id: Booking["id"], booking: UpdateBooking): Promise<Booking> {
-    const updatedBooking = await this.bookingRepository.update(id, booking);
-    this.handleNotFound(updatedBooking, id);
+  async update(
+    mail: Booking["mail"],
+    booking: UpdateBooking
+  ): Promise<Booking> {
+    const updatedBooking = await this.bookingRepository.update(mail, booking);
+    this.handleNotFound(updatedBooking, mail);
     return updatedBooking;
   }
 
-  async delete(id: Booking["id"]): Promise<Booking> {
-    const deletedBooking = await this.bookingRepository.delete(id);
-    this.handleNotFound(deletedBooking, id);
+  async delete(mail: Booking["mail"]): Promise<Booking> {
+    const deletedBooking = await this.bookingRepository.delete(mail);
+    this.handleNotFound(deletedBooking, mail);
     return deletedBooking;
   }
 
   private handleNotFound(
     booking: Booking | undefined,
-    id: Booking["id"]
+    mail: Booking["mail"]
   ): asserts booking is Booking {
     if (!booking)
-      throw new NotFoundException(`Booking with id ${id} not found`);
+      throw new NotFoundException(`Booking with mail ${mail} not found`);
   }
 }

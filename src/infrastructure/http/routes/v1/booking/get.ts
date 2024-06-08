@@ -4,17 +4,17 @@ import { decodeSort } from "../../../utils/decodeSort.ts";
 
 const routes: FastifyPluginAsyncTypebox = async (app) => {
   app.get(
-    "/:bookingId",
+    "/:bookingMail",
     {
       schema: {
         tags: ["Booking"],
-        params: BookingSchemas.Params.BookingId,
+        params: BookingSchemas.Params.BookingMail,
         response: {
           200: BookingSchemas.Bodies.Booking,
         },
       },
     },
-    (request) => app.bookingsService.findById(request.params.bookingId)
+    (request) => app.bookingsService.findByMail(request.params.bookingMail)
   );
 
   app.get(

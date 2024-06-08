@@ -1,5 +1,5 @@
 import { Type } from "@sinclair/typebox";
 
-export const BookingId = Type.Object({
-  bookingId: Type.Number(),
+export const BookingMail = Type.Object({
+  bookingMail: Type.String(),
 });

@@ -60,30 +60,30 @@ export class BookingDao implements IBookingRepository {
     };
   }
 
-  findById(id: Booking["id"]): Promise<Booking | undefined> {
+  findByMail(mail: Booking["mail"]): Promise<Booking | undefined> {
     return this.db
       .selectFrom("bookings")
-      .where("id", "=", id)
+      .where("mail", "=", mail)
       .select(this.DEFAULT_SELECT_FIELDS)
       .executeTakeFirst();
   }
 
   update(
-    id: Booking["id"],
+    mail: Booking["mail"],
     booking: UpdateBooking
   ): Promise<Booking | undefined> {
     return this.db
       .updateTable("bookings")
       .set(booking)
-      .where("id", "=", id)
+      .where("mail", "=", mail)
       .returning(this.DEFAULT_SELECT_FIELDS)
       .executeTakeFirst();
   }
 
-  delete(id: Booking["id"]): Promise<Booking | undefined> {
+  delete(mail: Booking["mail"]): Promise<Booking | undefined> {
     return this.db
       .deleteFrom("bookings")
-      .where("id", "=", id)
+      .where("mail", "=", mail)
       .returning(this.DEFAULT_SELECT_FIELDS)
       .executeTakeFirst();
   }

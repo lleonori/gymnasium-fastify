@@ -3,11 +3,11 @@ import { BookingSchemas } from "../../../schemas/index.ts";
 
 const routes: FastifyPluginAsyncTypebox = async (app) => {
   app.patch(
-    "/:bookingId",
+    "/:bookingMail",
     {
       schema: {
         tags: ["Booking"],
-        params: BookingSchemas.Params.BookingId,
+        params: BookingSchemas.Params.BookingMail,
         body: BookingSchemas.Bodies.UpdateBooking,
         response: {
           200: BookingSchemas.Bodies.Booking,
@@ -15,7 +15,7 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
       },
     },
     async (request) =>
-      app.bookingsService.update(request.params.bookingId, request.body)
+      app.bookingsService.update(request.params.bookingMail, request.body)
   );
 };
 
