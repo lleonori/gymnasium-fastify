@@ -4,6 +4,9 @@ import {
   Calendar,
   ICalendarRepository,
 } from "../../application/calendar/index.ts";
+import { format, addDays } from "date-fns";
+import { fromZonedTime } from "date-fns-tz";
+import { it } from "date-fns/locale/it";
 
 export class CalendarDao implements ICalendarRepository {
   constructor(protected readonly db: Kysely<DB>) {}
@@ -13,19 +16,19 @@ export class CalendarDao implements ICalendarRepository {
     return { today: today, tomorrow: tomorrow };
   }
 
-  getDateTimeInItaly(): Calendar {
-    // Get the current date and time in Italy
-    const italyTime = new Date().toLocaleString("it-IT", {
-      timeZone: "Europe/Rome",
-      dateStyle: "short",
-    });
+  getDateTimeInItaly() {
+    // Get the current date and time in UTC with Italy timezone
+    const now = fromZonedTime(new Date(), "Europe/Rome");
 
-    // Get the date and time for tomorrow in Italy
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    const tomorrowItalyTime = tomorrow.toLocaleString("it-IT", {
-      timeZone: "Europe/Rome",
-      dateStyle: "short",
+    // Format the date according to the Italian locale
+    const italyTime = format(now, "yyyy/MM/dd", { locale: it });
+
+    // Get tomorrow's date in UTC with Italy timezone
+    const tomorrow = addDays(now, 1);
+
+    // Format tomorrow's date according to the Italian locale
+    const tomorrowItalyTime = format(tomorrow, "yyyy/MM/dd", {
+      locale: it,
     });
 
     return { today: italyTime, tomorrow: tomorrowItalyTime };
