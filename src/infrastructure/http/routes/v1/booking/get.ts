@@ -8,13 +8,28 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
     {
       schema: {
         tags: ["Booking"],
+        querystring: BookingSchemas.Queries.BookingsQuery,
         params: BookingSchemas.Params.BookingMail,
         response: {
-          200: BookingSchemas.Bodies.Booking,
+          200: BookingSchemas.Bodies.BookingsPaginated,
         },
       },
     },
-    (request) => app.bookingsService.findByMail(request.params.bookingMail)
+    async (request, reply) => {
+      const { offset, limit, sort } = request.query;
+      const { bookingMail } = request.params;
+
+      const calendar = await app.calendarsService.findAll();
+
+      const bookings = await app.bookingsService.findByMail(
+        calendar,
+        bookingMail,
+        { offset: offset!, limit: limit! },
+        decodeSort(sort!)
+      );
+
+      reply.send(bookings);
+    }
   );
 
   app.get(

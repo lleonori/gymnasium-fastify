@@ -12,6 +12,7 @@ import {
   UpdateBooking,
 } from "../../application/index.ts";
 import { buildSortBy } from "./utils.ts";
+import { Calendar } from "../../application/calendar/models.ts";
 
 export class BookingDao implements IBookingRepository {
   protected readonly DEFAULT_SELECT_FIELDS = [
@@ -60,30 +61,65 @@ export class BookingDao implements IBookingRepository {
     };
   }
 
-  findByMail(mail: Booking["mail"]): Promise<Booking | undefined> {
-    return this.db
+  async findByMail(
+    calendar: Calendar,
+    mail: string,
+    pagination: Pagination,
+    sortBy: SortBy<Booking>
+  ): Promise<PaginatedResult<Booking>> {
+    const countQuery = this.db
       .selectFrom("bookings")
-      .where("mail", "=", mail)
-      .select(this.DEFAULT_SELECT_FIELDS)
+      .select(({ fn }) => [fn.count<number>("id").as("count")])
+      .where((eb) =>
+        eb.and([
+          eb("mail", "=", mail),
+          eb("day", "<=", calendar.today),
+          eb("day", ">=", calendar.tomorrow),
+        ])
+      )
       .executeTakeFirst();
+
+    const bookingsQuery = this.db
+      .selectFrom("bookings")
+      .where((eb) =>
+        eb.and([
+          eb("mail", "=", mail),
+          eb("day", "<=", calendar.today),
+          eb("day", ">=", calendar.tomorrow),
+        ])
+      )
+      .orderBy(buildSortBy<"bookings", Booking>(sortBy))
+      .limit(pagination.limit)
+      .offset(pagination.offset)
+      .select(this.DEFAULT_SELECT_FIELDS)
+      .execute();
+
+    const [countResult, bookingsResult] = await Promise.all([
+      countQuery,
+      bookingsQuery,
+    ]);
+    return {
+      count: countResult?.count ?? 0,
+      data: bookingsResult,
+    };
   }
 
   update(
-    mail: Booking["mail"],
+    id: Booking["id"],
     booking: UpdateBooking
   ): Promise<Booking | undefined> {
     return this.db
       .updateTable("bookings")
       .set(booking)
-      .where("mail", "=", mail)
+      .where("id", "=", id)
       .returning(this.DEFAULT_SELECT_FIELDS)
       .executeTakeFirst();
   }
 
-  delete(mail: Booking["mail"]): Promise<Booking | undefined> {
+  delete(id: Booking["id"]): Promise<Booking | undefined> {
     return this.db
       .deleteFrom("bookings")
-      .where("mail", "=", mail)
+      .where("id", "=", id)
       .returning(this.DEFAULT_SELECT_FIELDS)
       .executeTakeFirst();
   }

@@ -3,7 +3,6 @@ import CommonSchemas from "../commons/index.ts";
 
 export const CreateBooking = Type.Object({
   mail: Type.String(),
-  day: Type.String(),
   hour: Type.String(),
 });
 

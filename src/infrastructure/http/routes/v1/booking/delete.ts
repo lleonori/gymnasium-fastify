@@ -3,17 +3,17 @@ import { BookingSchemas } from "../../../schemas/index.ts";
 
 const routes: FastifyPluginAsyncTypebox = async (app) => {
   app.delete(
-    "/:bookingMail",
+    "/:bookingId",
     {
       schema: {
         tags: ["Booking"],
-        params: BookingSchemas.Params.BookingMail,
+        params: BookingSchemas.Params.BookingId,
         response: {
           200: BookingSchemas.Bodies.Booking,
         },
       },
     },
-    ({ params: { bookingMail } }) => app.bookingsService.delete(bookingMail)
+    ({ params: { bookingId } }) => app.bookingsService.delete(bookingId)
   );
 };
 

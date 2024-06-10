@@ -1,3 +1,4 @@
+import { Calendar } from "../calendar/models.ts";
 import { PaginatedResult, Pagination, SortBy } from "../commons/models.ts";
 import { CreateBooking, Booking, UpdateBooking } from "./models.ts";
 
@@ -7,10 +8,15 @@ export interface IBookingRepository {
     pagination: Pagination,
     sortBy: SortBy<Booking>
   ): Promise<PaginatedResult<Booking>>;
-  findByMail(mail: Booking["mail"]): Promise<Booking | undefined>;
-  update(
+  findByMail(
+    calendar: Calendar,
     mail: Booking["mail"],
+    pagination: Pagination,
+    sortBy: SortBy<Booking>
+  ): Promise<PaginatedResult<Booking>>;
+  update(
+    id: Booking["id"],
     booking: UpdateBooking
   ): Promise<Booking | undefined>;
-  delete(mail: Booking["mail"]): Promise<Booking | undefined>;
+  delete(id: Booking["id"]): Promise<Booking | undefined>;
 }

@@ -1,6 +1,6 @@
 export type CreateBooking = {
   mail: string;
-  day: string;
+  day: Date;
   hour: string;
 };
 

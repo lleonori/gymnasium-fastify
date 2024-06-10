@@ -2,6 +2,7 @@ import { NotFoundException } from "../commons/exceptions.ts";
 import { PaginatedResult, Pagination, SortBy } from "../commons/models.ts";
 import { CreateBooking, Booking, UpdateBooking } from "./models.ts";
 import { IBookingRepository } from "./bookingRepository.ts";
+import { Calendar } from "../calendar/models.ts";
 
 export class BookingService {
   constructor(protected readonly bookingRepository: IBookingRepository) {}
@@ -17,32 +18,37 @@ export class BookingService {
     return this.bookingRepository.findAll(pagination, sortBy);
   }
 
-  async findByMail(mail: Booking["mail"]): Promise<Booking> {
-    const booking = await this.bookingRepository.findByMail(mail);
-    this.handleNotFound(booking, mail);
-    return booking;
+  findByMail(
+    calendar: Calendar,
+    mail: string,
+    pagination: Pagination,
+    sortBy: SortBy<Booking>
+  ): Promise<PaginatedResult<Booking>> {
+    return this.bookingRepository.findByMail(
+      calendar,
+      mail,
+      pagination,
+      sortBy
+    );
   }
 
-  async update(
-    mail: Booking["mail"],
-    booking: UpdateBooking
-  ): Promise<Booking> {
-    const updatedBooking = await this.bookingRepository.update(mail, booking);
-    this.handleNotFound(updatedBooking, mail);
+  async update(id: Booking["id"], booking: UpdateBooking): Promise<Booking> {
+    const updatedBooking = await this.bookingRepository.update(id, booking);
+    this.handleNotFound(updatedBooking, id);
     return updatedBooking;
   }
 
-  async delete(mail: Booking["mail"]): Promise<Booking> {
-    const deletedBooking = await this.bookingRepository.delete(mail);
-    this.handleNotFound(deletedBooking, mail);
+  async delete(id: Booking["id"]): Promise<Booking> {
+    const deletedBooking = await this.bookingRepository.delete(id);
+    this.handleNotFound(deletedBooking, id);
     return deletedBooking;
   }
 
   private handleNotFound(
     booking: Booking | undefined,
-    mail: Booking["mail"]
+    id: Booking["id"]
   ): asserts booking is Booking {
     if (!booking)
-      throw new NotFoundException(`Booking with mail ${mail} not found`);
+      throw new NotFoundException(`Booking with id ${id} not found`);
   }
 }
