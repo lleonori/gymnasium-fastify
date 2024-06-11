@@ -1,4 +1,4 @@
 export type Calendar = {
-  today: Date;
-  tomorrow: Date;
+  today: string;
+  tomorrow: string;
 };
