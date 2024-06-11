@@ -5,6 +5,7 @@ Gymnasium-Fastify is a Fastify project for booking lesson.
 ## Installation
 
 Use node v20.11.1
+
 Use the package manager [npm](https://www.npmjs.com/) to install all modules you need.
 
 ```bash
