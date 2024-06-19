@@ -2,7 +2,8 @@ import { Type } from "@sinclair/typebox";
 import CommonSchemas from "../commons/index.ts";
 
 export const CreateBooking = Type.Object({
-  mail: Type.String(),
+  mail: Type.String({ format: "email" }),
+  day: Type.String({ format: "date-time" }), // ISO 8601 date format
   hour: Type.String(),
 });
 

@@ -1,20 +1,22 @@
-import { Kysely, SelectExpression } from "kysely";
+import { Kysely, SelectExpression, sql } from "kysely";
 import { DB } from "kysely-codegen";
+import { Calendar } from "../../application/calendar/models.ts";
 import {
   PaginatedResult,
   Pagination,
   SortBy,
 } from "../../application/commons/models.ts";
 import {
+  Booking,
   CreateBooking,
   IBookingRepository,
-  Booking,
   UpdateBooking,
 } from "../../application/index.ts";
 import { buildSortBy } from "./utils.ts";
-import { Calendar } from "../../application/calendar/models.ts";
 
 export class BookingDao implements IBookingRepository {
+  constructor(protected readonly db: Kysely<DB>) {}
+
   protected readonly DEFAULT_SELECT_FIELDS = [
     "id",
     "mail",
@@ -24,13 +26,21 @@ export class BookingDao implements IBookingRepository {
     "updated_at as updatedAt",
   ] satisfies ReadonlyArray<SelectExpression<DB, "bookings">>;
 
-  constructor(protected readonly db: Kysely<DB>) {}
-
   create(newBooking: CreateBooking): Promise<Booking> {
+    // Parse the string representation of the date
+    const bookingDate = { ...newBooking, day: new Date(newBooking.day) };
+
+    // Construct the fields to return, replacing the 'day' field with the SQL expression
+    const returnFields = this.DEFAULT_SELECT_FIELDS.map((field) =>
+      field === "day"
+        ? sql<string>`to_char(day, 'YYYY-MM-DD HH24:MI:SS')`.as("day")
+        : field
+    );
+
     return this.db
       .insertInto("bookings")
-      .values(newBooking)
-      .returning(this.DEFAULT_SELECT_FIELDS)
+      .values(bookingDate)
+      .returning(returnFields)
       .executeTakeFirstOrThrow();
   }
 
@@ -43,12 +53,19 @@ export class BookingDao implements IBookingRepository {
       .select(({ fn }) => [fn.count<number>("id").as("count")])
       .executeTakeFirst();
 
+    // Construct the fields to return, replacing the 'day' field with the SQL expression
+    const returnFields = this.DEFAULT_SELECT_FIELDS.map((field) =>
+      field === "day"
+        ? sql<string>`to_char(day, 'YYYY-MM-DD HH24:MI:SS')`.as("day")
+        : field
+    );
+
     const bookingsQuery = this.db
       .selectFrom("bookings")
       .orderBy(buildSortBy<"bookings", Booking>(sortBy))
       .limit(pagination.limit)
       .offset(pagination.offset)
-      .select(this.DEFAULT_SELECT_FIELDS)
+      .select(returnFields)
       .execute();
 
     const [countResult, bookingsResult] = await Promise.all([
@@ -73,25 +90,32 @@ export class BookingDao implements IBookingRepository {
       .where((eb) =>
         eb.and([
           eb("mail", "=", mail),
-          eb("day", "<=", calendar.today),
-          eb("day", ">=", calendar.tomorrow),
+          eb("day", ">=", new Date(calendar.today)),
+          eb("day", "<=", new Date(calendar.tomorrow)),
         ])
       )
       .executeTakeFirst();
+
+    // Construct the fields to return, replacing the 'day' field with the SQL expression
+    const returnFields = this.DEFAULT_SELECT_FIELDS.map((field) =>
+      field === "day"
+        ? sql<string>`to_char(day, 'YYYY-MM-DD HH24:MI:SS')`.as("day")
+        : field
+    );
 
     const bookingsQuery = this.db
       .selectFrom("bookings")
       .where((eb) =>
         eb.and([
           eb("mail", "=", mail),
-          eb("day", "<=", calendar.today),
-          eb("day", ">=", calendar.tomorrow),
+          eb("day", ">=", new Date(calendar.today)),
+          eb("day", "<=", new Date(calendar.tomorrow)),
         ])
       )
       .orderBy(buildSortBy<"bookings", Booking>(sortBy))
       .limit(pagination.limit)
       .offset(pagination.offset)
-      .select(this.DEFAULT_SELECT_FIELDS)
+      .select(returnFields)
       .execute();
 
     const [countResult, bookingsResult] = await Promise.all([
@@ -108,19 +132,33 @@ export class BookingDao implements IBookingRepository {
     id: Booking["id"],
     booking: UpdateBooking
   ): Promise<Booking | undefined> {
+    // Construct the fields to return, replacing the 'day' field with the SQL expression
+    const returnFields = this.DEFAULT_SELECT_FIELDS.map((field) =>
+      field === "day"
+        ? sql<string>`to_char(day, 'YYYY-MM-DD HH24:MI:SS')`.as("day")
+        : field
+    );
+
     return this.db
       .updateTable("bookings")
       .set(booking)
       .where("id", "=", id)
-      .returning(this.DEFAULT_SELECT_FIELDS)
+      .returning(returnFields)
       .executeTakeFirst();
   }
 
   delete(id: Booking["id"]): Promise<Booking | undefined> {
+    // Construct the fields to return, replacing the 'day' field with the SQL expression
+    const returnFields = this.DEFAULT_SELECT_FIELDS.map((field) =>
+      field === "day"
+        ? sql<string>`to_char(day, 'YYYY-MM-DD HH24:MI:SS')`.as("day")
+        : field
+    );
+
     return this.db
       .deleteFrom("bookings")
       .where("id", "=", id)
-      .returning(this.DEFAULT_SELECT_FIELDS)
+      .returning(returnFields)
       .executeTakeFirst();
   }
 }

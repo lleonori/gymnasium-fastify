@@ -1,8 +1,8 @@
+import { Calendar } from "../calendar/models.ts";
 import { NotFoundException } from "../commons/exceptions.ts";
 import { PaginatedResult, Pagination, SortBy } from "../commons/models.ts";
-import { CreateBooking, Booking, UpdateBooking } from "./models.ts";
 import { IBookingRepository } from "./bookingRepository.ts";
-import { Calendar } from "../calendar/models.ts";
+import { Booking, CreateBooking, UpdateBooking } from "./models.ts";
 
 export class BookingService {
   constructor(protected readonly bookingRepository: IBookingRepository) {}
