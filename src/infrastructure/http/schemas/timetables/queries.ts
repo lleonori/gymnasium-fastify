@@ -1,7 +1,7 @@
 import { Type } from "@sinclair/typebox";
 import PaginationSchema from "../commons/index.ts";
 
-export const CoachsQuery = Type.Partial(
+export const TimetablesQuery = Type.Partial(
   Type.Intersect([
     PaginationSchema.Queries.Pagination,
     Type.Object({

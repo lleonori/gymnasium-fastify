@@ -8,13 +8,13 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
     {
       schema: {
         tags: ["Timetable"],
-        querystring: TimetableSchemas.Queries.CoachsQuery,
+        querystring: TimetableSchemas.Queries.TimetablesQuery,
         response: {
           200: TimetableSchemas.Bodies.TimetablesPaginated,
         },
       },
     },
-    async ({ query: { offset, limit, sort } }) =>
+    ({ query: { offset, limit, sort } }) =>
       app.timetablesService.findAll(
         { offset: offset!, limit: limit! },
         decodeSort(sort!)

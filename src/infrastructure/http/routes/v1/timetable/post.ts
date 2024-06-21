@@ -13,10 +13,7 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
         },
       },
     },
-    async (request, reply) => {
-      const newPost = await app.timetablesService.create(request.body);
-      return reply.status(201).send(newPost);
-    }
+    (request) => app.timetablesService.create(request.body)
   );
 };
 

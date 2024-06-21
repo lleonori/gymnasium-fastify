@@ -6,11 +6,11 @@ import { ITimetableRepository } from "./timetableRepository.ts";
 export class TimetableService {
   constructor(protected readonly timetableRepository: ITimetableRepository) {}
 
-  create(timetable: CreateTimetable): Promise<Timetable> {
+  async create(timetable: CreateTimetable): Promise<Timetable> {
     return this.timetableRepository.create(timetable);
   }
 
-  findAll(
+  async findAll(
     pagination: Pagination,
     sortBy: SortBy<Timetable>
   ): Promise<PaginatedResult<Timetable>> {
