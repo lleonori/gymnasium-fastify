@@ -19,7 +19,7 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
       const { offset, limit, sort } = request.query;
       const { bookingMail } = request.params;
 
-      // const calendar = await ;
+      const calendar = app.calendarService.getDateTimeInItaly();
 
       const bookings = await app.bookingsService.findByMail(
         calendar,
