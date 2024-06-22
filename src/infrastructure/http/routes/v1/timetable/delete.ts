@@ -13,7 +13,8 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
         },
       },
     },
-    ({ params: { timetableId } }) => app.timetablesService.delete(timetableId)
+    async ({ params: { timetableId } }) =>
+      app.timetablesService.delete(timetableId)
   );
 };
 

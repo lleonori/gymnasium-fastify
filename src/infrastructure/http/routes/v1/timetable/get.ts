@@ -14,7 +14,7 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
         },
       },
     },
-    ({ query: { offset, limit, sort } }) =>
+    async ({ query: { offset, limit, sort } }) =>
       app.timetablesService.findAll(
         { offset: offset!, limit: limit! },
         decodeSort(sort!)

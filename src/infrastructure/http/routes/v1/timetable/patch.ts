@@ -14,7 +14,7 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
         },
       },
     },
-    (request) =>
+    async (request) =>
       app.timetablesService.update(request.params.timetableId, request.body)
   );
 };
