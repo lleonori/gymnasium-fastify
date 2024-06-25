@@ -1,7 +1,5 @@
 import fp from "fastify-plugin";
 import { IBookingRepository } from "../../application/booking/bookingRepository.ts";
-import { ICalendarRepository } from "../../application/calendar/calendarRepository.ts";
-import { CalendarService } from "../../application/calendar/index.ts";
 import { ICoachRepository } from "../../application/coach/coachRepository.ts";
 import { CoachService } from "../../application/coach/coachService.ts";
 import { BookingService } from "../../application/index.js";
@@ -16,7 +14,6 @@ declare module "fastify" {
     bookingsService: BookingService;
     coachsService: CoachService;
     timetablesService: TimetableService;
-    calendarService: CalendarService;
   }
 }
 
@@ -34,7 +31,4 @@ export default fp(async (fastify) => {
   );
   const timetablesService = new TimetableService(timetablesRepository);
   fastify.decorate("timetablesService", timetablesService);
-
-  const calendarService = new CalendarService();
-  fastify.decorate("calendarService", calendarService);
 });

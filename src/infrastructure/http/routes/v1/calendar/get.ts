@@ -17,7 +17,7 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
         },
       },
     },
-    () => app.calendarService.getDateTimeInItaly()
+    () => getDateTimeInItaly()
   );
 
   app.get(
