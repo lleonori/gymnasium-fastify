@@ -1,14 +1,15 @@
 import fp from "fastify-plugin";
-import { BookingService } from "../../application/index.js";
 import { IBookingRepository } from "../../application/booking/bookingRepository.ts";
-import { BookingDao } from "../dao/bookingDao.ts";
-import { ICoachRepository } from "../../application/coach/coachRepository.ts";
-import { CoachDao } from "../dao/coachDao.ts";
-import { CoachService } from "../../application/coach/coachService.ts";
-import { ITimetableRepository } from "../../application/timetable/timetableRepository.ts";
-import { TimetableDao } from "../dao/timetableDao.ts";
-import { TimetableService } from "../../application/timetable/timetableService.ts";
+import { ICalendarRepository } from "../../application/calendar/calendarRepository.ts";
 import { CalendarService } from "../../application/calendar/index.ts";
+import { ICoachRepository } from "../../application/coach/coachRepository.ts";
+import { CoachService } from "../../application/coach/coachService.ts";
+import { BookingService } from "../../application/index.js";
+import { ITimetableRepository } from "../../application/timetable/timetableRepository.ts";
+import { TimetableService } from "../../application/timetable/timetableService.ts";
+import { BookingDao } from "../dao/bookingDao.ts";
+import { CoachDao } from "../dao/coachDao.ts";
+import { TimetableDao } from "../dao/timetableDao.ts";
 
 declare module "fastify" {
   interface FastifyInstance {
