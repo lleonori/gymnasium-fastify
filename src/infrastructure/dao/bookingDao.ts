@@ -33,7 +33,7 @@ export class BookingDao implements IBookingRepository {
     // Construct the fields to return, replacing the 'day' field with the SQL expression
     const returnFields = this.DEFAULT_SELECT_FIELDS.map((field) =>
       field === "day"
-        ? sql<string>`to_char(day, 'YYYY-MM-DD HH24:MI:SS')`.as("day")
+        ? sql<string>`to_char(day, 'YYYY-MM-DD')`.as("day")
         : field
     );
 
@@ -56,7 +56,7 @@ export class BookingDao implements IBookingRepository {
     // Construct the fields to return, replacing the 'day' field with the SQL expression
     const returnFields = this.DEFAULT_SELECT_FIELDS.map((field) =>
       field === "day"
-        ? sql<string>`to_char(day, 'YYYY-MM-DD HH24:MI:SS')`.as("day")
+        ? sql<string>`to_char(day, 'YYYY-MM-DD')`.as("day")
         : field
     );
 
@@ -99,7 +99,7 @@ export class BookingDao implements IBookingRepository {
     // Construct the fields to return, replacing the 'day' field with the SQL expression
     const returnFields = this.DEFAULT_SELECT_FIELDS.map((field) =>
       field === "day"
-        ? sql<string>`to_char(day, 'YYYY-MM-DD HH24:MI:SS')`.as("day")
+        ? sql<string>`to_char(day, 'YYYY-MM-DD')`.as("day")
         : field
     );
 
@@ -135,7 +135,7 @@ export class BookingDao implements IBookingRepository {
     // Construct the fields to return, replacing the 'day' field with the SQL expression
     const returnFields = this.DEFAULT_SELECT_FIELDS.map((field) =>
       field === "day"
-        ? sql<string>`to_char(day, 'YYYY-MM-DD HH24:MI:SS')`.as("day")
+        ? sql<string>`to_char(day, 'YYYY-MM-DD')`.as("day")
         : field
     );
 
@@ -151,7 +151,7 @@ export class BookingDao implements IBookingRepository {
     // Construct the fields to return, replacing the 'day' field with the SQL expression
     const returnFields = this.DEFAULT_SELECT_FIELDS.map((field) =>
       field === "day"
-        ? sql<string>`to_char(day, 'YYYY-MM-DD HH24:MI:SS')`.as("day")
+        ? sql<string>`to_char(day, 'YYYY-MM-DD')`.as("day")
         : field
     );
 

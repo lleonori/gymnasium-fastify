@@ -1,6 +1,7 @@
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import { BookingSchemas } from "../../../schemas/index.ts";
 import { decodeSort } from "../../../utils/decodeSort.ts";
+import { getDateTimeInItaly } from "../../../utils/dateTimeInItaly.ts";
 
 const routes: FastifyPluginAsyncTypebox = async (app) => {
   app.get(
@@ -19,7 +20,7 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
       const { offset, limit, sort } = request.query;
       const { bookingMail } = request.params;
 
-      const calendar = app.calendarService.getDateTimeInItaly();
+      const calendar = getDateTimeInItaly();
 
       const bookings = await app.bookingsService.findByMail(
         calendar,
