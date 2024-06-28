@@ -19,6 +19,7 @@ export class CoachDao implements ICoachRepository {
     "name",
     "surname",
     "notes",
+    "image",
     "created_at as createdAt",
     "updated_at as updatedAt",
   ] satisfies ReadonlyArray<SelectExpression<DB, "coachs">>;

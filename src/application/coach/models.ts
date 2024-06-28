@@ -2,6 +2,7 @@ export type CreateCoach = {
   name: string;
   surname: string;
   notes: string;
+  image: string;
 };
 
 export type UpdateCoach = Partial<CreateCoach>;
