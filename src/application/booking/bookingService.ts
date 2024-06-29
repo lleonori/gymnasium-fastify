@@ -1,5 +1,5 @@
 import { Calendar } from "../calendar/models.ts";
-import { NotFoundException } from "../commons/exceptions.ts";
+import { ConflictException, NotFoundException } from "../commons/exceptions.ts";
 import { PaginatedResult, Pagination, SortBy } from "../commons/models.ts";
 import { IBookingRepository } from "./bookingRepository.ts";
 import { Booking, CreateBooking, UpdateBooking } from "./models.ts";
@@ -7,8 +7,10 @@ import { Booking, CreateBooking, UpdateBooking } from "./models.ts";
 export class BookingService {
   constructor(protected readonly bookingRepository: IBookingRepository) {}
 
-  create(booking: CreateBooking): Promise<Booking> {
-    return this.bookingRepository.create(booking);
+  async create(booking: CreateBooking): Promise<Booking> {
+    const createdBooking = await this.bookingRepository.create(booking);
+    this.handleConflictError(createdBooking);
+    return createdBooking;
   }
 
   findAll(
@@ -32,6 +34,14 @@ export class BookingService {
     );
   }
 
+  countBookingsByDayAndMail(day: Date, mail: string): Promise<number> {
+    return this.bookingRepository.countBookingsByDayAndMail(day, mail);
+  }
+
+  countAllBookingsByDay(day: Date): Promise<number> {
+    return this.bookingRepository.countAllBookingsByDay(day);
+  }
+
   async update(id: Booking["id"], booking: UpdateBooking): Promise<Booking> {
     const updatedBooking = await this.bookingRepository.update(id, booking);
     this.handleNotFound(updatedBooking, id);
@@ -50,5 +60,11 @@ export class BookingService {
   ): asserts booking is Booking {
     if (!booking)
       throw new NotFoundException(`Booking with id ${id} not found`);
+  }
+
+  private handleConflictError(
+    booking: Booking | undefined
+  ): asserts booking is Booking {
+    if (!booking) throw new ConflictException(`Something wrong`);
   }
 }

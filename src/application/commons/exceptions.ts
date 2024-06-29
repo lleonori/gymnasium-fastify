@@ -13,3 +13,11 @@ export class UnauthorizedException extends Error {
     Object.setPrototypeOf(this, UnauthorizedException.prototype);
   }
 }
+
+export class ConflictException extends Error {
+  constructor(message: string) {
+    super(message);
+
+    Object.setPrototypeOf(this, ConflictException.prototype);
+  }
+}

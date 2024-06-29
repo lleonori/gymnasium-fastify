@@ -128,6 +128,26 @@ export class BookingDao implements IBookingRepository {
     };
   }
 
+  async countBookingsByDayAndMail(day: Date, mail: string): Promise<number> {
+    const countResult = await this.db
+      .selectFrom("bookings")
+      .select(({ fn }) => [fn.count<number>("id").as("count")])
+      .where((eb) => eb.and([eb("mail", "=", mail), eb("day", "=", day)]))
+      .executeTakeFirst();
+
+    return countResult?.count ?? 0;
+  }
+
+  async countAllBookingsByDay(day: Date): Promise<number> {
+    const countResult = await this.db
+      .selectFrom("bookings")
+      .select(({ fn }) => [fn.count<number>("id").as("count")])
+      .where("day", "=", day)
+      .executeTakeFirst();
+
+    return countResult?.count ?? 0;
+  }
+
   update(
     id: Booking["id"],
     booking: UpdateBooking

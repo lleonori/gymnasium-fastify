@@ -1,5 +1,6 @@
 import { FastifyInstance } from "fastify";
 import {
+  ConflictException,
   NotFoundException,
   UnauthorizedException,
 } from "../../../application/commons/exceptions.ts";
@@ -18,6 +19,10 @@ export const errorHandler: FastifyInstance["errorHandler"] = function (
 
   if (error instanceof UnauthorizedException) {
     return reply.unauthorized(error.message);
+  }
+
+  if (error instanceof ConflictException) {
+    return reply.conflict(error.message);
   }
 
   reply.log.error(
