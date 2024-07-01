@@ -1,7 +1,6 @@
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import { BookingSchemas } from "../../../schemas/index.ts";
 import { DailyBookingLimit } from "../../../utils/enums.ts";
-import { errorHandler } from "../../../errors/index.ts";
 import { ConflictException } from "../../../../../application/commons/exceptions.ts";
 
 const routes: FastifyPluginAsyncTypebox = async (app) => {
@@ -36,9 +35,9 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
         return reply.status(201).send(newBooking);
       } else {
         if (countBookingsByDayAndMail > 0)
-          throw new ConflictException("Booking already exists.");
+          throw new ConflictException("La lezione è stata già prenotata.");
         else if (countAllBookingsByDay === DailyBookingLimit.Limit)
-          throw new ConflictException("Booking limit exceeded for the day.");
+          throw new ConflictException("Limite di prenotazione raggiunto.");
       }
     }
   );

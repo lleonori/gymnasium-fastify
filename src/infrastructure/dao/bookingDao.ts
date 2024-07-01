@@ -135,7 +135,7 @@ export class BookingDao implements IBookingRepository {
       .where((eb) => eb.and([eb("mail", "=", mail), eb("day", "=", day)]))
       .executeTakeFirst();
 
-    return countResult?.count ?? 0;
+    return Number(countResult?.count ?? 0);
   }
 
   async countAllBookingsByDay(day: Date): Promise<number> {
@@ -145,7 +145,7 @@ export class BookingDao implements IBookingRepository {
       .where("day", "=", day)
       .executeTakeFirst();
 
-    return countResult?.count ?? 0;
+    return Number(countResult?.count ?? 0);
   }
 
   update(

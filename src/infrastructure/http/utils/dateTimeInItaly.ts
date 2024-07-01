@@ -1,8 +1,6 @@
-import { Calendar } from "../../../application/calendar/models.ts";
 import { addDays, format } from "date-fns";
 import { fromZonedTime } from "date-fns-tz";
-import { PaginatedResult } from "../../../application/commons/models.ts";
-import { Booking } from "../../../application/index.ts";
+import { Calendar } from "../../../application/calendar/models.ts";
 
 export const getDateTimeInItaly = (): Calendar => {
   // Get the current date and time in Italy timezone
@@ -18,29 +16,29 @@ export const getDateTimeInItaly = (): Calendar => {
   return { today: today, tomorrow: tomorrow };
 };
 
-export const clearBookedDaysFromCalendar = (
-  bookings: PaginatedResult<Booking>,
-  calendar: Calendar
-): Calendar => {
-  let calendarResult: Calendar = { ...calendar };
-  let bookingExistsToday: boolean = false;
-  let bookingExistsTomorrow: boolean = false;
+// export const clearBookedDaysFromCalendar = (
+//   bookings: PaginatedResult<Booking>,
+//   calendar: Calendar
+// ): Calendar => {
+//   let calendarResult: Calendar = { ...calendar };
+//   let bookingExistsToday: boolean = false;
+//   let bookingExistsTomorrow: boolean = false;
 
-  bookings.data.forEach((booking: Booking) => {
-    if (booking.day === calendar.today) {
-      bookingExistsToday = true;
-    }
-    if (booking.day === calendar.tomorrow) {
-      bookingExistsTomorrow = true;
-    }
-  });
+//   bookings.data.forEach((booking: Booking) => {
+//     if (booking.day === calendar.today) {
+//       bookingExistsToday = true;
+//     }
+//     if (booking.day === calendar.tomorrow) {
+//       bookingExistsTomorrow = true;
+//     }
+//   });
 
-  if (bookingExistsToday) {
-    calendarResult.today = "";
-  }
-  if (bookingExistsTomorrow) {
-    calendarResult.tomorrow = "";
-  }
+//   if (bookingExistsToday) {
+//     calendarResult.today = "";
+//   }
+//   if (bookingExistsTomorrow) {
+//     calendarResult.tomorrow = "";
+//   }
 
-  return calendarResult;
-};
+//   return calendarResult;
+// };

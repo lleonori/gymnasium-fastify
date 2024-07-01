@@ -1,5 +1,5 @@
 import { Calendar } from "../calendar/models.ts";
-import { ConflictException, NotFoundException } from "../commons/exceptions.ts";
+import { NotFoundException } from "../commons/exceptions.ts";
 import { PaginatedResult, Pagination, SortBy } from "../commons/models.ts";
 import { IBookingRepository } from "./bookingRepository.ts";
 import { Booking, CreateBooking, UpdateBooking } from "./models.ts";
@@ -9,7 +9,6 @@ export class BookingService {
 
   async create(booking: CreateBooking): Promise<Booking> {
     const createdBooking = await this.bookingRepository.create(booking);
-    this.handleConflictError(createdBooking);
     return createdBooking;
   }
 
@@ -60,11 +59,5 @@ export class BookingService {
   ): asserts booking is Booking {
     if (!booking)
       throw new NotFoundException(`Booking with id ${id} not found`);
-  }
-
-  private handleConflictError(
-    booking: Booking | undefined
-  ): asserts booking is Booking {
-    if (!booking) throw new ConflictException(`Something wrong`);
   }
 }
