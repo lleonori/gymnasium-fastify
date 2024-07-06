@@ -11,3 +11,5 @@ export type Booking = {
   createdAt: Date;
   updatedAt: Date;
 } & CreateBooking;
+
+export type FilterBooking = Partial<CreateBooking>;

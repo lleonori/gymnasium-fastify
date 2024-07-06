@@ -2,7 +2,12 @@ import { Calendar } from "../calendar/models.ts";
 import { NotFoundException } from "../commons/exceptions.ts";
 import { PaginatedResult, Pagination, SortBy } from "../commons/models.ts";
 import { IBookingRepository } from "./bookingRepository.ts";
-import { Booking, CreateBooking, UpdateBooking } from "./models.ts";
+import {
+  Booking,
+  CreateBooking,
+  FilterBooking,
+  UpdateBooking,
+} from "./models.ts";
 
 export class BookingService {
   constructor(protected readonly bookingRepository: IBookingRepository) {}
@@ -13,10 +18,11 @@ export class BookingService {
   }
 
   findAll(
+    filterBy: FilterBooking,
     pagination: Pagination,
     sortBy: SortBy<Booking>
   ): Promise<PaginatedResult<Booking>> {
-    return this.bookingRepository.findAll(pagination, sortBy);
+    return this.bookingRepository.findAll(filterBy, pagination, sortBy);
   }
 
   findByMail(

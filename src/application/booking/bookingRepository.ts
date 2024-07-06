@@ -1,10 +1,16 @@
 import { Calendar } from "../calendar/models.ts";
 import { PaginatedResult, Pagination, SortBy } from "../commons/models.ts";
-import { CreateBooking, Booking, UpdateBooking } from "./models.ts";
+import {
+  CreateBooking,
+  Booking,
+  UpdateBooking,
+  FilterBooking,
+} from "./models.ts";
 
 export interface IBookingRepository {
   create(booking: CreateBooking): Promise<Booking>;
   findAll(
+    filterBy: FilterBooking,
     pagination: Pagination,
     sortBy: SortBy<Booking>
   ): Promise<PaginatedResult<Booking>>;

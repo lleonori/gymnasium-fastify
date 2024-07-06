@@ -9,6 +9,7 @@ import {
 import {
   Booking,
   CreateBooking,
+  FilterBooking,
   IBookingRepository,
   UpdateBooking,
 } from "../../application/index.ts";
@@ -45,13 +46,21 @@ export class BookingDao implements IBookingRepository {
   }
 
   async findAll(
+    filterBy: FilterBooking,
     pagination: Pagination,
     sortBy: SortBy<Booking>
   ): Promise<PaginatedResult<Booking>> {
-    const countQuery = this.db
+    let countQuery = this.db
       .selectFrom("bookings")
-      .select(({ fn }) => [fn.count<number>("id").as("count")])
-      .executeTakeFirst();
+      .select(({ fn }) => [fn.count<number>("id").as("count")]);
+
+    if (filterBy.day) {
+      countQuery = countQuery.where("day", "=", new Date(filterBy.day));
+    }
+
+    if (filterBy.hour) {
+      countQuery = countQuery.where("hour", "=", filterBy.hour);
+    }
 
     // Construct the fields to return, replacing the 'day' field with the SQL expression
     const returnFields = this.DEFAULT_SELECT_FIELDS.map((field) =>
@@ -60,17 +69,26 @@ export class BookingDao implements IBookingRepository {
         : field
     );
 
-    const bookingsQuery = this.db
+    let bookingsQuery = this.db
       .selectFrom("bookings")
       .orderBy(buildSortBy<"bookings", Booking>(sortBy))
       .limit(pagination.limit)
       .offset(pagination.offset)
-      .select(returnFields)
-      .execute();
+      .select(returnFields);
+
+    if (filterBy.day) {
+      bookingsQuery = bookingsQuery.where("day", "=", new Date(filterBy.day));
+    } else {
+      bookingsQuery = bookingsQuery.where("day", "=", new Date());
+    }
+
+    if (filterBy.hour) {
+      bookingsQuery = bookingsQuery.where("hour", "=", filterBy.hour);
+    }
 
     const [countResult, bookingsResult] = await Promise.all([
-      countQuery,
-      bookingsQuery,
+      countQuery.executeTakeFirst(),
+      bookingsQuery.execute(),
     ]);
     return {
       count: countResult?.count ?? 0,
