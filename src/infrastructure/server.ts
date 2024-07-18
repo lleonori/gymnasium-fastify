@@ -19,8 +19,8 @@ export default async function (app: FastifyInstance) {
     routePrefix: "/documentation",
   });
   app.register(fastifyAuth0Verifiy, {
-    domain: process.env.DOMAIN,
-    secret: process.env.SECRET,
+    domain: process.env.DOMAIN_AUTH0,
+    secret: process.env.SECRET_AUTH0,
   });
   app.register(autoLoad, {
     dir: join(__dirname, "plugins"),
@@ -41,7 +41,7 @@ export default async function (app: FastifyInstance) {
   });
   app.addHook("onRequest", async (request, reply) => {
     try {
-      // await request.jwtVerify();
+      await request.jwtVerify();
     } catch (err) {
       throw new UnauthorizedException(`User unauthorized`);
     }
