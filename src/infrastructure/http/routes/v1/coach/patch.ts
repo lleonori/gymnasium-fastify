@@ -1,6 +1,7 @@
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import { CoachSchemas } from "../../../schemas/index.ts";
 import { sql } from "kysely";
+import { UserRoles } from "../../../utils/enums.ts";
 
 const routes: FastifyPluginAsyncTypebox = async (app) => {
   app.patch(
@@ -13,6 +14,9 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
         response: {
           200: CoachSchemas.Bodies.Coach,
         },
+      },
+      preHandler: async (request, reply) => {
+        app.authGuard(request, reply, [UserRoles.systemAdministrator]);
       },
     },
     async (request) =>
