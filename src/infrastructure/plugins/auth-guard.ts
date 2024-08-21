@@ -7,10 +7,6 @@ interface AppMetadata {
   active: boolean;
 }
 
-interface User {
-  "https://my-app.example.com/app_metadata"?: AppMetadata;
-}
-
 declare module "fastify" {
   interface FastifyInstance {
     authGuard(
@@ -48,9 +44,8 @@ export default fp(async (fastify) => {
           !hasRequiredActive(userActive) ||
           !hasRequiredRole(requiredRoles, userRoles)
         )
-          throw new UnauthorizedException(`User unauthorized`);
-        else throw new UnauthorizedException(`User unauthorized`);
-      } else throw new UnauthorizedException(`User unauthorized`);
+          reply.send(new UnauthorizedException(`User unauthorized`));
+      } else reply.send(new UnauthorizedException(`User unauthorized`));
     }
   );
 });
