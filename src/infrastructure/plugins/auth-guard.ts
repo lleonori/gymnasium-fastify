@@ -1,6 +1,5 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import fp from "fastify-plugin";
-import { UnauthorizedException } from "../../application/commons/exceptions.ts";
 
 interface AppMetadata {
   role: string[];
@@ -13,14 +12,14 @@ declare module "fastify" {
       request: FastifyRequest,
       reply: FastifyReply,
       requiredRoles: string[]
-    ): Promise<void>;
+    ): boolean;
   }
 }
 
 export default fp(async (fastify) => {
   fastify.decorate(
     "authGuard",
-    async function (
+    function (
       request: FastifyRequest,
       reply: FastifyReply,
       requiredRoles: string[]
@@ -44,8 +43,9 @@ export default fp(async (fastify) => {
           !hasRequiredActive(userActive) ||
           !hasRequiredRole(requiredRoles, userRoles)
         )
-          reply.send(new UnauthorizedException(`User unauthorized`));
-      } else reply.send(new UnauthorizedException(`User unauthorized`));
+          return false;
+        else return true;
+      } else return false;
     }
   );
 });

@@ -1,6 +1,7 @@
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import { TimetableSchemas } from "../../../schemas/index.ts";
 import { UserRoles } from "../../../utils/enums.ts";
+import { UnauthorizedException } from "../../../../../application/commons/exceptions.ts";
 
 const routes: FastifyPluginAsyncTypebox = async (app) => {
   app.patch(
@@ -15,7 +16,9 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
         },
       },
       preHandler: async (request, reply) => {
-        app.authGuard(request, reply, [UserRoles.systemAdministrator]);
+        if (!app.authGuard(request, reply, [UserRoles.systemAdministrator])) {
+          throw new UnauthorizedException(`User unauthorized`);
+        }
       },
     },
     async (request) =>

@@ -16,7 +16,7 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
         },
       },
       preHandler: async (request, reply) => {
-        app.authGuard(request, reply, [UserRoles.systemAdministrator]);
+        request, reply, [UserRoles.systemAdministrator];
       },
     },
     async (request) =>
