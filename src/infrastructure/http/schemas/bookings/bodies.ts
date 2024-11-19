@@ -1,8 +1,8 @@
-import { Type } from "@sinclair/typebox";
+import { Null, Type } from "@sinclair/typebox";
 import CommonSchemas from "../commons/index.ts";
 
 export const CreateBooking = Type.Object({
-  fullName: Type.String(),
+  fullName: Type.Union([Type.String(), Type.Null()]),
   mail: Type.String({ format: "email" }),
   day: Type.String({ format: "date-time" }), // ISO 8601 date format
   hour: Type.String(),
