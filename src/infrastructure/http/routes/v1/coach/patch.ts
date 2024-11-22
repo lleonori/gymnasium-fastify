@@ -15,11 +15,11 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
           200: CoachSchemas.Bodies.Coach,
         },
       },
-      preHandler: async (request, reply) => {
-        if (!app.authGuard(request, reply, [UserRoles.systemAdministrator])) {
-          throw new UnauthorizedException(`User unauthorized`);
-        }
-      },
+      // preHandler: async (request, reply) => {
+      //   if (!app.authGuard(request, reply, [UserRoles.systemAdministrator])) {
+      //     throw new UnauthorizedException(`User unauthorized`);
+      //   }
+      // },
     },
     async (request) =>
       app.coachsService.update(request.params.coachId, request.body)
