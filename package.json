@@ -9,7 +9,7 @@
     "build": "tsc",
     "start": "node dist/index.js",
     "db:up": "docker compose up -d",
-    "db:migrate": "postgrator --config ./postgrator-config.ts",
+    "db:migrate": "postgrator",
     "db:down": "docker compose down",
     "generate:db:types": "kysely-codegen"
   },

@@ -23,6 +23,19 @@ export class TimetableService {
     return timetable;
   }
 
+  async findByDate(
+    date: string,
+    pagination: Pagination,
+    sortBy: SortBy<Timetable>
+  ): Promise<PaginatedResult<Timetable>> {
+    const timetable = await this.timetableRepository.findByDate(
+      date,
+      pagination,
+      sortBy
+    );
+    return timetable;
+  }
+
   async update(
     id: Timetable["id"],
     timetable: UpdateTimetable

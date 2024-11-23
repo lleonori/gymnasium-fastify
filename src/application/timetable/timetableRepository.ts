@@ -8,6 +8,11 @@ export interface ITimetableRepository {
     sortBy: SortBy<Timetable>
   ): Promise<PaginatedResult<Timetable>>;
   findById(id: Timetable["id"]): Promise<Timetable | undefined>;
+  findByDate(
+    date: string,
+    pagination: Pagination,
+    sortBy: SortBy<Timetable>
+  ): Promise<PaginatedResult<Timetable>>;
   update(
     id: Timetable["id"],
     timetable: UpdateTimetable

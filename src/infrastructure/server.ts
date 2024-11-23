@@ -41,7 +41,7 @@ export default async function (app: FastifyInstance) {
   });
   app.addHook("onRequest", async (request, reply) => {
     try {
-      await request.jwtVerify();
+      // await request.jwtVerify();
     } catch (err) {
       throw new UnauthorizedException(`User unauthorized`);
     }

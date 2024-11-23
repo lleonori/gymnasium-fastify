@@ -20,6 +20,32 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
         decodeSort(sort!)
       )
   );
+
+  app.get(
+    "/:date",
+    {
+      schema: {
+        tags: ["Timetable"],
+        querystring: TimetableSchemas.Queries.TimetablesQuery,
+        params: TimetableSchemas.Params.Date,
+        response: {
+          200: TimetableSchemas.Bodies.TimetablesPaginated,
+        },
+      },
+    },
+    async (request, reply) => {
+      const { offset, limit, sort } = request.query;
+      const { date } = request.params;
+
+      const timetables = await app.timetablesService.findByDate(
+        date,
+        { offset: offset!, limit: limit! },
+        decodeSort(sort!)
+      );
+
+      reply.send(timetables);
+    }
+  );
 };
 
 export default routes;

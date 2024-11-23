@@ -15,30 +15,3 @@ export const getDateTimeInItaly = (): Calendar => {
 
   return { today: today, tomorrow: tomorrow };
 };
-
-// export const clearBookedDaysFromCalendar = (
-//   bookings: PaginatedResult<Booking>,
-//   calendar: Calendar
-// ): Calendar => {
-//   let calendarResult: Calendar = { ...calendar };
-//   let bookingExistsToday: boolean = false;
-//   let bookingExistsTomorrow: boolean = false;
-
-//   bookings.data.forEach((booking: Booking) => {
-//     if (booking.day === calendar.today) {
-//       bookingExistsToday = true;
-//     }
-//     if (booking.day === calendar.tomorrow) {
-//       bookingExistsTomorrow = true;
-//     }
-//   });
-
-//   if (bookingExistsToday) {
-//     calendarResult.today = "";
-//   }
-//   if (bookingExistsTomorrow) {
-//     calendarResult.tomorrow = "";
-//   }
-
-//   return calendarResult;
-// };
