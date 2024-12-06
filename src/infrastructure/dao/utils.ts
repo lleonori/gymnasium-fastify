@@ -10,11 +10,11 @@ export function buildSortBy<
   O extends object = object,
 >(
   sortBy: SortBy<Model>,
-  alias?: Alias
+  alias?: Alias,
 ): ReadonlyArray<OrderByExpression<DB, Table, O>> {
   return sortBy.map(
     ([field, order]) =>
-      `${alias ? `${alias}.` : ""}${snakeCase(field as string)} ${order ?? "asc"}`
+      `${alias ? `${alias}.` : ""}${snakeCase(field as string)} ${order ?? "asc"}`,
   ) as unknown as ReadonlyArray<OrderByExpression<DB, Table, O>>;
 }
 
