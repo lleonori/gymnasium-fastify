@@ -20,7 +20,7 @@ export interface IBookingRepository {
     pagination: Pagination,
     sortBy: SortBy<Booking>
   ): Promise<PaginatedResult<Booking>>;
-  countBookingsByDayAndMail(day: Date, mail: string): Promise<number>;
+  countAllBookingsByDayAndMail(day: Date, mail: string): Promise<number>;
   countAllBookingsByDay(day: Date): Promise<number>;
   update(
     id: Booking["id"],

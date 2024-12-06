@@ -39,8 +39,8 @@ export class BookingService {
     );
   }
 
-  countBookingsByDayAndMail(day: Date, mail: string): Promise<number> {
-    return this.bookingRepository.countBookingsByDayAndMail(day, mail);
+  countAllBookingsByDayAndMail(day: Date, mail: string): Promise<number> {
+    return this.bookingRepository.countAllBookingsByDayAndMail(day, mail);
   }
 
   countAllBookingsByDay(day: Date): Promise<number> {

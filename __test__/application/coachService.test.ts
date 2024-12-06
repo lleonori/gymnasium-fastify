@@ -43,6 +43,30 @@ describe("CoachService", () => {
     vi.resetAllMocks();
   });
 
+  describe("find all", () => {
+    test("should find all coach", async () => {
+      mockedCoachRepository.findAll.mockResolvedValue({
+        count: 1,
+        data: [mockCoach],
+      });
+
+      const findAllCoach = await coachService.findAll(
+        { limit: 0, offset: 10 },
+        [["name", "asc"]]
+      );
+
+      expect(findAllCoach).toEqual({
+        count: 1,
+        data: [mockCoach],
+      });
+      expect(mockedCoachRepository.findAll).toHaveBeenCalledOnce();
+      expect(mockedCoachRepository.findAll).toHaveBeenCalledWith(
+        { limit: 0, offset: 10 },
+        [["name", "asc"]]
+      );
+    });
+  });
+
   describe("find by id", () => {
     test("should find a coach by id", async () => {
       mockedCoachRepository.findById.mockResolvedValue(mockCoach);

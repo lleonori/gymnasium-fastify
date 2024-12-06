@@ -16,8 +16,8 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
       },
     },
     async (request, reply) => {
-      const countBookingsByDayAndMail =
-        await app.bookingsService.countBookingsByDayAndMail(
+      const countAllBookingsByDayAndMail =
+        await app.bookingsService.countAllBookingsByDayAndMail(
           new Date(request.body.day),
           request.body.mail
         );
@@ -28,13 +28,13 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
         );
 
       if (
-        countBookingsByDayAndMail === 0 &&
+        countAllBookingsByDayAndMail === 0 &&
         countAllBookingsByDay <= DailyBookingLimit.Limit
       ) {
         const newBooking = await app.bookingsService.create(request.body);
         return reply.status(201).send(newBooking);
       } else {
-        if (countBookingsByDayAndMail > 0)
+        if (countAllBookingsByDayAndMail > 0)
           throw new ConflictException("La lezione è stata già prenotata.");
         else if (countAllBookingsByDay === DailyBookingLimit.Limit)
           throw new ConflictException("Limite di prenotazione raggiunto.");

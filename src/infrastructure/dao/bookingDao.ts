@@ -147,7 +147,7 @@ export class BookingDao implements IBookingRepository {
     };
   }
 
-  async countBookingsByDayAndMail(day: Date, mail: string): Promise<number> {
+  async countAllBookingsByDayAndMail(day: Date, mail: string): Promise<number> {
     const countResult = await this.db
       .selectFrom("bookings")
       .select(({ fn }) => [fn.count<number>("id").as("count")])
