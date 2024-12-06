@@ -17,8 +17,8 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
     async ({ query: { offset, limit, sort } }) =>
       app.coachsService.findAll(
         { offset: offset!, limit: limit! },
-        decodeSort(sort!)
-      )
+        decodeSort(sort!),
+      ),
   );
 };
 

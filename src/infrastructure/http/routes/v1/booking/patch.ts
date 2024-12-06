@@ -15,7 +15,7 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
       },
     },
     async (request) =>
-      app.bookingsService.update(request.params.bookingId, request.body)
+      app.bookingsService.update(request.params.bookingId, request.body),
   );
 };
 

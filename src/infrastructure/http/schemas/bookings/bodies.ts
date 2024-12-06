@@ -1,4 +1,4 @@
-import { Null, Type } from "@sinclair/typebox";
+import { Type } from "@sinclair/typebox";
 import CommonSchemas from "../commons/index.ts";
 
 export const CreateBooking = Type.Object({

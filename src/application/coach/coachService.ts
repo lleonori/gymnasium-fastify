@@ -12,7 +12,7 @@ export class CoachService {
 
   findAll(
     pagination: Pagination,
-    sortBy: SortBy<Coach>
+    sortBy: SortBy<Coach>,
   ): Promise<PaginatedResult<Coach>> {
     return this.coachRepository.findAll(pagination, sortBy);
   }
@@ -37,7 +37,7 @@ export class CoachService {
 
   private handleNotFound(
     coach: Coach | undefined,
-    id: Coach["id"]
+    id: Coach["id"],
   ): asserts coach is Coach {
     if (!coach) throw new NotFoundException(`Coach with id ${id} not found`);
   }

@@ -11,7 +11,7 @@ declare module "fastify" {
     authGuard(
       request: FastifyRequest,
       reply: FastifyReply,
-      requiredRoles: string[]
+      requiredRoles: string[],
     ): boolean;
   }
 }
@@ -22,7 +22,7 @@ export default fp(async (fastify) => {
     function (
       request: FastifyRequest,
       reply: FastifyReply,
-      requiredRoles: string[]
+      requiredRoles: string[],
     ) {
       const user = request.user;
 
@@ -46,7 +46,7 @@ export default fp(async (fastify) => {
           return false;
         else return true;
       } else return false;
-    }
+    },
   );
 });
 
@@ -56,10 +56,10 @@ const hasRequiredActive = (userActive: boolean): boolean => {
 
 const hasRequiredRole = (
   requiredRoles: string[],
-  userRoles: string[]
+  userRoles: string[],
 ): boolean => {
   const hasRequiredRole = requiredRoles.every((role) =>
-    userRoles.includes(role)
+    userRoles.includes(role),
   );
 
   return hasRequiredRole;

@@ -19,12 +19,12 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
       const countAllBookingsByDayAndMail =
         await app.bookingsService.countAllBookingsByDayAndMail(
           new Date(request.body.day),
-          request.body.mail
+          request.body.mail,
         );
 
       const countAllBookingsByDay =
         await app.bookingsService.countAllBookingsByDay(
-          new Date(request.body.day)
+          new Date(request.body.day),
         );
 
       if (
@@ -39,7 +39,7 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
         else if (countAllBookingsByDay === DailyBookingLimit.Limit)
           throw new ConflictException("Limite di prenotazione raggiunto.");
       }
-    }
+    },
   );
 };
 

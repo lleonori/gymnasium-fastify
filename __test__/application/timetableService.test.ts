@@ -51,7 +51,7 @@ describe("TimetableService", () => {
 
       const findAllTimetable = await timetableService.findAll(
         { limit: 0, offset: 10 },
-        [["id", "asc"]]
+        [["id", "asc"]],
       );
 
       expect(findAllTimetable).toEqual({
@@ -61,7 +61,7 @@ describe("TimetableService", () => {
       expect(mockedTimetableRepository.findAll).toHaveBeenCalledOnce();
       expect(mockedTimetableRepository.findAll).toHaveBeenCalledWith(
         { limit: 0, offset: 10 },
-        [["id", "asc"]]
+        [["id", "asc"]],
       );
     });
   });
@@ -81,7 +81,7 @@ describe("TimetableService", () => {
       mockedTimetableRepository.findById.mockResolvedValue(undefined);
 
       await expect(timetableService.findById(1)).rejects.toThrow(
-        "Timetable with id 1 not found"
+        "Timetable with id 1 not found",
       );
     });
   });
@@ -123,7 +123,7 @@ describe("TimetableService", () => {
       await expect(
         timetableService.update(1, {
           hour: "13:00",
-        })
+        }),
       ).rejects.toThrow("Timetable with id 1 not found");
     });
   });

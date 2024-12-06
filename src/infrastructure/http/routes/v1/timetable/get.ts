@@ -17,8 +17,8 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
     async ({ query: { offset, limit, sort } }) =>
       app.timetablesService.findAll(
         { offset: offset!, limit: limit! },
-        decodeSort(sort!)
-      )
+        decodeSort(sort!),
+      ),
   );
 
   app.get(
@@ -40,11 +40,11 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
       const timetables = await app.timetablesService.findByDate(
         date,
         { offset: offset!, limit: limit! },
-        decodeSort(sort!)
+        decodeSort(sort!),
       );
 
       reply.send(timetables);
-    }
+    },
   );
 };
 

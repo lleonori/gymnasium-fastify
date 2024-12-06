@@ -27,7 +27,7 @@ export default fp(async (fastify) => {
   fastify.decorate("coachsService", coachsService);
 
   const timetablesRepository: ITimetableRepository = new TimetableDao(
-    fastify.db
+    fastify.db,
   );
   const timetablesService = new TimetableService(timetablesRepository);
   fastify.decorate("timetablesService", timetablesService);

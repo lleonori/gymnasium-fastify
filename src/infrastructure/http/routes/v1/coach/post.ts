@@ -1,7 +1,5 @@
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import { CoachSchemas } from "../../../schemas/index.ts";
-import { UserRoles } from "../../../utils/enums.ts";
-import { UnauthorizedException } from "../../../../../application/commons/exceptions.ts";
 
 const routes: FastifyPluginAsyncTypebox = async (app) => {
   app.post(
@@ -23,7 +21,7 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
     async (request, reply) => {
       const newCoach = await app.coachsService.create(request.body);
       return reply.status(201).send(newCoach);
-    }
+    },
   );
 };
 

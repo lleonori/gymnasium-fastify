@@ -13,7 +13,7 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
         },
       },
     },
-    () => getDateTimeInItaly()
+    () => getDateTimeInItaly(),
   );
 };
 

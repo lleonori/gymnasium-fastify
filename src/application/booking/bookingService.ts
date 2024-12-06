@@ -20,7 +20,7 @@ export class BookingService {
   findAll(
     filterBy: FilterBooking,
     pagination: Pagination,
-    sortBy: SortBy<Booking>
+    sortBy: SortBy<Booking>,
   ): Promise<PaginatedResult<Booking>> {
     return this.bookingRepository.findAll(filterBy, pagination, sortBy);
   }
@@ -29,13 +29,13 @@ export class BookingService {
     calendar: Calendar,
     mail: string,
     pagination: Pagination,
-    sortBy: SortBy<Booking>
+    sortBy: SortBy<Booking>,
   ): Promise<PaginatedResult<Booking>> {
     return this.bookingRepository.findByMail(
       calendar,
       mail,
       pagination,
-      sortBy
+      sortBy,
     );
   }
 
@@ -61,7 +61,7 @@ export class BookingService {
 
   private handleNotFound(
     booking: Booking | undefined,
-    id: Booking["id"]
+    id: Booking["id"],
   ): asserts booking is Booking {
     if (!booking)
       throw new NotFoundException(`Booking with id ${id} not found`);

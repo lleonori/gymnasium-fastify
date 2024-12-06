@@ -39,10 +39,10 @@ export default async function (app: FastifyInstance) {
   app.ready(() => {
     app.log.info(app.printRoutes());
   });
-  app.addHook("onRequest", async (request, reply) => {
+  app.addHook("onRequest", async (request) => {
     try {
-      // await request.jwtVerify();
-    } catch (err) {
+      await request.jwtVerify();
+    } catch {
       throw new UnauthorizedException(`User unauthorized`);
     }
   });

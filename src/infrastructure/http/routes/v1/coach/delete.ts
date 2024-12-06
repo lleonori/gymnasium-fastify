@@ -18,7 +18,7 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
       //   }
       // },
     },
-    async ({ params: { coachId } }) => app.coachsService.delete(coachId)
+    async ({ params: { coachId } }) => app.coachsService.delete(coachId),
   );
 };
 

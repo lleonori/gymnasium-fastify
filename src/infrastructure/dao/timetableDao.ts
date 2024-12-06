@@ -34,7 +34,7 @@ export class TimetableDao implements ITimetableRepository {
 
   async findAll(
     pagination: Pagination,
-    sortBy: SortBy<Timetable>
+    sortBy: SortBy<Timetable>,
   ): Promise<PaginatedResult<Timetable>> {
     const countQuery = this.db
       .selectFrom("timetables")
@@ -70,7 +70,7 @@ export class TimetableDao implements ITimetableRepository {
   async findByDate(
     date: string,
     pagination: Pagination,
-    sortBy: SortBy<Timetable>
+    sortBy: SortBy<Timetable>,
   ): Promise<PaginatedResult<Timetable>> {
     if (isWeekEnd(new Date(date))) {
       const countQuery = this.db
@@ -123,7 +123,7 @@ export class TimetableDao implements ITimetableRepository {
 
   update(
     id: Timetable["id"],
-    timetable: UpdateTimetable
+    timetable: UpdateTimetable,
   ): Promise<Timetable | undefined> {
     return this.db
       .updateTable("timetables")

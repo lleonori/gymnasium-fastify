@@ -12,7 +12,7 @@ export class TimetableService {
 
   findAll(
     pagination: Pagination,
-    sortBy: SortBy<Timetable>
+    sortBy: SortBy<Timetable>,
   ): Promise<PaginatedResult<Timetable>> {
     return this.timetableRepository.findAll(pagination, sortBy);
   }
@@ -26,23 +26,23 @@ export class TimetableService {
   async findByDate(
     date: string,
     pagination: Pagination,
-    sortBy: SortBy<Timetable>
+    sortBy: SortBy<Timetable>,
   ): Promise<PaginatedResult<Timetable>> {
     const timetable = await this.timetableRepository.findByDate(
       date,
       pagination,
-      sortBy
+      sortBy,
     );
     return timetable;
   }
 
   async update(
     id: Timetable["id"],
-    timetable: UpdateTimetable
+    timetable: UpdateTimetable,
   ): Promise<Timetable> {
     const updatedTimetable = await this.timetableRepository.update(
       id,
-      timetable
+      timetable,
     );
     this.handleNotFound(updatedTimetable, id);
     return updatedTimetable;
@@ -56,7 +56,7 @@ export class TimetableService {
 
   private handleNotFound(
     timetable: Timetable | undefined,
-    id: Timetable["id"]
+    id: Timetable["id"],
   ): asserts timetable is Timetable {
     if (!timetable)
       throw new NotFoundException(`Timetable with id ${id} not found`);

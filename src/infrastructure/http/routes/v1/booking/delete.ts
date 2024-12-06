@@ -13,7 +13,7 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
         },
       },
     },
-    async ({ params: { bookingId } }) => app.bookingsService.delete(bookingId)
+    async ({ params: { bookingId } }) => app.bookingsService.delete(bookingId),
   );
 };
 

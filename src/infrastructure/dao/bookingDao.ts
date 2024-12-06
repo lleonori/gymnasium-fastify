@@ -36,7 +36,7 @@ export class BookingDao implements IBookingRepository {
     const returnFields = this.DEFAULT_SELECT_FIELDS.map((field) =>
       field === "day"
         ? sql<string>`to_char(day, 'YYYY-MM-DD')`.as("day")
-        : field
+        : field,
     );
 
     return this.db
@@ -49,7 +49,7 @@ export class BookingDao implements IBookingRepository {
   async findAll(
     filterBy: FilterBooking,
     pagination: Pagination,
-    sortBy: SortBy<Booking>
+    sortBy: SortBy<Booking>,
   ): Promise<PaginatedResult<Booking>> {
     let countQuery = this.db
       .selectFrom("bookings")
@@ -67,7 +67,7 @@ export class BookingDao implements IBookingRepository {
     const returnFields = this.DEFAULT_SELECT_FIELDS.map((field) =>
       field === "day"
         ? sql<string>`to_char(day, 'YYYY-MM-DD')`.as("day")
-        : field
+        : field,
     );
 
     let bookingsQuery = this.db
@@ -101,7 +101,7 @@ export class BookingDao implements IBookingRepository {
     calendar: Calendar,
     mail: string,
     pagination: Pagination,
-    sortBy: SortBy<Booking>
+    sortBy: SortBy<Booking>,
   ): Promise<PaginatedResult<Booking>> {
     const countQuery = this.db
       .selectFrom("bookings")
@@ -111,7 +111,7 @@ export class BookingDao implements IBookingRepository {
           eb("mail", "=", mail),
           eb("day", ">=", new Date(calendar.today)),
           eb("day", "<=", new Date(calendar.tomorrow)),
-        ])
+        ]),
       )
       .executeTakeFirst();
 
@@ -119,7 +119,7 @@ export class BookingDao implements IBookingRepository {
     const returnFields = this.DEFAULT_SELECT_FIELDS.map((field) =>
       field === "day"
         ? sql<string>`to_char(day, 'YYYY-MM-DD')`.as("day")
-        : field
+        : field,
     );
 
     const bookingsQuery = this.db
@@ -129,7 +129,7 @@ export class BookingDao implements IBookingRepository {
           eb("mail", "=", mail),
           eb("day", ">=", new Date(calendar.today)),
           eb("day", "<=", new Date(calendar.tomorrow)),
-        ])
+        ]),
       )
       .orderBy(buildSortBy<"bookings", Booking>(sortBy))
       .limit(pagination.limit)
@@ -169,13 +169,13 @@ export class BookingDao implements IBookingRepository {
 
   update(
     id: Booking["id"],
-    booking: UpdateBooking
+    booking: UpdateBooking,
   ): Promise<Booking | undefined> {
     // Construct the fields to return, replacing the 'day' field with the SQL expression
     const returnFields = this.DEFAULT_SELECT_FIELDS.map((field) =>
       field === "day"
         ? sql<string>`to_char(day, 'YYYY-MM-DD')`.as("day")
-        : field
+        : field,
     );
 
     return this.db
@@ -191,7 +191,7 @@ export class BookingDao implements IBookingRepository {
     const returnFields = this.DEFAULT_SELECT_FIELDS.map((field) =>
       field === "day"
         ? sql<string>`to_char(day, 'YYYY-MM-DD')`.as("day")
-        : field
+        : field,
     );
 
     return this.db

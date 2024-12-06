@@ -36,7 +36,7 @@ export class CoachDao implements ICoachRepository {
 
   async findAll(
     pagination: Pagination,
-    sortBy: SortBy<Coach>
+    sortBy: SortBy<Coach>,
   ): Promise<PaginatedResult<Coach>> {
     const countQuery = this.db
       .selectFrom("coachs")

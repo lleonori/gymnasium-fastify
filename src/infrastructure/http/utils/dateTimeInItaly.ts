@@ -10,7 +10,7 @@ export const getDateTimeInItaly = (): Calendar => {
   const today: string = format(fromZonedTime(now, "Europe/Rome"), "yyyy-MM-dd");
   const tomorrow: string = format(
     fromZonedTime(addDays(now, 1), "Europe/Rome"),
-    "yyyy-MM-dd"
+    "yyyy-MM-dd",
   );
 
   return { today: today, tomorrow: tomorrow };

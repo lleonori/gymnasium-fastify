@@ -10,8 +10,8 @@ export const CalendarQuery = Type.Partial(
           Type.TemplateLiteral("${id}"),
           Type.TemplateLiteral("${id}.${asc|desc}"),
         ]),
-        { default: ["id.asc"] }
+        { default: ["id.asc"] },
       ),
     }),
-  ])
+  ]),
 );

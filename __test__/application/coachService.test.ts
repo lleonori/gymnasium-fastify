@@ -52,7 +52,7 @@ describe("CoachService", () => {
 
       const findAllCoach = await coachService.findAll(
         { limit: 0, offset: 10 },
-        [["name", "asc"]]
+        [["name", "asc"]],
       );
 
       expect(findAllCoach).toEqual({
@@ -62,7 +62,7 @@ describe("CoachService", () => {
       expect(mockedCoachRepository.findAll).toHaveBeenCalledOnce();
       expect(mockedCoachRepository.findAll).toHaveBeenCalledWith(
         { limit: 0, offset: 10 },
-        [["name", "asc"]]
+        [["name", "asc"]],
       );
     });
   });
@@ -82,7 +82,7 @@ describe("CoachService", () => {
       mockedCoachRepository.findById.mockResolvedValue(undefined);
 
       await expect(coachService.findById(1)).rejects.toThrow(
-        "Coach with id 1 not found"
+        "Coach with id 1 not found",
       );
     });
   });
@@ -139,7 +139,7 @@ describe("CoachService", () => {
           surname: "Leonori",
           image: "/asset/coach/man1.png",
           notes: "Laurea Scienze Motorie",
-        })
+        }),
       ).rejects.toThrow("Coach with id 1 not found");
     });
   });

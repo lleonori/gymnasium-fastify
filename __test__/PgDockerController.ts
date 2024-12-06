@@ -28,7 +28,7 @@ export default class PgDockerController {
     ...this.dbConfig.default,
   }).reduce(
     (acc, [key, value]) => (acc += ` --${kebabCase(key)} ${value}`),
-    "--no-config"
+    "--no-config",
   );
   public readonly db: Kysely<DB> = createDbConnection(this.dbConfig);
   private tables: string[] = [];
@@ -102,7 +102,7 @@ export default class PgDockerController {
           } else {
             resolve();
           }
-        }
+        },
       );
     });
   }
@@ -116,8 +116,8 @@ export default class PgDockerController {
       this.tables.map((table) =>
         sql
           .raw(`TRUNCATE TABLE "${table}" RESTART IDENTITY CASCADE`)
-          .execute(this.db)
-      )
+          .execute(this.db),
+      ),
     );
   }
 
@@ -131,7 +131,7 @@ export default class PgDockerController {
       .map((container) => container.Id)
       .map(
         PgDockerController.dockerConnection.getContainer,
-        PgDockerController.dockerConnection
+        PgDockerController.dockerConnection,
       )
       .map(PgDockerController.deleteContainer);
 
@@ -140,7 +140,7 @@ export default class PgDockerController {
 
   private static isControlledContainer(container: ContainerInfo): boolean {
     return Boolean(
-      container.Names.find((name) => name.includes(CONTAINER_PREFIX))
+      container.Names.find((name) => name.includes(CONTAINER_PREFIX)),
     );
   }
 

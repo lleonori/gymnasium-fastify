@@ -55,7 +55,7 @@ describe("BookingService", () => {
       const findAllBooking = await bookingService.findAll(
         { fullName: "Lorenzo" },
         { limit: 0, offset: 10 },
-        [["id", "asc"]]
+        [["id", "asc"]],
       );
 
       expect(findAllBooking).toEqual({
@@ -66,7 +66,7 @@ describe("BookingService", () => {
       expect(mockedBookingRepository.findAll).toHaveBeenCalledWith(
         { fullName: "Lorenzo" },
         { limit: 0, offset: 10 },
-        [["id", "asc"]]
+        [["id", "asc"]],
       );
     });
   });
@@ -82,7 +82,7 @@ describe("BookingService", () => {
         { today: "06/12/2024", tomorrow: "07/12/2024" },
         "lorenzo.leonori.93@gmail.com",
         { limit: 0, offset: 10 },
-        [["id", "asc"]]
+        [["id", "asc"]],
       );
 
       expect(findBookingByMail).toEqual({
@@ -94,7 +94,7 @@ describe("BookingService", () => {
         { today: "06/12/2024", tomorrow: "07/12/2024" },
         "lorenzo.leonori.93@gmail.com",
         { limit: 0, offset: 10 },
-        [["id", "asc"]]
+        [["id", "asc"]],
       );
     });
   });
@@ -107,10 +107,10 @@ describe("BookingService", () => {
 
       expect(cabbd).toEqual(1);
       expect(
-        mockedBookingRepository.countAllBookingsByDay
+        mockedBookingRepository.countAllBookingsByDay,
       ).toHaveBeenCalledOnce();
       expect(
-        mockedBookingRepository.countAllBookingsByDay
+        mockedBookingRepository.countAllBookingsByDay,
       ).toHaveBeenCalledWith(new Date());
     });
   });
@@ -121,15 +121,15 @@ describe("BookingService", () => {
 
       const cabbdam = await bookingService.countAllBookingsByDayAndMail(
         new Date(),
-        "lorenzo.leonori.93@gmail.com"
+        "lorenzo.leonori.93@gmail.com",
       );
 
       expect(cabbdam).toEqual(1);
       expect(
-        mockedBookingRepository.countAllBookingsByDayAndMail
+        mockedBookingRepository.countAllBookingsByDayAndMail,
       ).toHaveBeenCalledOnce();
       expect(
-        mockedBookingRepository.countAllBookingsByDayAndMail
+        mockedBookingRepository.countAllBookingsByDayAndMail,
       ).toHaveBeenCalledWith(new Date(), "lorenzo.leonori.93@gmail.com");
     });
   });
@@ -186,7 +186,7 @@ describe("BookingService", () => {
           mail: "lorenzo.leonori.93@gmail.com",
           day: "06/12/2024",
           hour: "9:00",
-        })
+        }),
       ).rejects.toThrow("Booking with id 1 not found");
     });
   });

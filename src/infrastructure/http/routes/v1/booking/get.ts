@@ -26,11 +26,11 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
         calendar,
         bookingMail,
         { offset: offset!, limit: limit! },
-        decodeSort(sort!)
+        decodeSort(sort!),
       );
 
       reply.send(bookings);
-    }
+    },
   );
 
   app.get(
@@ -48,8 +48,8 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
       app.bookingsService.findAll(
         { day: day, hour: hour },
         { offset: offset!, limit: limit! },
-        decodeSort(sort!)
-      )
+        decodeSort(sort!),
+      ),
   );
 };
 

@@ -7,16 +7,17 @@ export function buildSortBy<
   Table extends Exclude<keyof DB, "schemaversion">,
   Model extends Record<string, unknown>,
   Alias extends string = Table,
-  O extends object = {}
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  O extends object = {},
 >(
   sortBy: SortBy<Model>,
-  alias?: Alias
+  alias?: Alias,
 ): ReadonlyArray<OrderByExpression<DB, Table, O>> {
   return sortBy.map(
     ([field, order]) =>
       `${alias ? `${alias}.` : ""}${snakeCase(field as string)} ${
         order ?? "asc"
-      }`
+      }`,
   ) as unknown as ReadonlyArray<OrderByExpression<DB, Table, O>>;
 }
 

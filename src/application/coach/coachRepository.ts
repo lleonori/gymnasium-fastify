@@ -5,7 +5,7 @@ export interface ICoachRepository {
   create(coach: CreateCoach): Promise<Coach>;
   findAll(
     pagination: Pagination,
-    sortBy: SortBy<Coach>
+    sortBy: SortBy<Coach>,
   ): Promise<PaginatedResult<Coach>>;
   findById(id: Coach["id"]): Promise<Coach | undefined>;
   update(id: Coach["id"], coach: UpdateCoach): Promise<Coach | undefined>;

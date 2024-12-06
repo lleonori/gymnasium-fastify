@@ -8,7 +8,7 @@ import {
 export const errorHandler: FastifyInstance["errorHandler"] = function (
   error,
   request,
-  reply
+  reply,
 ) {
   if (error instanceof NotFoundException) {
     if (request.method === "DELETE") {
@@ -37,7 +37,7 @@ export const errorHandler: FastifyInstance["errorHandler"] = function (
       },
       error,
     },
-    "Unhandled error occurred."
+    "Unhandled error occurred.",
   );
   return reply.code(500).send(error.message);
 };

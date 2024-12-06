@@ -1,7 +1,5 @@
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
-import { UnauthorizedException } from "../../../../../application/commons/exceptions.ts";
 import { CoachSchemas } from "../../../schemas/index.ts";
-import { UserRoles } from "../../../utils/enums.ts";
 
 const routes: FastifyPluginAsyncTypebox = async (app) => {
   app.patch(
@@ -22,7 +20,7 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
       // },
     },
     async (request) =>
-      app.coachsService.update(request.params.coachId, request.body)
+      app.coachsService.update(request.params.coachId, request.body),
   );
 };
 
