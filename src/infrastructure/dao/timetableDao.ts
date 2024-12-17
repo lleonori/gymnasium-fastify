@@ -11,7 +11,7 @@ import {
   Timetable,
   UpdateTimetable,
 } from "../../application/timetable/index.ts";
-import { buildSortBy, isWeekEnd } from "./utils.ts";
+import { buildSortBy, isSaturday, isSunday } from "./utils.ts";
 
 export class TimetableDao implements ITimetableRepository {
   protected readonly DEFAULT_SELECT_FIELDS = [
@@ -72,16 +72,20 @@ export class TimetableDao implements ITimetableRepository {
     pagination: Pagination,
     sortBy: SortBy<Timetable>,
   ): Promise<PaginatedResult<Timetable>> {
-    if (isWeekEnd(new Date(date))) {
+    if (!isSunday(new Date(date))) {
       const countQuery = this.db
         .selectFrom("timetables")
-        .where("is_valid_on_weekend", "=", true)
+        .$if(isSaturday(new Date(date)), (qb) =>
+          qb.where("is_valid_on_weekend", "=", true),
+        )
         .select(({ fn }) => [fn.count<number>("id").as("count")])
         .executeTakeFirst();
 
       const timetablesQuery = this.db
         .selectFrom("timetables")
-        .where("is_valid_on_weekend", "=", true)
+        .$if(isSaturday(new Date(date)), (qb) =>
+          qb.where("is_valid_on_weekend", "=", true),
+        )
         .orderBy(buildSortBy<"timetables", Timetable>(sortBy))
         .limit(pagination.limit)
         .offset(pagination.offset)
@@ -97,26 +101,9 @@ export class TimetableDao implements ITimetableRepository {
         data: timetablesResult,
       };
     } else {
-      const countQuery = this.db
-        .selectFrom("timetables")
-        .select(({ fn }) => [fn.count<number>("id").as("count")])
-        .executeTakeFirst();
-
-      const timetablesQuery = this.db
-        .selectFrom("timetables")
-        .orderBy(buildSortBy<"timetables", Timetable>(sortBy))
-        .limit(pagination.limit)
-        .offset(pagination.offset)
-        .select(this.DEFAULT_SELECT_FIELDS)
-        .execute();
-
-      const [countResult, timetablesResult] = await Promise.all([
-        countQuery,
-        timetablesQuery,
-      ]);
       return {
-        count: countResult?.count ?? 0,
-        data: timetablesResult,
+        count: 0,
+        data: [],
       };
     }
   }

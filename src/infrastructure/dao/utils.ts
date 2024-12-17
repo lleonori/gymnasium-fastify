@@ -18,7 +18,12 @@ export function buildSortBy<
   ) as unknown as ReadonlyArray<OrderByExpression<DB, Table, O>>;
 }
 
-export function isWeekEnd(date: Date): boolean {
-  const day = date.getDay(); // getDay() returns the day of the week (0 for Sunday, 6 for Saturday)
-  return day === 0 || day === 6;
+export function isSaturday(date: Date): boolean {
+  const day = date.getDay(); // getDay() returns the day of the week (6 for Saturday)
+  return day === 6;
+}
+
+export function isSunday(date: Date): boolean {
+  const day = date.getDay(); // getDay() returns the day of the week (0 for Sunday)
+  return day === 0;
 }
