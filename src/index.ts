@@ -3,7 +3,9 @@ import fastify from "fastify";
 import buildServer from "./infrastructure/server.ts";
 import qs from "qs";
 
-dotenv.config();
+const envFile = `.env.${process.env.NODE_ENV || "development"}`;
+dotenv.config({ path: envFile });
+console.log(`Loaded environment variables from ${envFile}`);
 
 const port = parseInt(process.env.PORT!) || 3000;
 const host = process.env.HOST || "127.0.0.1";
