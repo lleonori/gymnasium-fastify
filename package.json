@@ -9,7 +9,7 @@
     "build": "tsc",
     "pm2:start": "NODE_ENV=production pm2 start dist/index.js --name gymnasium",
     "db:up": "docker compose up -d",
-    "db:migrate": "postgrator",
+    "db:migrate": "postgrator --config postgrator-config.js",
     "db:down": "docker compose down",
     "generate:db:types": "kysely-codegen",
     "pg-pull": "docker pull postgres:$(grep POSTGRES_VERSION .env | cut -d '=' -f2)-alpine",
