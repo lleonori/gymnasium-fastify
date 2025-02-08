@@ -1,3 +1,3 @@
-export * from "./models.ts";
-export type { IBookingRepository } from "./bookingRepository.ts";
-export { BookingService } from "./bookingService.ts";
+export * from "./models.js";
+export type { IBookingRepository } from "./bookingRepository.js";
+export { BookingService } from "./bookingService.js";

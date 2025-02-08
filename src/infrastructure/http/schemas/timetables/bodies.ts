@@ -1,5 +1,5 @@
 import { Type } from "@sinclair/typebox";
-import CommonSchemas from "../commons/index.ts";
+import CommonSchemas from "../commons/index.js";
 
 export const CreateTimetable = Type.Object({
   hour: Type.String(),

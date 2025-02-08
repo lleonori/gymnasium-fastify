@@ -1,5 +1,5 @@
-import { PaginatedResult, Pagination, SortBy } from "../commons/models.ts";
-import { CreateCoach, Coach, UpdateCoach } from "./models.ts";
+import { PaginatedResult, Pagination, SortBy } from "../commons/models.js";
+import { CreateCoach, Coach, UpdateCoach } from "./models.js";
 
 export interface ICoachRepository {
   create(coach: CreateCoach): Promise<Coach>;

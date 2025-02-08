@@ -1,7 +1,7 @@
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
-import { BookingSchemas } from "../../../schemas/index.ts";
-import { DailyBookingLimit } from "../../../utils/enums.ts";
-import { ConflictException } from "../../../../../application/commons/exceptions.ts";
+import { BookingSchemas } from "../../../schemas/index.js";
+import { DailyBookingLimit } from "../../../utils/enums.js";
+import { ConflictException } from "../../../../../application/commons/exceptions.js";
 
 const routes: FastifyPluginAsyncTypebox = async (app) => {
   app.post(

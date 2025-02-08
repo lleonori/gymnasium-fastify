@@ -2,9 +2,9 @@ import autoLoad from "@fastify/autoload";
 import { FastifyInstance } from "fastify";
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
-import { errorHandler } from "./http/errors/index.ts";
+import { errorHandler } from "./http/errors/index.js";
 import fastifyAuth0Verifiy from "fastify-auth0-verify";
-import { UnauthorizedException } from "../application/commons/exceptions.ts";
+import { UnauthorizedException } from "../application/commons/exceptions.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);

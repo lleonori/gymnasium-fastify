@@ -1,5 +1,5 @@
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
-import { CoachSchemas } from "../../../schemas/index.ts";
+import { CoachSchemas } from "../../../schemas/index.js";
 
 const routes: FastifyPluginAsyncTypebox = async (app) => {
   app.post(

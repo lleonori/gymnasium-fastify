@@ -3,7 +3,7 @@ import {
   ConflictException,
   NotFoundException,
   UnauthorizedException,
-} from "../../../application/commons/exceptions.ts";
+} from "../../../application/commons/exceptions.js";
 
 export const errorHandler: FastifyInstance["errorHandler"] = function (
   error,

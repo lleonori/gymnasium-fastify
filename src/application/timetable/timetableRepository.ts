@@ -1,5 +1,5 @@
-import { PaginatedResult, Pagination, SortBy } from "../commons/models.ts";
-import { CreateTimetable, Timetable, UpdateTimetable } from "./models.ts";
+import { PaginatedResult, Pagination, SortBy } from "../commons/models.js";
+import { CreateTimetable, Timetable, UpdateTimetable } from "./models.js";
 
 export interface ITimetableRepository {
   create(timetable: CreateTimetable): Promise<Timetable>;

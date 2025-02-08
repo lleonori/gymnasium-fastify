@@ -1,13 +1,13 @@
-import { Calendar } from "../calendar/models.ts";
-import { NotFoundException } from "../commons/exceptions.ts";
-import { PaginatedResult, Pagination, SortBy } from "../commons/models.ts";
-import { IBookingRepository } from "./bookingRepository.ts";
+import { Calendar } from "../calendar/models.js";
+import { NotFoundException } from "../commons/exceptions.js";
+import { PaginatedResult, Pagination, SortBy } from "../commons/models.js";
+import { IBookingRepository } from "./bookingRepository.js";
 import {
   Booking,
   CreateBooking,
   FilterBooking,
   UpdateBooking,
-} from "./models.ts";
+} from "./models.js";
 
 export class BookingService {
   constructor(protected readonly bookingRepository: IBookingRepository) {}

@@ -11,7 +11,7 @@ import {
   ICoachRepository,
   Coach,
   CoachService,
-} from "../../src/application/coach/index.ts";
+} from "../../src/application/coach/index.js";
 
 const mockCoach: Coach = {
   id: 1,

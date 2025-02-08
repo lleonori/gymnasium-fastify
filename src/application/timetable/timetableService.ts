@@ -1,7 +1,7 @@
-import { NotFoundException } from "../commons/exceptions.ts";
-import { PaginatedResult, Pagination, SortBy } from "../commons/models.ts";
-import { CreateTimetable, Timetable, UpdateTimetable } from "./models.ts";
-import { ITimetableRepository } from "./timetableRepository.ts";
+import { NotFoundException } from "../commons/exceptions.js";
+import { PaginatedResult, Pagination, SortBy } from "../commons/models.js";
+import { CreateTimetable, Timetable, UpdateTimetable } from "./models.js";
+import { ITimetableRepository } from "./timetableRepository.js";
 
 export class TimetableService {
   constructor(protected readonly timetableRepository: ITimetableRepository) {}

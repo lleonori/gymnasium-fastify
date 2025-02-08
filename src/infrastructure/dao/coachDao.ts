@@ -4,14 +4,14 @@ import {
   PaginatedResult,
   Pagination,
   SortBy,
-} from "../../application/commons/models.ts";
+} from "../../application/commons/models.js";
 import {
   CreateCoach,
   ICoachRepository,
   Coach,
   UpdateCoach,
-} from "../../application/coach/index.ts";
-import { buildSortBy } from "./utils.ts";
+} from "../../application/coach/index.js";
+import { buildSortBy } from "./utils.js";
 
 export class CoachDao implements ICoachRepository {
   protected readonly DEFAULT_SELECT_FIELDS = [

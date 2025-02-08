@@ -1,3 +1,3 @@
-export * from "./models.ts";
-export type { ITimetableRepository } from "./timetableRepository.ts";
-export { TimetableService } from "./timetableService.ts";
+export * from "./models.js";
+export type { ITimetableRepository } from "./timetableRepository.js";
+export { TimetableService } from "./timetableService.js";

@@ -1,7 +1,7 @@
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
-import { BookingSchemas } from "../../../schemas/index.ts";
-import { decodeSort } from "../../../utils/decodeSort.ts";
-import { getDateTimeInItaly } from "../../../utils/dateTimeInItaly.ts";
+import { BookingSchemas } from "../../../schemas/index.js";
+import { decodeSort } from "../../../utils/decodeSort.js";
+import { getDateTimeInItaly } from "../../../utils/dateTimeInItaly.js";
 
 const routes: FastifyPluginAsyncTypebox = async (app) => {
   app.get(

@@ -1,7 +1,7 @@
-import { NotFoundException } from "../commons/exceptions.ts";
-import { PaginatedResult, Pagination, SortBy } from "../commons/models.ts";
-import { CreateCoach, Coach, UpdateCoach } from "./models.ts";
-import { ICoachRepository } from "./coachRepository.ts";
+import { NotFoundException } from "../commons/exceptions.js";
+import { PaginatedResult, Pagination, SortBy } from "../commons/models.js";
+import { CreateCoach, Coach, UpdateCoach } from "./models.js";
+import { ICoachRepository } from "./coachRepository.js";
 
 export class CoachService {
   constructor(protected readonly coachRepository: ICoachRepository) {}

@@ -1,6 +1,6 @@
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
-import { TimetableSchemas } from "../../../schemas/index.ts";
-import { decodeSort } from "../../../utils/decodeSort.ts";
+import { TimetableSchemas } from "../../../schemas/index.js";
+import { decodeSort } from "../../../utils/decodeSort.js";
 
 const routes: FastifyPluginAsyncTypebox = async (app) => {
   app.get(

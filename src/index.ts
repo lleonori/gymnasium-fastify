@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 import fastify from "fastify";
-import buildServer from "./infrastructure/server.ts";
+import buildServer from "./infrastructure/server.js";
 import qs from "qs";
 
 const envFile = `.env.${process.env.NODE_ENV || "development"}`;

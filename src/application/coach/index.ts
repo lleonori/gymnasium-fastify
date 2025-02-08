@@ -1,3 +1,3 @@
-export * from "./models.ts";
-export type { ICoachRepository } from "./coachRepository.ts";
-export { CoachService } from "./coachService.ts";
+export * from "./models.js";
+export type { ICoachRepository } from "./coachRepository.js";
+export { CoachService } from "./coachService.js";

@@ -1,5 +1,5 @@
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
-import { TimetableSchemas } from "../../../schemas/index.ts";
+import { TimetableSchemas } from "../../../schemas/index.js";
 
 const routes: FastifyPluginAsyncTypebox = async (app) => {
   app.delete(

@@ -1,4 +1,4 @@
-import { Calendar } from "../../../application/calendar/models.ts";
+import { Calendar } from "../../../application/calendar/models.js";
 
 export const getDateTimeInItaly = (): Calendar => {
   // Helper to format a date to "yyyy-MM-dd" in the Italy timezone
@@ -18,13 +18,13 @@ export const getDateTimeInItaly = (): Calendar => {
   // Get the current date and time in Italy timezone
   const now = new Date();
   const italyTime = new Date(
-    now.toLocaleString("en-US", { timeZone: "Europe/Rome" })
+    now.toLocaleString("en-US", { timeZone: "Europe/Rome" }),
   );
 
   // Calculate today and tomorrow
   const today = formatDate(italyTime);
   const tomorrow = formatDate(
-    new Date(italyTime.setDate(italyTime.getDate() + 1))
+    new Date(italyTime.setDate(italyTime.getDate() + 1)),
   );
 
   return { today: today, tomorrow: tomorrow };

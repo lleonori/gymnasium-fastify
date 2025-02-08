@@ -1,19 +1,19 @@
 import { Kysely, SelectExpression, sql } from "kysely";
 import { DB } from "kysely-codegen";
-import { Calendar } from "../../application/calendar/models.ts";
+import { Calendar } from "../../application/calendar/models.js";
 import {
   PaginatedResult,
   Pagination,
   SortBy,
-} from "../../application/commons/models.ts";
+} from "../../application/commons/models.js";
 import {
   Booking,
   CreateBooking,
   FilterBooking,
   IBookingRepository,
   UpdateBooking,
-} from "../../application/index.ts";
-import { buildSortBy } from "./utils.ts";
+} from "../../application/index.js";
+import { buildSortBy } from "./utils.js";
 
 export class BookingDao implements IBookingRepository {
   constructor(protected readonly db: Kysely<DB>) {}

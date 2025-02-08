@@ -2,7 +2,7 @@ import fp from "fastify-plugin";
 import { Kysely, PostgresDialect } from "kysely";
 import { DB } from "kysely-codegen";
 import pg from "pg";
-import { buildDbConfig, DatabaseConnectionsConfig } from "../env/dbConfig.ts";
+import { buildDbConfig, DatabaseConnectionsConfig } from "../env/dbConfig.js";
 const { Pool } = pg;
 
 export function createDbConnection(config: DatabaseConnectionsConfig) {

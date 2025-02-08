@@ -1,7 +1,7 @@
 import { snakeCase } from "change-case";
 import { OrderByExpression } from "kysely";
 import { DB } from "kysely-codegen";
-import { SortBy } from "../../application/commons/models.ts";
+import { SortBy } from "../../application/commons/models.js";
 
 export function buildSortBy<
   Table extends Exclude<keyof DB, "schemaversion">,
@@ -10,11 +10,11 @@ export function buildSortBy<
   O extends object = object,
 >(
   sortBy: SortBy<Model>,
-  alias?: Alias
+  alias?: Alias,
 ): ReadonlyArray<OrderByExpression<DB, Table, O>> {
   return sortBy.map(
     ([field, order]) =>
-      `${alias ? `${alias}.` : ""}${snakeCase(field as string)} ${order ?? "asc"}`
+      `${alias ? `${alias}.` : ""}${snakeCase(field as string)} ${order ?? "asc"}`,
   ) as unknown as ReadonlyArray<OrderByExpression<DB, Table, O>>;
 }
 

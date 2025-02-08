@@ -1,5 +1,5 @@
 import { Type } from "@sinclair/typebox";
-import PaginationSchema from "../commons/index.ts";
+import PaginationSchema from "../commons/index.js";
 
 export const CalendarQuery = Type.Partial(
   Type.Intersect([

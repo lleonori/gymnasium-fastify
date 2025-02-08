@@ -1,1 +1,1 @@
-export * from "./booking/index.ts";
+export * from "./booking/index.js";

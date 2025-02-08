@@ -9,8 +9,8 @@ import { setInterval } from "timers/promises";
 import {
   DatabaseConnectionsConfig,
   buildDbConfig,
-} from "../src/infrastructure/env/dbConfig.ts";
-import { createDbConnection } from "../src/infrastructure/plugins/database-connections.ts";
+} from "../src/infrastructure/env/dbConfig.js";
+import { createDbConnection } from "../src/infrastructure/plugins/database-connections.js";
 
 const { parsed: parsedEnv = {} } = config();
 

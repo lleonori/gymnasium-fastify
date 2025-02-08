@@ -11,7 +11,7 @@ import {
   ITimetableRepository,
   Timetable,
   TimetableService,
-} from "../../src/application/timetable/index.ts";
+} from "../../src/application/timetable/index.js";
 
 const mockTimetable: Timetable = {
   id: 1,

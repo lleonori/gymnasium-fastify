@@ -11,7 +11,7 @@ import {
   IBookingRepository,
   Booking,
   BookingService,
-} from "../../src/application/booking/index.ts";
+} from "../../src/application/booking/index.js";
 
 const mockBooking: Booking = {
   id: 1,
