@@ -1,6 +1,9 @@
-require("dotenv").config();
+import dotenv from "dotenv";
+const envFile = `.env.${process.env.NODE_ENV || "development"}`;
+dotenv.config({ path: envFile });
+console.log(`Loaded environment variables from ${envFile}`);
 
-module.exports = {
+export default {
   migrationPattern: "migrations/*",
   driver: "pg",
   host: process.env.POSTGRES_HOST,

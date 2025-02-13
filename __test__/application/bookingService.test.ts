@@ -15,7 +15,7 @@ import {
 
 const mockBooking: Booking = {
   id: 1,
-  fullName: "Lorenzo Leonori",
+  fullname: "Lorenzo Leonori",
   mail: "lorenzo.leonori.93@gmail.com",
   day: "06/12/2024",
   hour: "9:00",
@@ -53,7 +53,7 @@ describe("BookingService", () => {
       });
 
       const findAllBooking = await bookingService.findAll(
-        { fullName: "Lorenzo" },
+        { fullname: "Lorenzo" },
         { limit: 0, offset: 10 },
         [["id", "asc"]],
       );
@@ -64,7 +64,7 @@ describe("BookingService", () => {
       });
       expect(mockedBookingRepository.findAll).toHaveBeenCalledOnce();
       expect(mockedBookingRepository.findAll).toHaveBeenCalledWith(
-        { fullName: "Lorenzo" },
+        { fullname: "Lorenzo" },
         { limit: 0, offset: 10 },
         [["id", "asc"]],
       );
@@ -139,7 +139,7 @@ describe("BookingService", () => {
       mockedBookingRepository.create.mockResolvedValue(mockBooking);
 
       const createdBooking = await bookingService.create({
-        fullName: "Lorenzo Leonori",
+        fullname: "Lorenzo Leonori",
         mail: "lorenzo.leonori.93@gmail.com",
         day: "06/12/2024",
         hour: "9:00",
@@ -148,7 +148,7 @@ describe("BookingService", () => {
       expect(createdBooking).toEqual(mockBooking);
       expect(mockedBookingRepository.create).toHaveBeenCalledOnce();
       expect(mockedBookingRepository.create).toHaveBeenCalledWith({
-        fullName: "Lorenzo Leonori",
+        fullname: "Lorenzo Leonori",
         mail: "lorenzo.leonori.93@gmail.com",
         day: "06/12/2024",
         hour: "9:00",
@@ -161,7 +161,7 @@ describe("BookingService", () => {
       mockedBookingRepository.update.mockResolvedValue(mockBooking);
 
       const updateBooking = await bookingService.update(1, {
-        fullName: "Lorenzo Leonori",
+        fullname: "Lorenzo Leonori",
         mail: "lorenzo.leonori.93@gmail.com",
         day: "06/12/2024",
         hour: "9:00",
@@ -170,7 +170,7 @@ describe("BookingService", () => {
       expect(updateBooking).toEqual(mockBooking);
       expect(mockedBookingRepository.update).toHaveBeenCalledOnce();
       expect(mockedBookingRepository.update).toHaveBeenCalledWith(1, {
-        fullName: "Lorenzo Leonori",
+        fullname: "Lorenzo Leonori",
         mail: "lorenzo.leonori.93@gmail.com",
         day: "06/12/2024",
         hour: "9:00",
@@ -182,7 +182,7 @@ describe("BookingService", () => {
 
       await expect(
         bookingService.update(1, {
-          fullName: "Lorenzo Leonori",
+          fullname: "Lorenzo Leonori",
           mail: "lorenzo.leonori.93@gmail.com",
           day: "06/12/2024",
           hour: "9:00",

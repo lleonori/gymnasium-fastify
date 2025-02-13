@@ -1,5 +1,5 @@
 export type CreateBooking = {
-  fullName: string | null;
+  fullname: string | null;
   mail: string;
   day: string;
   hour: string;

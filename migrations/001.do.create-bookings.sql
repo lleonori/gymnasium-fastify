@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS bookings (
     id SERIAL PRIMARY KEY,
-    full_name VARCHAR(255) NULL,
+    fullname VARCHAR(255) NULL,
     mail VARCHAR(255) NOT NULL,
     day DATE NOT NULL,
     hour VARCHAR(255) NOT NULL,

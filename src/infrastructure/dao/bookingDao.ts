@@ -20,7 +20,7 @@ export class BookingDao implements IBookingRepository {
 
   protected readonly DEFAULT_SELECT_FIELDS = [
     "id",
-    "full_name as fullName",
+    "fullname",
     "mail",
     "day",
     "hour",
