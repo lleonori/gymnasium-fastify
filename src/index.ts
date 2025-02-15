@@ -4,18 +4,23 @@ import buildServer from "./infrastructure/server.js";
 import qs from "qs";
 import fs from "fs";
 
-const envFile = `.env.${process.env.NODE_ENV || "development"}`;
+// Load environment variables from .env file
+const envFile = `.env.${process.env.NODE_ENV}`;
 dotenv.config({ path: envFile });
-console.log(`Loaded environment variables from ${envFile}`);
 
-const port = parseInt(process.env.PORT!) || 3000;
+// Check if we are in production mode to enable ssl
+const isProduction = process.env.NODE_ENV === "production";
+
+const port = 3000;
 const host = process.env.HOST || "127.0.0.1";
 
 const opts = {
-  https: {
-    key: fs.readFileSync("./ssl/localhost.key"),
-    cert: fs.readFileSync("./ssl/localhost.crt"),
-  },
+  https: isProduction
+    ? {
+        key: fs.readFileSync("./ssl/localhost.key"),
+        cert: fs.readFileSync("./ssl/localhost.crt"),
+      }
+    : undefined,
   querystringParser: (str: string) => qs.parse(str),
   logger: {
     transport: {
