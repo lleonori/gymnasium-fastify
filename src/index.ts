@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 import fastify from "fastify";
 import buildServer from "./infrastructure/server.js";
 import qs from "qs";
+import fs from "fs";
 
 const envFile = `.env.${process.env.NODE_ENV || "development"}`;
 dotenv.config({ path: envFile });
@@ -11,6 +12,10 @@ const port = parseInt(process.env.PORT!) || 3000;
 const host = process.env.HOST || "127.0.0.1";
 
 const opts = {
+  https: {
+    key: fs.readFileSync("./ssl/localhost.key"),
+    cert: fs.readFileSync("./ssl/localhost.crt"),
+  },
   querystringParser: (str: string) => qs.parse(str),
   logger: {
     transport: {
