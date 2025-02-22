@@ -2,12 +2,7 @@ import { Calendar } from "../calendar/models.js";
 import { NotFoundException } from "../commons/exceptions.js";
 import { PaginatedResult, Pagination, SortBy } from "../commons/models.js";
 import { IBookingRepository } from "./bookingRepository.js";
-import {
-  Booking,
-  CreateBooking,
-  FilterBooking,
-  UpdateBooking,
-} from "./models.js";
+import { Booking, CreateBooking, FilterBooking } from "./models.js";
 
 export class BookingService {
   constructor(protected readonly bookingRepository: IBookingRepository) {}
@@ -45,12 +40,6 @@ export class BookingService {
 
   countBookingsForDay(day: Date): Promise<number> {
     return this.bookingRepository.countBookingsForDay(day);
-  }
-
-  async update(id: Booking["id"], booking: UpdateBooking): Promise<Booking> {
-    const updatedBooking = await this.bookingRepository.update(id, booking);
-    this.handleNotFound(updatedBooking, id);
-    return updatedBooking;
   }
 
   async delete(id: Booking["id"]): Promise<Booking> {

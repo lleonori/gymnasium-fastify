@@ -2,7 +2,7 @@ import { Type } from "@sinclair/typebox";
 import CommonSchemas from "../commons/index.js";
 
 export const CreateTimetable = Type.Object({
-  hour: Type.String(),
+  hour: Type.String({ format: "time" }),
 });
 
 export const UpdateTimetable = Type.Partial(CreateTimetable);

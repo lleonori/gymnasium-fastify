@@ -5,8 +5,6 @@ export type CreateBooking = {
   hour: string;
 };
 
-export type UpdateBooking = Partial<CreateBooking>;
-
 export type Booking = {
   id: number;
   createdAt: Date;

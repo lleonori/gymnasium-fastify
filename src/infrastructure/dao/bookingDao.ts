@@ -11,7 +11,6 @@ import {
   CreateBooking,
   FilterBooking,
   IBookingRepository,
-  UpdateBooking,
 } from "../../application/index.js";
 import { buildSortBy } from "./utils.js";
 
@@ -165,25 +164,6 @@ export class BookingDao implements IBookingRepository {
       .executeTakeFirst();
 
     return Number(countResult?.count ?? 0);
-  }
-
-  update(
-    id: Booking["id"],
-    booking: UpdateBooking,
-  ): Promise<Booking | undefined> {
-    // Construct the fields to return, replacing the 'day' field with the SQL expression
-    const returnFields = this.DEFAULT_SELECT_FIELDS.map((field) =>
-      field === "day"
-        ? sql<string>`to_char(day, 'YYYY-MM-DD')`.as("day")
-        : field,
-    );
-
-    return this.db
-      .updateTable("bookings")
-      .set(booking)
-      .where("id", "=", id)
-      .returning(returnFields)
-      .executeTakeFirst();
   }
 
   delete(id: Booking["id"]): Promise<Booking | undefined> {

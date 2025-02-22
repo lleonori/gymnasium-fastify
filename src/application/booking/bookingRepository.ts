@@ -1,11 +1,6 @@
 import { Calendar } from "../calendar/models.js";
 import { PaginatedResult, Pagination, SortBy } from "../commons/models.js";
-import {
-  CreateBooking,
-  Booking,
-  UpdateBooking,
-  FilterBooking,
-} from "./models.js";
+import { CreateBooking, Booking, FilterBooking } from "./models.js";
 
 export interface IBookingRepository {
   create(booking: CreateBooking): Promise<Booking>;
@@ -22,9 +17,5 @@ export interface IBookingRepository {
   ): Promise<PaginatedResult<Booking>>;
   countBookingsForDayAndEmail(day: Date, mail: string): Promise<number>;
   countBookingsForDay(day: Date): Promise<number>;
-  update(
-    id: Booking["id"],
-    booking: UpdateBooking,
-  ): Promise<Booking | undefined>;
   delete(id: Booking["id"]): Promise<Booking | undefined>;
 }
