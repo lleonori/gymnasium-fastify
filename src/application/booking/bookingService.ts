@@ -39,12 +39,12 @@ export class BookingService {
     );
   }
 
-  countAllBookingsByDayAndMail(day: Date, mail: string): Promise<number> {
-    return this.bookingRepository.countAllBookingsByDayAndMail(day, mail);
+  countBookingsForDayAndEmail(day: Date, mail: string): Promise<number> {
+    return this.bookingRepository.countBookingsForDayAndEmail(day, mail);
   }
 
-  countAllBookingsByDay(day: Date): Promise<number> {
-    return this.bookingRepository.countAllBookingsByDay(day);
+  countBookingsForDay(day: Date): Promise<number> {
+    return this.bookingRepository.countBookingsForDay(day);
   }
 
   async update(id: Booking["id"], booking: UpdateBooking): Promise<Booking> {

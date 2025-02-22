@@ -1,7 +1,11 @@
 import { FastifyInstance } from "fastify";
 import {
+  BadRequestException,
   ConflictException,
+  ForbiddenException,
+  InternalServerError,
   NotFoundException,
+  TooManyRequestsException,
   UnauthorizedException,
 } from "../../../application/commons/exceptions.js";
 
@@ -25,6 +29,22 @@ export const errorHandler: FastifyInstance["errorHandler"] = function (
     return reply.conflict(error.message);
   }
 
+  if (error instanceof BadRequestException) {
+    return reply.badRequest(error.message);
+  }
+
+  if (error instanceof InternalServerError) {
+    return reply.internalServerError(error.message);
+  }
+
+  if (error instanceof TooManyRequestsException) {
+    return reply.tooManyRequests(error.message);
+  }
+
+  if (error instanceof ForbiddenException) {
+    return reply.forbidden(error.message);
+  }
+
   reply.log.error(
     {
       request: {
@@ -34,6 +54,8 @@ export const errorHandler: FastifyInstance["errorHandler"] = function (
         body: request.body,
         query: request.query,
         params: request.params,
+        stack: error.stack,
+        validation: error.validation,
       },
       error,
     },

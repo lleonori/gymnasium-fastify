@@ -1,6 +1,6 @@
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import { CalendarSchemas } from "../../../schemas/index.js";
-import { getDateTimeInItaly } from "../../../utils/dateTimeInItaly.js";
+import { getDateInItaly } from "../../../utils/dateTimeInItaly.js";
 
 const routes: FastifyPluginAsyncTypebox = async (app) => {
   app.get(
@@ -13,7 +13,7 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
         },
       },
     },
-    () => getDateTimeInItaly(),
+    () => getDateInItaly(),
   );
 };
 
