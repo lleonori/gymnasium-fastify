@@ -61,5 +61,5 @@ export const errorHandler: FastifyInstance["errorHandler"] = function (
     },
     "Unhandled error occurred.",
   );
-  return reply.code(500).send(error.message);
+  return reply.internalServerError(error.message);
 };

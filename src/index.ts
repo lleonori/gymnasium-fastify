@@ -17,8 +17,8 @@ const host = process.env.HOST || "127.0.0.1";
 const opts = {
   https: isProduction
     ? {
-        key: fs.readFileSync("./ssl/localhost.key"),
-        cert: fs.readFileSync("./ssl/localhost.crt"),
+        key: fs.readFileSync(process.env.SSL_KEY_PATH!),
+        cert: fs.readFileSync(process.env.SSL_CERT_PATH!),
       }
     : undefined,
   querystringParser: (str: string) => qs.parse(str),
