@@ -37,3 +37,9 @@ npm run db:migrate
 ```bash
 npm run generate:db:types
 ```
+
+To build:
+
+```bash
+npm run build
+```

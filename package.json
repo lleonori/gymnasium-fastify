@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "NODE_ENV=development FASTIFY_AUTOLOAD_TYPESCRIPT=1 node --import tsx/esm --watch src src/index.ts",
     "build": "tsc",
-    "postbuild": "cp package*.json dist/ && cp .postgratorrc.js dist/ && cp .env.production dist/ && cp -rf migrations dist/",
+    "postbuild": "cp package*.json dist/ && cp postgrator-config.js dist/ && cp .env.production dist/ && cp -rf migrations dist/",
     "pm2:start": "NODE_ENV=production pm2 start src/index.js --name gymnasium",
     "db:up": "docker compose --env-file .env.development up -d",
     "db:migrate": "postgrator --config postgrator-config.js",

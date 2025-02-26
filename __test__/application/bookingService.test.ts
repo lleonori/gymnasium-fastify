@@ -32,9 +32,8 @@ describe("BookingService", () => {
       create: vi.fn(),
       findAll: vi.fn(),
       findByMail: vi.fn(),
-      countAllBookingsByDayAndMail: vi.fn(),
-      countAllBookingsByDay: vi.fn(),
-      update: vi.fn(),
+      countBookingsForDayAndEmail: vi.fn(),
+      countBookingsForDay: vi.fn(),
       delete: vi.fn(),
     };
 
@@ -101,35 +100,35 @@ describe("BookingService", () => {
 
   describe("count all bookings by day", () => {
     test("should count all bookings by day", async () => {
-      mockedBookingRepository.countAllBookingsByDay.mockResolvedValue(1);
+      mockedBookingRepository.countBookingsForDay.mockResolvedValue(1);
 
-      const cabbd = await bookingService.countAllBookingsByDay(new Date());
+      const cabbd = await bookingService.countBookingsForDay(new Date());
 
       expect(cabbd).toEqual(1);
       expect(
-        mockedBookingRepository.countAllBookingsByDay,
+        mockedBookingRepository.countBookingsForDay,
       ).toHaveBeenCalledOnce();
-      expect(
-        mockedBookingRepository.countAllBookingsByDay,
-      ).toHaveBeenCalledWith(new Date());
+      expect(mockedBookingRepository.countBookingsForDay).toHaveBeenCalledWith(
+        new Date(),
+      );
     });
   });
 
   describe("count all bookings by day and mail", () => {
     test("should count all bookings by day and mail", async () => {
-      mockedBookingRepository.countAllBookingsByDayAndMail.mockResolvedValue(1);
+      mockedBookingRepository.countBookingsForDayAndEmail.mockResolvedValue(1);
 
-      const cabbdam = await bookingService.countAllBookingsByDayAndMail(
+      const cabbdam = await bookingService.countBookingsForDayAndEmail(
         new Date(),
         "lorenzo.leonori.93@gmail.com",
       );
 
       expect(cabbdam).toEqual(1);
       expect(
-        mockedBookingRepository.countAllBookingsByDayAndMail,
+        mockedBookingRepository.countBookingsForDayAndEmail,
       ).toHaveBeenCalledOnce();
       expect(
-        mockedBookingRepository.countAllBookingsByDayAndMail,
+        mockedBookingRepository.countBookingsForDayAndEmail,
       ).toHaveBeenCalledWith(new Date(), "lorenzo.leonori.93@gmail.com");
     });
   });
@@ -153,41 +152,6 @@ describe("BookingService", () => {
         day: "06/12/2024",
         hour: "9:00",
       });
-    });
-  });
-
-  describe("update", () => {
-    test("should update a booking", async () => {
-      mockedBookingRepository.update.mockResolvedValue(mockBooking);
-
-      const updateBooking = await bookingService.update(1, {
-        fullname: "Lorenzo Leonori",
-        mail: "lorenzo.leonori.93@gmail.com",
-        day: "06/12/2024",
-        hour: "9:00",
-      });
-
-      expect(updateBooking).toEqual(mockBooking);
-      expect(mockedBookingRepository.update).toHaveBeenCalledOnce();
-      expect(mockedBookingRepository.update).toHaveBeenCalledWith(1, {
-        fullname: "Lorenzo Leonori",
-        mail: "lorenzo.leonori.93@gmail.com",
-        day: "06/12/2024",
-        hour: "9:00",
-      });
-    });
-
-    test("should thrown an error if not fuond a booking", async () => {
-      mockedBookingRepository.update.mockResolvedValue(undefined);
-
-      await expect(
-        bookingService.update(1, {
-          fullname: "Lorenzo Leonori",
-          mail: "lorenzo.leonori.93@gmail.com",
-          day: "06/12/2024",
-          hour: "9:00",
-        }),
-      ).rejects.toThrow("Booking with id 1 not found");
     });
   });
 
