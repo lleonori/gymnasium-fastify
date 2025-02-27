@@ -4,6 +4,9 @@ import buildServer from "./infrastructure/server.js";
 import qs from "qs";
 import fs from "fs";
 
+// Set the timezone to Rome
+process.env.TZ = "Europe/Rome";
+
 // Load environment variables from .env file
 const envFile = `.env.${process.env.NODE_ENV}`;
 dotenv.config({ path: envFile });

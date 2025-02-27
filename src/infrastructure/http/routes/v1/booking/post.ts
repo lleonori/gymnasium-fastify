@@ -7,10 +7,7 @@ import {
   ForbiddenException,
   TooManyRequestsException,
 } from "../../../../../application/commons/exceptions.js";
-import {
-  formatTimeInSecond,
-  getTimeInItaly,
-} from "../../../utils/dateTimeInItaly.js";
+import { formatTimeInSecond, getTime } from "../../../utils/datetime.js";
 
 const routes: FastifyPluginAsyncTypebox = async (app) => {
   app.post(
@@ -26,16 +23,19 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
     },
     async (request, reply) => {
       const data = new Date(request.body.day);
+      // Normalize the request date to remove the time
+      data.setHours(0, 0, 0, 0);
 
-      // set today's date
       const today = new Date();
+      // Normalize the today date to remove the time
+      today.setHours(0, 0, 0, 0);
 
-      // set tomorrow's date
       const tomorrow = new Date(today);
+      // Set tomorrow date
       tomorrow.setDate(today.getDate() + 1);
 
-      // check if the date is between today and tomorrow
-      if (data < today || data >= tomorrow) {
+      // Check if the date is between today and tomorrow
+      if (data < today || data > tomorrow) {
         throw new BadRequestException(
           "Impossibile prenotare: la data deve essere compresa tra oggi e domani.",
         );
@@ -52,11 +52,8 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
       );
 
       const isBookingAllowed =
-        formatTimeInSecond(request.body.hour) -
-          formatTimeInSecond(getTimeInItaly()) >=
-        BookingLimitHours.Limit
-          ? true
-          : false;
+        formatTimeInSecond(request.body.hour) - formatTimeInSecond(getTime()) >=
+        BookingLimitHours.Limit;
 
       if (
         countBookingsForDayAndEmail === 0 &&
