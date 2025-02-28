@@ -1,6 +1,6 @@
-# Gymnasium-Fastify
+# GYMNASIUM-FASTIFY
 
-Gymnasium-Fastify is a Fastify project for booking lesson.
+Gymnasium-Fastify is a Fastify project for Gymnasium gym.
 
 ## Installation
 
