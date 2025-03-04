@@ -42,3 +42,13 @@ export const formatTimeInSecond = (time: string): number => {
   const secondInt = parseInt(timeArray[2] ? timeArray[2] : "00");
   return hourInt + minuteInt + secondInt;
 };
+
+export function isSaturday(date: Date): boolean {
+  const day = date.getDay(); // getDay() returns the day of the week (6 for Saturday)
+  return day === 6;
+}
+
+export function isSunday(date: Date): boolean {
+  const day = date.getDay(); // getDay() returns the day of the week (0 for Sunday)
+  return day === 0;
+}

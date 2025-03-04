@@ -17,13 +17,3 @@ export function buildSortBy<
       `${alias ? `${alias}.` : ""}${snakeCase(field as string)} ${order ?? "asc"}`,
   ) as unknown as ReadonlyArray<OrderByExpression<DB, Table, O>>;
 }
-
-export function isSaturday(date: Date): boolean {
-  const day = date.getDay(); // getDay() returns the day of the week (6 for Saturday)
-  return day === 6;
-}
-
-export function isSunday(date: Date): boolean {
-  const day = date.getDay(); // getDay() returns the day of the week (0 for Sunday)
-  return day === 0;
-}

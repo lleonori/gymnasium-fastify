@@ -18,7 +18,7 @@ export default async function (app: FastifyInstance) {
   });
   app.register(fastifyAuth0Verifiy, {
     domain: process.env.DOMAIN_AUTH0,
-    secret: process.env.SECRET_AUTH0,
+    audience: process.env.AUDIENCE_AUTH0,
   });
   app.register(autoLoad, {
     dir: join(__dirname, "plugins"),

@@ -8,6 +8,7 @@ export interface ITimetableRepository {
     sortBy: SortBy<Timetable>,
   ): Promise<PaginatedResult<Timetable>>;
   findById(id: Timetable["id"]): Promise<Timetable | undefined>;
+  findByHour(hour: Timetable["hour"]): Promise<Timetable | undefined>;
   findByDate(
     date: string,
     pagination: Pagination,

@@ -1,13 +1,11 @@
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import { BookingSchemas } from "../../../schemas/index.js";
-import { BookingLimitHours, DailyBookingLimit } from "../../../utils/enums.js";
+import { DailyBookingLimit } from "../../../utils/enums.js";
 import {
-  BadRequestException,
   ConflictException,
-  ForbiddenException,
   TooManyRequestsException,
 } from "../../../../../application/commons/exceptions.js";
-import { formatTimeInSecond, getTime } from "../../../utils/datetime.js";
+import { validateBookingRequest } from "../../../../validations/booking.validation.js";
 
 const routes: FastifyPluginAsyncTypebox = async (app) => {
   app.post(
@@ -22,24 +20,7 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
       },
     },
     async (request, reply) => {
-      const data = new Date(request.body.day);
-      // Normalize the request date to remove the time
-      data.setHours(0, 0, 0, 0);
-
-      const today = new Date();
-      // Normalize the today date to remove the time
-      today.setHours(0, 0, 0, 0);
-
-      const tomorrow = new Date(today);
-      // Set tomorrow date
-      tomorrow.setDate(today.getDate() + 1);
-
-      // Check if the date is between today and tomorrow
-      if (data < today || data > tomorrow) {
-        throw new BadRequestException(
-          "Impossibile prenotare: la data deve essere compresa tra oggi e domani.",
-        );
-      }
+      await validateBookingRequest(app, request.body);
 
       const countBookingsForDayAndEmail =
         await app.bookingsService.countBookingsForDayAndEmail(
@@ -51,14 +32,9 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
         new Date(request.body.day),
       );
 
-      const isBookingAllowed =
-        formatTimeInSecond(request.body.hour) - formatTimeInSecond(getTime()) >=
-        BookingLimitHours.Limit;
-
       if (
         countBookingsForDayAndEmail === 0 &&
-        countBookingsForDay <= DailyBookingLimit.Limit &&
-        isBookingAllowed
+        countBookingsForDay <= DailyBookingLimit.Limit
       ) {
         const newBooking = await app.bookingsService.create(request.body);
         return reply.status(201).send(newBooking);
@@ -68,10 +44,6 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
         else if (countBookingsForDay >= DailyBookingLimit.Limit)
           throw new TooManyRequestsException(
             "Limite di prenotazione raggiunto.",
-          );
-        else if (!isBookingAllowed)
-          throw new ForbiddenException(
-            "Impossibile prenotare: il tempo limite è scaduto.",
           );
       }
     },

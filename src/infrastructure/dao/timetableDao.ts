@@ -11,7 +11,8 @@ import {
   Timetable,
   UpdateTimetable,
 } from "../../application/timetable/index.js";
-import { buildSortBy, isSaturday, isSunday } from "./utils.js";
+import { isSunday, isSaturday } from "../http/utils/datetime.js";
+import { buildSortBy } from "./utils.js";
 
 export class TimetableDao implements ITimetableRepository {
   protected readonly DEFAULT_SELECT_FIELDS = [
@@ -63,6 +64,14 @@ export class TimetableDao implements ITimetableRepository {
     return this.db
       .selectFrom("timetables")
       .where("id", "=", id)
+      .select(this.DEFAULT_SELECT_FIELDS)
+      .executeTakeFirst();
+  }
+
+  findByHour(hour: Timetable["hour"]): Promise<Timetable | undefined> {
+    return this.db
+      .selectFrom("timetables")
+      .where("hour", "=", hour)
       .select(this.DEFAULT_SELECT_FIELDS)
       .executeTakeFirst();
   }

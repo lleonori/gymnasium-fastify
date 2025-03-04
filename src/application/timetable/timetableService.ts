@@ -23,6 +23,10 @@ export class TimetableService {
     return timetable;
   }
 
+  async findByHour(hour: Timetable["hour"]): Promise<Timetable | undefined> {
+    return this.timetableRepository.findByHour(hour);
+  }
+
   async findByDate(
     date: string,
     pagination: Pagination,
