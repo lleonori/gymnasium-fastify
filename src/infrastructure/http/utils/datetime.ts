@@ -44,11 +44,13 @@ export const formatTimeInSecond = (time: string): number => {
 };
 
 export function isSaturday(date: Date): boolean {
-  const day = date.getDay(); // getDay() returns the day of the week (6 for Saturday)
+  // getDay() returns the day of the week (6 for Saturday)
+  const day = date.getDay();
   return day === 6;
 }
 
 export function isSunday(date: Date): boolean {
-  const day = date.getDay(); // getDay() returns the day of the week (0 for Sunday)
+  // getDay() returns the day of the week (0 for Sunday)
+  const day = date.getDay();
   return day === 0;
 }

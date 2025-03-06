@@ -68,9 +68,13 @@ export class TimetableDao implements ITimetableRepository {
       .executeTakeFirst();
   }
 
-  findByHour(hour: Timetable["hour"]): Promise<Timetable | undefined> {
+  findByHourAndIsValidOnWeekend(
+    hour: Timetable["hour"],
+    isValidOnWeekend: boolean,
+  ): Promise<Timetable | undefined> {
     return this.db
       .selectFrom("timetables")
+      .$if(isValidOnWeekend, (qb) => qb.where("is_valid_on_weekend", "=", true))
       .where("hour", "=", hour)
       .select(this.DEFAULT_SELECT_FIELDS)
       .executeTakeFirst();

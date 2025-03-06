@@ -23,8 +23,14 @@ export class TimetableService {
     return timetable;
   }
 
-  async findByHour(hour: Timetable["hour"]): Promise<Timetable | undefined> {
-    return this.timetableRepository.findByHour(hour);
+  async findByHourAndIsValidOnWeekend(
+    hour: Timetable["hour"],
+    isValidOnWeekend: boolean,
+  ): Promise<Timetable | undefined> {
+    return this.timetableRepository.findByHourAndIsValidOnWeekend(
+      hour,
+      isValidOnWeekend,
+    );
   }
 
   async findByDate(

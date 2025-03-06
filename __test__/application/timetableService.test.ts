@@ -33,7 +33,7 @@ describe("TimetableService", () => {
       findByDate: vi.fn(),
       update: vi.fn(),
       delete: vi.fn(),
-      findByHour: vi.fn(),
+      findByHourAndIsValidOnWeekend: vi.fn(),
     };
 
     timetableService = new TimetableService(mockedTimetableRepository);
