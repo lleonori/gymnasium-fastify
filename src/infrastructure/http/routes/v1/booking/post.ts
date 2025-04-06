@@ -34,14 +34,14 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
 
       if (
         countBookingsForDayAndEmail === 0 &&
-        countBookingsForDay <= DailyBookingLimit.Limit
+        countBookingsForDay <= DailyBookingLimit.LIMIT
       ) {
         const newBooking = await app.bookingsService.create(request.body);
         return reply.status(201).send(newBooking);
       } else {
         if (countBookingsForDayAndEmail > 0)
           throw new ConflictException("La lezione è stata già prenotata.");
-        else if (countBookingsForDay >= DailyBookingLimit.Limit)
+        else if (countBookingsForDay >= DailyBookingLimit.LIMIT)
           throw new TooManyRequestsException(
             "Limite di prenotazione raggiunto.",
           );

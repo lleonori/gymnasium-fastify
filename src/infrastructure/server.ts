@@ -10,6 +10,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 export default async function (app: FastifyInstance) {
+  app.register(import("@fastify/auth"));
   app.register(import("@fastify/cors"));
   app.register(import("@fastify/sensible"));
   app.register(import("@fastify/swagger"));

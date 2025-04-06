@@ -1,5 +1,8 @@
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import { TimetableSchemas } from "../../../schemas/index.js";
+import { UserRoles } from "../../../utils/enums.js";
+import { hasRole } from "../../../../auth/hasRole.js";
+import { isAuthenticated } from "../../../../auth/isAuthenticated.js";
 
 const routes: FastifyPluginAsyncTypebox = async (app) => {
   app.patch(
@@ -13,11 +16,10 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
           200: TimetableSchemas.Bodies.Timetable,
         },
       },
-      // preHandler: async (request, reply) => {
-      //   if (!app.authGuard(request, reply, [UserRoles.systemAdministrator])) {
-      //     throw new UnauthorizedException(`User unauthorized`);
-      //   }
-      // },
+      preHandler: app.auth(
+        [isAuthenticated, hasRole([UserRoles.SYSTEM_ADMINISTRATOR])],
+        { relation: "and" },
+      ),
     },
     async (request) =>
       app.timetablesService.update(request.params.timetableId, request.body),

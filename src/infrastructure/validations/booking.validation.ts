@@ -38,7 +38,7 @@ export const validateBookingRequest = async (
     const timeDifference =
       formatTimeInSecond(body.hour) - formatTimeInSecond(currentTime);
 
-    if (timeDifference < BookingLimitHours.Limit) {
+    if (timeDifference < BookingLimitHours.LIMIT) {
       console.error("Errore: tempo limite scaduto.");
       throw new ForbiddenException(
         "Impossibile prenotare: il tempo limite è scaduto.",

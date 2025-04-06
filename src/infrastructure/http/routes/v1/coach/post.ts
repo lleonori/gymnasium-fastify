@@ -1,5 +1,8 @@
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
+import { hasRole } from "../../../../auth/hasRole.js";
+import { isAuthenticated } from "../../../../auth/isAuthenticated.js";
 import { CoachSchemas } from "../../../schemas/index.js";
+import { UserRoles } from "../../../utils/enums.js";
 
 const routes: FastifyPluginAsyncTypebox = async (app) => {
   app.post(
@@ -12,11 +15,10 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
           201: CoachSchemas.Bodies.Coach,
         },
       },
-      // preHandler: async (request, reply) => {
-      //   if (!app.authGuard(request, reply, [UserRoles.systemAdministrator])) {
-      //     throw new UnauthorizedException(`User unauthorized`);
-      //   }
-      // },
+      preHandler: app.auth(
+        [isAuthenticated, hasRole([UserRoles.SYSTEM_ADMINISTRATOR])],
+        { relation: "and" },
+      ),
     },
     async (request, reply) => {
       const newCoach = await app.coachsService.create(request.body);

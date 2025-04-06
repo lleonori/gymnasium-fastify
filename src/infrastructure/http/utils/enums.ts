@@ -1,14 +1,14 @@
 export enum DailyBookingLimit {
-  Limit = 12,
+  LIMIT = 12,
 }
 
 export enum UserRoles {
-  systemAdministrator = "systemAdministrator",
-  administrator = "administrator",
-  user = "user",
+  SYSTEM_ADMINISTRATOR = "SYSTEM_ADMINISTRATOR",
+  ADMINISTRATOR = "administrator",
+  USER = "user",
 }
 
 export enum BookingLimitHours {
   // 2 hours
-  Limit = 7200,
+  LIMIT = 7200,
 }
