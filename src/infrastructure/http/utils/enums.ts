@@ -3,7 +3,7 @@ export enum DailyBookingLimit {
 }
 
 export enum UserRoles {
-  SYSTEM_ADMINISTRATOR = "SYSTEM_ADMINISTRATOR",
+  SYSTEM_ADMINISTRATOR = "systemAdministrator",
   ADMINISTRATOR = "administrator",
   USER = "user",
 }

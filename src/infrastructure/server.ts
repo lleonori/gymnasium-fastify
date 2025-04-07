@@ -38,7 +38,7 @@ export default async function (app: FastifyInstance) {
   app.ready(() => {
     app.log.info(app.printRoutes());
   });
-  app.addHook("onRequest", async (request) => {
+  app.addHook("preValidation", async (request) => {
     try {
       await request.jwtVerify();
     } catch {

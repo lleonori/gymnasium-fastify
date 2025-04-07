@@ -9,7 +9,7 @@ export function hasRole(requiredRoles: string[]) {
     }
 
     const userRoles = request.user.app_metadata.roles;
-    const hasAllRoles = requiredRoles.every((r) => userRoles.includes(r));
+    const hasAllRoles = requiredRoles.some((r) => userRoles.includes(r));
 
     if (!hasAllRoles) {
       throw new ForbiddenException(

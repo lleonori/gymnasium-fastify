@@ -1,11 +1,13 @@
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import { BookingSchemas } from "../../../schemas/index.js";
-import { DailyBookingLimit } from "../../../utils/enums.js";
+import { DailyBookingLimit, UserRoles } from "../../../utils/enums.js";
 import {
   ConflictException,
   TooManyRequestsException,
 } from "../../../../../application/commons/exceptions.js";
 import { validateBookingRequest } from "../../../../validations/booking.validation.js";
+import { hasRole } from "../../../../auth/hasRole.js";
+import { isAuthenticated } from "../../../../auth/isAuthenticated.js";
 
 const routes: FastifyPluginAsyncTypebox = async (app) => {
   app.post(
@@ -18,6 +20,17 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
           201: BookingSchemas.Bodies.Booking,
         },
       },
+      preHandler: app.auth(
+        [
+          isAuthenticated,
+          hasRole([
+            UserRoles.SYSTEM_ADMINISTRATOR,
+            UserRoles.ADMINISTRATOR,
+            UserRoles.USER,
+          ]),
+        ],
+        { relation: "and" },
+      ),
     },
     async (request, reply) => {
       await validateBookingRequest(app, request.body);

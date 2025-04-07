@@ -2,6 +2,9 @@ import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import { BookingSchemas } from "../../../schemas/index.js";
 import { decodeSort } from "../../../utils/decodeSort.js";
 import { getTodayAndTomorrow } from "../../../utils/datetime.js";
+import { hasRole } from "../../../../auth/hasRole.js";
+import { isAuthenticated } from "../../../../auth/isAuthenticated.js";
+import { UserRoles } from "../../../utils/enums.js";
 
 const routes: FastifyPluginAsyncTypebox = async (app) => {
   app.get(
@@ -15,6 +18,17 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
           200: BookingSchemas.Bodies.BookingsPaginated,
         },
       },
+      preHandler: app.auth(
+        [
+          isAuthenticated,
+          hasRole([
+            UserRoles.SYSTEM_ADMINISTRATOR,
+            UserRoles.ADMINISTRATOR,
+            UserRoles.USER,
+          ]),
+        ],
+        { relation: "and" },
+      ),
     },
     async (request, reply) => {
       const { offset, limit, sort } = request.query;
@@ -43,6 +57,17 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
           200: BookingSchemas.Bodies.BookingsPaginated,
         },
       },
+      preHandler: app.auth(
+        [
+          isAuthenticated,
+          hasRole([
+            UserRoles.SYSTEM_ADMINISTRATOR,
+            UserRoles.ADMINISTRATOR,
+            UserRoles.USER,
+          ]),
+        ],
+        { relation: "and" },
+      ),
     },
     async ({ query: { day, hour, offset, limit, sort } }) =>
       app.bookingsService.findAll(
