@@ -1,5 +1,6 @@
 export type CreateTimetable = {
   hour: string;
+  isValidOnWeekend: boolean;
 };
 
 export type UpdateTimetable = Partial<CreateTimetable>;

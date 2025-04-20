@@ -1,5 +1,5 @@
 import fp from "fastify-plugin";
-import { Kysely, PostgresDialect } from "kysely";
+import { CamelCasePlugin, Kysely, PostgresDialect } from "kysely";
 import { DB } from "kysely-codegen";
 import pg from "pg";
 import { buildDbConfig, DatabaseConnectionsConfig } from "../env/dbConfig.js";
@@ -22,6 +22,7 @@ export function createDbConnection(config: DatabaseConnectionsConfig) {
         console.log(event.query.parameters);
       }
     },
+    plugins: [new CamelCasePlugin()],
   });
 }
 

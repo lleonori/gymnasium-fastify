@@ -9,6 +9,8 @@ export const TimetablesQuery = Type.Partial(
         Type.Union([
           Type.TemplateLiteral("${id}"),
           Type.TemplateLiteral("${id}.${asc|desc}"),
+          Type.TemplateLiteral("${hour}"),
+          Type.TemplateLiteral("${hour}.${asc|desc}"),
         ]),
         { default: ["id.asc"] },
       ),
