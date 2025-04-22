@@ -1,4 +1,4 @@
-export enum DailyBookingLimit {
+export enum ClassBookingLimit {
   LIMIT = 12,
 }
 

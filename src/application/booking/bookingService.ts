@@ -38,8 +38,8 @@ export class BookingService {
     return this.bookingRepository.countBookingsForDayAndEmail(day, mail);
   }
 
-  countBookingsForDay(day: Date): Promise<number> {
-    return this.bookingRepository.countBookingsForDay(day);
+  countBookingsForDayAndHour(day: Date, hour: string): Promise<number> {
+    return this.bookingRepository.countBookingsForDayAndHour(day, hour);
   }
 
   async delete(id: Booking["id"]): Promise<Booking> {

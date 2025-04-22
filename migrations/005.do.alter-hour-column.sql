@@ -1,0 +1,3 @@
+ALTER TABLE bookings
+ALTER COLUMN hour TYPE TIME
+USING hour::time;

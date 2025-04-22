@@ -156,11 +156,11 @@ export class BookingDao implements IBookingRepository {
     return Number(countResult?.count ?? 0);
   }
 
-  async countBookingsForDay(day: Date): Promise<number> {
+  async countBookingsForDayAndHour(day: Date, hour: string): Promise<number> {
     const countResult = await this.db
       .selectFrom("bookings")
       .select(({ fn }) => [fn.count<number>("id").as("count")])
-      .where("day", "=", day)
+      .where((eb) => eb.and([eb("day", "=", day), eb("hour", "=", hour)]))
       .executeTakeFirst();
 
     return Number(countResult?.count ?? 0);

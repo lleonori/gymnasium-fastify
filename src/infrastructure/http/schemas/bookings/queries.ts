@@ -5,7 +5,7 @@ export const BookingsQuery = Type.Partial(
   Type.Intersect([
     Type.Object({
       day: Type.String(),
-      hour: Type.String(),
+      hour: Type.String({ format: "time" }),
     }),
     PaginationSchema.Queries.Pagination,
     Type.Object({
