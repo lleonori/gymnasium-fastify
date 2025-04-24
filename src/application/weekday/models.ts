@@ -1,4 +1,4 @@
-export type Weekdays = {
+export type Weekday = {
   id: number;
   name: string;
 };

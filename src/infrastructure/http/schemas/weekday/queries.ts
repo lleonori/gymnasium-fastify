@@ -1,7 +1,7 @@
 import { Type } from "@sinclair/typebox";
 import PaginationSchema from "../commons/index.js";
 
-export const WeekdaysQuery = Type.Partial(
+export const WeekdayQuery = Type.Partial(
   Type.Intersect([
     PaginationSchema.Queries.Pagination,
     Type.Object({

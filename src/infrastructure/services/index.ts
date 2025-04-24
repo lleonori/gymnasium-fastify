@@ -1,25 +1,35 @@
 import fp from "fastify-plugin";
-import { IBookingRepository } from "../../application/booking/bookingRepository.js";
-import { ICoachRepository } from "../../application/coach/coachRepository.js";
-import { CoachService } from "../../application/coach/coachService.js";
+import {
+  BookingService,
+  IBookingRepository,
+} from "../../application/booking/index.js";
+import {
+  CoachService,
+  ICoachRepository,
+} from "../../application/coach/index.js";
+import { TimetableService } from "../../application/timetable/index.js";
 import { ITimetableRepository } from "../../application/timetable/timetableRepository.js";
-import { TimetableService } from "../../application/timetable/timetableService.js";
+import {
+  IWeekdayTimeRepository,
+  WeekdayTimeService,
+} from "../../application/weekday-time/index.js";
+import {
+  IWeekdayRepository,
+  WeekdayService,
+} from "../../application/weekday/index.js";
 import { BookingDao } from "../dao/bookingDao.js";
 import { CoachDao } from "../dao/coachDao.js";
 import { TimetableDao } from "../dao/timetableDao.js";
-import { BookingService } from "../../application/booking/index.js";
-import {
-  IWeekdaysRepository,
-  WeekdaysService,
-} from "../../application/weekdays/index.js";
-import { WeekdaysDao } from "../dao/weekdaysDao.js";
+import { WeekdayDao } from "../dao/weekdayDao.js";
+import { WeekdayTimeDao } from "../dao/weekdayTimeDao.js";
 
 declare module "fastify" {
   interface FastifyInstance {
     bookingsService: BookingService;
     coachsService: CoachService;
     timetablesService: TimetableService;
-    weekdaysService: WeekdaysService;
+    weekdayService: WeekdayService;
+    weekdayTimeService: WeekdayTimeService;
   }
 }
 
@@ -38,7 +48,13 @@ export default fp(async (fastify) => {
   const timetablesService = new TimetableService(timetablesRepository);
   fastify.decorate("timetablesService", timetablesService);
 
-  const weekdaysRepository: IWeekdaysRepository = new WeekdaysDao(fastify.db);
-  const weekdaysService = new WeekdaysService(weekdaysRepository);
-  fastify.decorate("weekdaysService", weekdaysService);
+  const weekdaysRepository: IWeekdayRepository = new WeekdayDao(fastify.db);
+  const weekdayService = new WeekdayService(weekdaysRepository);
+  fastify.decorate("weekdayService", weekdayService);
+
+  const weekdaysTimesRepository: IWeekdayTimeRepository = new WeekdayTimeDao(
+    fastify.db,
+  );
+  const weekdayTimeService = new WeekdayTimeService(weekdaysTimesRepository);
+  fastify.decorate("weekdayTimeService", weekdayTimeService);
 });

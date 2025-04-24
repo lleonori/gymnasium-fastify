@@ -1,5 +1,5 @@
 import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
-import { WeekdaysSchemas } from "../../../schemas/index.js";
+import { WeekdayTimeSchemas } from "../../../schemas/index.js";
 import { decodeSort } from "../../../utils/decodeSort.js";
 import { isAuthenticated } from "../../../../auth/isAuthenticated.js";
 import { hasRole } from "../../../../auth/hasRole.js";
@@ -10,10 +10,10 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
     "/",
     {
       schema: {
-        tags: ["Weekdays"],
-        querystring: WeekdaysSchemas.Queries.WeekdaysQuery,
+        tags: ["Weekday-Time"],
+        querystring: WeekdayTimeSchemas.Queries.WeekdayTimeQuery,
         response: {
-          200: WeekdaysSchemas.Bodies.WeekdaysPaginated,
+          200: WeekdayTimeSchemas.Bodies.WeekdayTimePaginated,
         },
       },
       preHandler: app.auth(
@@ -29,7 +29,7 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
       ),
     },
     async ({ query: { offset, limit, sort } }) =>
-      app.weekdaysService.findAll(
+      app.weekdayTimeService.findAll(
         { offset: offset!, limit: limit! },
         decodeSort(sort!),
       ),

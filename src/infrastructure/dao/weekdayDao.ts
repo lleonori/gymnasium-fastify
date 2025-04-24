@@ -6,12 +6,12 @@ import {
   SortBy,
 } from "../../application/commons/models.js";
 import {
-  IWeekdaysRepository,
-  Weekdays,
-} from "../../application/weekdays/index.js";
+  IWeekdayRepository,
+  Weekday,
+} from "../../application/weekday/index.js";
 import { buildSortBy } from "./utils.js";
 
-export class WeekdaysDao implements IWeekdaysRepository {
+export class WeekdayDao implements IWeekdayRepository {
   protected readonly DEFAULT_SELECT_FIELDS = [
     "id",
     "name",
@@ -21,8 +21,8 @@ export class WeekdaysDao implements IWeekdaysRepository {
 
   async findAll(
     pagination: Pagination,
-    sortBy: SortBy<Weekdays>,
-  ): Promise<PaginatedResult<Weekdays>> {
+    sortBy: SortBy<Weekday>,
+  ): Promise<PaginatedResult<Weekday>> {
     const countQuery = this.db
       .selectFrom("weekdays")
       .select(({ fn }) => [fn.count<number>("id").as("count")])
@@ -30,7 +30,7 @@ export class WeekdaysDao implements IWeekdaysRepository {
 
     const weekdaysQuery = this.db
       .selectFrom("weekdays")
-      .orderBy(buildSortBy<"weekdays", Weekdays>(sortBy))
+      .orderBy(buildSortBy<"weekdays", Weekday>(sortBy))
       .limit(pagination.limit)
       .offset(pagination.offset)
       .select(this.DEFAULT_SELECT_FIELDS)
