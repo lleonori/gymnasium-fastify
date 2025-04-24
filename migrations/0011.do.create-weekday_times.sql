@@ -1,0 +1,8 @@
+CREATE TABLE IF NOT EXISTS weekday_times (
+    id SERIAL PRIMARY KEY,
+    weekday SMALLINT NOT NULL REFERENCES weekdays(id),
+    timetable_id INTEGER NOT NULL REFERENCES timetables(id) ON DELETE CASCADE,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE (weekday, timetable_id)
+);
