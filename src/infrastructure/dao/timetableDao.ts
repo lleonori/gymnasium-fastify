@@ -11,14 +11,13 @@ import {
   Timetable,
   UpdateTimetable,
 } from "../../application/timetable/index.js";
-import { isSunday, isSaturday } from "../http/utils/datetime.js";
+import { isSunday } from "../http/utils/datetime.js";
 import { buildSortBy } from "./utils.js";
 
 export class TimetableDao implements ITimetableRepository {
   protected readonly DEFAULT_SELECT_FIELDS = [
     "id",
     "hour",
-    "is_valid_on_weekend as isValidOnWeekend",
     "created_at as createdAt",
     "updated_at as updatedAt",
   ] satisfies ReadonlyArray<SelectExpression<DB, "timetables">>;
@@ -68,18 +67,6 @@ export class TimetableDao implements ITimetableRepository {
       .executeTakeFirst();
   }
 
-  findByHourAndIsValidOnWeekend(
-    hour: Timetable["hour"],
-    isValidOnWeekend: boolean,
-  ): Promise<Timetable | undefined> {
-    return this.db
-      .selectFrom("timetables")
-      .$if(isValidOnWeekend, (qb) => qb.where("is_valid_on_weekend", "=", true))
-      .where("hour", "=", hour)
-      .select(this.DEFAULT_SELECT_FIELDS)
-      .executeTakeFirst();
-  }
-
   async findByDate(
     date: string,
     pagination: Pagination,
@@ -88,17 +75,11 @@ export class TimetableDao implements ITimetableRepository {
     if (!isSunday(new Date(date))) {
       const countQuery = this.db
         .selectFrom("timetables")
-        .$if(isSaturday(new Date(date)), (qb) =>
-          qb.where("is_valid_on_weekend", "=", true),
-        )
         .select(({ fn }) => [fn.count<number>("id").as("count")])
         .executeTakeFirst();
 
       const timetablesQuery = this.db
         .selectFrom("timetables")
-        .$if(isSaturday(new Date(date)), (qb) =>
-          qb.where("is_valid_on_weekend", "=", true),
-        )
         .orderBy(buildSortBy<"timetables", Timetable>(sortBy))
         .limit(pagination.limit)
         .offset(pagination.offset)

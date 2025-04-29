@@ -5,30 +5,25 @@ import { WeekdayTimeSchemas } from "../../../schemas/index.js";
 import { UserRoles } from "../../../utils/enums.js";
 
 const routes: FastifyPluginAsyncTypebox = async (app) => {
-  app.get(
+  app.post(
     "/",
     {
       schema: {
         tags: ["Weekday-Time"],
-        querystring: WeekdayTimeSchemas.Queries.WeekdayTimeQuery,
+        body: WeekdayTimeSchemas.Bodies.CreateWeekdayTime,
         response: {
-          200: WeekdayTimeSchemas.Bodies.WeekdayTimePaginated,
+          201: WeekdayTimeSchemas.Bodies.WeekdayTime,
         },
       },
       preHandler: app.auth(
-        [
-          isAuthenticated,
-          hasRole([
-            UserRoles.SYSTEM_ADMINISTRATOR,
-            UserRoles.ADMINISTRATOR,
-            UserRoles.USER,
-          ]),
-        ],
+        [isAuthenticated, hasRole([UserRoles.SYSTEM_ADMINISTRATOR])],
         { relation: "and" },
       ),
     },
-    async ({ query: { offset, limit } }) =>
-      app.weekdayTimeService.findAll({ offset: offset!, limit: limit! }),
+    async (request, reply) => {
+      const newWeekdayTime = await app.weekdayTimeService.create(request.body);
+      return reply.status(201).send(newWeekdayTime);
+    },
   );
 };
 

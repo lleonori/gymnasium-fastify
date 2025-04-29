@@ -1,10 +1,15 @@
-export type UpdateWeekdayTime = {
-  weekday: number;
-  timetableId: number;
+export type CreateWeekdayTime = {
+  weekdayId: number;
+  timetableId: number[];
+};
+
+export type WeekdayTimesHour = {
+  id: number;
+  hour: string;
 };
 
 export type WeekdayTime = {
-  id: number;
-  createdAt: Date;
-  updatedAt: Date;
-} & UpdateWeekdayTime;
+  weekdayId: number;
+  weekdayName: string;
+  hour: WeekdayTimesHour[];
+};

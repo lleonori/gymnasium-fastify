@@ -23,16 +23,6 @@ export class TimetableService {
     return timetable;
   }
 
-  async findByHourAndIsValidOnWeekend(
-    hour: Timetable["hour"],
-    isValidOnWeekend: boolean,
-  ): Promise<Timetable | undefined> {
-    return this.timetableRepository.findByHourAndIsValidOnWeekend(
-      hour,
-      isValidOnWeekend,
-    );
-  }
-
   async findByDate(
     date: string,
     pagination: Pagination,

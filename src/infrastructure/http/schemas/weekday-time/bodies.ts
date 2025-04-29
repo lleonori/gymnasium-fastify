@@ -1,17 +1,21 @@
 import { Type } from "@sinclair/typebox";
 import CommonSchemas from "../commons/index.js";
 
-export const UpdateWeekdayTime = Type.Object({
-  weekday: Type.Number(),
-  timetableId: Type.Number(),
+export const CreateWeekdayTime = Type.Object({
+  weekdayId: Type.Number(),
+  timetableId: Type.Array(Type.Number()),
 });
 
-export const WeekdayTime = Type.Intersect([
-  Type.Object({
-    id: Type.Number(),
-  }),
-  UpdateWeekdayTime,
-]);
+export const WeekdayTimesHour = Type.Object({
+  id: Type.Number(),
+  hour: Type.String(),
+});
+
+export const WeekdayTime = Type.Object({
+  weekdayId: Type.Number(),
+  weekdayName: Type.String(),
+  hour: Type.Array(WeekdayTimesHour),
+});
 
 export const WeekdayTimePaginated =
   CommonSchemas.Bodies.PaginationResult(WeekdayTime);
