@@ -8,7 +8,7 @@ export const CreateWeekdayTime = Type.Object({
 
 export const WeekdayTimesHour = Type.Object({
   id: Type.Number(),
-  hour: Type.String(),
+  hour: Type.String({ format: "time" }),
 });
 
 export const WeekdayTime = Type.Object({

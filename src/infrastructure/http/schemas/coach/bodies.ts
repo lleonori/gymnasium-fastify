@@ -5,7 +5,6 @@ export const CreateCoach = Type.Object({
   name: Type.String(),
   surname: Type.String(),
   notes: Type.String(),
-  image: Type.String(),
 });
 
 export const UpdateCoach = Type.Partial(CreateCoach);

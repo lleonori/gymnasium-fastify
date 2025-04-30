@@ -1,0 +1,1 @@
+ALTER TABLE coachs DROP COLUMN image;
