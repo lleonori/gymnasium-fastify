@@ -3,6 +3,7 @@ import { hasRole } from "../../../../auth/hasRole.js";
 import { isAuthenticated } from "../../../../auth/isAuthenticated.js";
 import { WeekdayTimeSchemas } from "../../../schemas/index.js";
 import { UserRoles } from "../../../utils/enums.js";
+import { decodeSort } from "../../../utils/decodeSort.js";
 
 const routes: FastifyPluginAsyncTypebox = async (app) => {
   app.get(
@@ -27,8 +28,11 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
         { relation: "and" },
       ),
     },
-    async ({ query: { offset, limit } }) =>
-      app.weekdayTimeService.findAll({ offset: offset!, limit: limit! }),
+    async ({ query: { offset, limit, sort } }) =>
+      app.weekdayTimeService.findAll(
+        { offset: offset!, limit: limit! },
+        decodeSort(sort!),
+      ),
   );
 };
 

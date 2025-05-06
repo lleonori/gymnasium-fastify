@@ -1,4 +1,4 @@
-import { PaginatedResult, Pagination } from "../commons/models.js";
+import { PaginatedResult, Pagination, SortBy } from "../commons/models.js";
 import { IWeekdayTimeRepository } from "./index.js";
 import { CreateWeekdayTime, WeekdayTime } from "./models.js";
 
@@ -11,7 +11,10 @@ export class WeekdayTimeService {
     return this.weekdayTimeRepository.create(weekdayTime);
   }
 
-  findAll(pagination: Pagination): Promise<PaginatedResult<WeekdayTime>> {
-    return this.weekdayTimeRepository.findAll(pagination);
+  findAll(
+    pagination: Pagination,
+    sortBy: SortBy<WeekdayTime>,
+  ): Promise<PaginatedResult<WeekdayTime>> {
+    return this.weekdayTimeRepository.findAll(pagination, sortBy);
   }
 }

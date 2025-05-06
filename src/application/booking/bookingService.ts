@@ -1,4 +1,3 @@
-import { Calendar } from "../calendar/models.js";
 import { NotFoundException } from "../commons/exceptions.js";
 import { PaginatedResult, Pagination, SortBy } from "../commons/models.js";
 import { IBookingRepository } from "./bookingRepository.js";
@@ -18,20 +17,6 @@ export class BookingService {
     sortBy: SortBy<Booking>,
   ): Promise<PaginatedResult<Booking>> {
     return this.bookingRepository.findAll(filterBy, pagination, sortBy);
-  }
-
-  findByMail(
-    calendar: Calendar,
-    mail: string,
-    pagination: Pagination,
-    sortBy: SortBy<Booking>,
-  ): Promise<PaginatedResult<Booking>> {
-    return this.bookingRepository.findByMail(
-      calendar,
-      mail,
-      pagination,
-      sortBy,
-    );
   }
 
   countBookingsForDayAndEmail(day: Date, mail: string): Promise<number> {

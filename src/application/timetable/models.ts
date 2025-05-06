@@ -9,3 +9,7 @@ export type Timetable = {
   createdAt: Date;
   updatedAt: Date;
 } & CreateTimetable;
+
+export type FilterTimetable = Partial<CreateTimetable> & {
+  weekdayId?: number;
+};

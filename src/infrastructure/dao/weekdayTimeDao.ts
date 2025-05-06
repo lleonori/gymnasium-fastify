@@ -3,6 +3,7 @@ import { DB } from "kysely-codegen";
 import {
   PaginatedResult,
   Pagination,
+  SortBy,
 } from "../../application/commons/models.js";
 import {
   CreateWeekdayTime,
@@ -10,6 +11,7 @@ import {
   WeekdayTime,
   WeekdayTimesHour,
 } from "../../application/weekday-time/index.js";
+import { buildSortBy } from "./utils.js";
 
 export class WeekdayTimeDao implements IWeekdayTimeRepository {
   protected readonly DEFAULT_SELECT_FIELDS = [
@@ -71,7 +73,10 @@ export class WeekdayTimeDao implements IWeekdayTimeRepository {
     });
   }
 
-  async findAll(pagination: Pagination): Promise<PaginatedResult<WeekdayTime>> {
+  async findAll(
+    pagination: Pagination,
+    sortBy: SortBy<WeekdayTime>,
+  ): Promise<PaginatedResult<WeekdayTime>> {
     const countQuery = await this.db
       .selectFrom("weekdays")
       .leftJoin("weekday_times", "weekday_times.weekday_id", "weekdays.id")
@@ -83,6 +88,7 @@ export class WeekdayTimeDao implements IWeekdayTimeRepository {
 
     const weekdayTimesQuery = await this.db
       .selectFrom("weekdays")
+      .orderBy(buildSortBy<"weekdays", WeekdayTime>(sortBy))
       .leftJoin("weekday_times", "weekday_times.weekday_id", "weekdays.id")
       .leftJoin("timetables", "timetables.id", "weekday_times.timetable_id")
       .limit(pagination.limit)
@@ -105,7 +111,6 @@ export class WeekdayTimeDao implements IWeekdayTimeRepository {
     `.as("hour"),
       ])
       .groupBy(["weekdays.id", "weekdays.name"])
-      .orderBy("weekdays.id")
       .execute();
 
     const [countResult, weekdayTimesResult] = await Promise.all([

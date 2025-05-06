@@ -4,15 +4,11 @@ import {
   BadRequestException,
   ForbiddenException,
 } from "../../application/commons/exceptions.js";
-import {
-  formatTimeInSecond,
-  getTime,
-  isSunday,
-} from "../http/utils/datetime.js";
+import { formatTimeInSecond, getTime } from "../http/utils/datetime.js";
 import { BookingLimitHours } from "../http/utils/enums.js";
 
 export const validateBookingRequest = async (
-  app: FastifyInstance,
+  _: FastifyInstance,
   body: CreateBooking,
 ) => {
   const today = new Date();
@@ -44,18 +40,4 @@ export const validateBookingRequest = async (
       );
     }
   }
-
-  if (isSunday(bookingDate)) {
-    console.error("Errore: tentativo di prenotazione per domenica.");
-    throw new BadRequestException(
-      "Impossibile prenotare: il giorno selezionato è domenica.",
-    );
-  }
-
-  // if (!existTimetable) {
-  //   console.error("Errore: orario selezionato non valido.");
-  //   throw new BadRequestException(
-  //     "Impossibile prenotare: l'orario selezionato non è valido.",
-  //   );
-  // }
 };

@@ -3,6 +3,9 @@ import PaginationSchema from "../commons/index.js";
 
 export const TimetablesQuery = Type.Partial(
   Type.Intersect([
+    Type.Object({
+      weekdayId: Type.Number(),
+    }),
     PaginationSchema.Queries.Pagination,
     Type.Object({
       sort: Type.Array(

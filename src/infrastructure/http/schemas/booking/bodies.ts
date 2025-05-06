@@ -4,7 +4,7 @@ import CommonSchemas from "../commons/index.js";
 export const CreateBooking = Type.Object({
   fullname: Type.Union([Type.String(), Type.Null()]),
   mail: Type.String({ format: "email" }),
-  day: Type.String({ format: "date-time" }),
+  day: Type.String({ format: "date" }),
   hour: Type.String({ format: "time" }),
 });
 

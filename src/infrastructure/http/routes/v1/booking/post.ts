@@ -2,12 +2,14 @@ import { FastifyPluginAsyncTypebox } from "@fastify/type-provider-typebox";
 import { BookingSchemas } from "../../../schemas/index.js";
 import { ClassBookingLimit, UserRoles } from "../../../utils/enums.js";
 import {
+  BadRequestException,
   ConflictException,
   TooManyRequestsException,
 } from "../../../../../application/commons/exceptions.js";
 import { validateBookingRequest } from "../../../../validations/booking.validation.js";
 import { hasRole } from "../../../../auth/hasRole.js";
 import { isAuthenticated } from "../../../../auth/isAuthenticated.js";
+import { formatTime } from "../../../utils/datetime.js";
 
 const routes: FastifyPluginAsyncTypebox = async (app) => {
   app.post(
@@ -33,7 +35,17 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
       ),
     },
     async (request, reply) => {
-      await validateBookingRequest(app, request.body);
+      validateBookingRequest(app, request.body);
+
+      const timetables = await app.timetablesService.findAll(
+        { weekdayId: new Date(request.body.day).getDay() },
+        { offset: 0, limit: 10 },
+        [["hour", "asc"]],
+      );
+
+      const isValidHour = timetables.data.some(
+        (timetable) => timetable.hour === formatTime(request.body.hour),
+      );
 
       // daily booking limit for user
       const countBookingsForDayAndEmail =
@@ -51,7 +63,8 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
 
       if (
         countBookingsForDayAndEmail === 0 &&
-        countBookingsForDay <= ClassBookingLimit.LIMIT
+        countBookingsForDay <= ClassBookingLimit.LIMIT &&
+        isValidHour
       ) {
         const newBooking = await app.bookingsService.create(request.body);
         return reply.status(201).send(newBooking);
@@ -62,6 +75,8 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
           throw new TooManyRequestsException(
             "Limite di prenotazione raggiunto.",
           );
+        else if (isValidHour)
+          throw new BadRequestException("Orario non valido.");
       }
     },
   );

@@ -4,8 +4,11 @@ import PaginationSchema from "../commons/index.js";
 export const BookingsQuery = Type.Partial(
   Type.Intersect([
     Type.Object({
-      day: Type.String(),
+      mail: Type.String({ format: "email" }),
+      day: Type.String({ format: "date" }),
       hour: Type.String({ format: "time" }),
+      dateFrom: Type.String({ format: "date" }),
+      dateTo: Type.String({ format: "date" }),
     }),
     PaginationSchema.Queries.Pagination,
     Type.Object({

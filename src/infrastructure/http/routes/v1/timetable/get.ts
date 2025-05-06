@@ -28,48 +28,12 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
         { relation: "and" },
       ),
     },
-    async ({ query: { offset, limit, sort } }) =>
+    async ({ query: { weekdayId, offset, limit, sort } }) =>
       app.timetablesService.findAll(
+        { weekdayId },
         { offset: offset!, limit: limit! },
         decodeSort(sort!),
       ),
-  );
-
-  app.get(
-    "/:date",
-    {
-      schema: {
-        tags: ["Timetable"],
-        querystring: TimetableSchemas.Queries.TimetablesQuery,
-        params: TimetableSchemas.Params.Date,
-        response: {
-          200: TimetableSchemas.Bodies.TimetablesPaginated,
-        },
-      },
-      preHandler: app.auth(
-        [
-          isAuthenticated,
-          hasRole([
-            UserRoles.SYSTEM_ADMINISTRATOR,
-            UserRoles.ADMINISTRATOR,
-            UserRoles.USER,
-          ]),
-        ],
-        { relation: "and" },
-      ),
-    },
-    async (request, reply) => {
-      const { offset, limit, sort } = request.query;
-      const { date } = request.params;
-
-      const timetables = await app.timetablesService.findByDate(
-        date,
-        { offset: offset!, limit: limit! },
-        decodeSort(sort!),
-      );
-
-      reply.send(timetables);
-    },
   );
 };
 

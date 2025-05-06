@@ -1,4 +1,4 @@
-import { Kysely, SelectExpression } from "kysely";
+import { Kysely, SelectExpression, SelectQueryBuilder } from "kysely";
 import { DB } from "kysely-codegen";
 import {
   PaginatedResult,
@@ -7,20 +7,22 @@ import {
 } from "../../application/commons/models.js";
 import {
   CreateTimetable,
+  FilterTimetable,
   ITimetableRepository,
   Timetable,
   UpdateTimetable,
 } from "../../application/timetable/index.js";
-import { isSunday } from "../http/utils/datetime.js";
 import { buildSortBy } from "./utils.js";
 
 export class TimetableDao implements ITimetableRepository {
   protected readonly DEFAULT_SELECT_FIELDS = [
-    "id",
-    "hour",
-    "created_at as createdAt",
-    "updated_at as updatedAt",
-  ] satisfies ReadonlyArray<SelectExpression<DB, "timetables">>;
+    "timetables.id",
+    "timetables.hour",
+    "timetables.created_at as createdAt",
+    "timetables.updated_at as updatedAt",
+  ] satisfies ReadonlyArray<
+    SelectExpression<DB, "timetables" | "weekday_times">
+  >;
 
   constructor(protected readonly db: Kysely<DB>) {}
 
@@ -33,30 +35,47 @@ export class TimetableDao implements ITimetableRepository {
   }
 
   async findAll(
+    filterBy: FilterTimetable,
     pagination: Pagination,
     sortBy: SortBy<Timetable>,
   ): Promise<PaginatedResult<Timetable>> {
-    const countQuery = this.db
+    let countQuery = this.db
       .selectFrom("timetables")
-      .select(({ fn }) => [fn.count<number>("id").as("count")])
-      .executeTakeFirst();
+      .innerJoin("weekday_times", "weekday_times.timetable_id", "timetables.id")
+      .select((eb) =>
+        eb.fn.count<number>("timetables.id").distinct().as("count"),
+      );
+    countQuery = this.applyTimetableFilters(countQuery, filterBy);
 
-    const timetablesQuery = this.db
+    let timetablesQuery = this.db
       .selectFrom("timetables")
+      .distinct()
+      .innerJoin("weekday_times", "weekday_times.timetable_id", "timetables.id")
       .orderBy(buildSortBy<"timetables", Timetable>(sortBy))
       .limit(pagination.limit)
       .offset(pagination.offset)
-      .select(this.DEFAULT_SELECT_FIELDS)
-      .execute();
+      .select(this.DEFAULT_SELECT_FIELDS);
+    timetablesQuery = this.applyTimetableFilters(timetablesQuery, filterBy);
 
     const [countResult, timetablesResult] = await Promise.all([
-      countQuery,
-      timetablesQuery,
+      countQuery.executeTakeFirst(),
+      timetablesQuery.execute(),
     ]);
     return {
       count: countResult?.count ?? 0,
       data: timetablesResult,
     };
+  }
+
+  private applyTimetableFilters<O>(
+    query: SelectQueryBuilder<DB, "timetables" | "weekday_times", O>,
+    filterBy: FilterTimetable,
+  ): SelectQueryBuilder<DB, "timetables" | "weekday_times", O> {
+    if (filterBy.weekdayId !== null && filterBy.weekdayId !== undefined) {
+      query = query.where("weekday_times.weekday_id", "=", filterBy.weekdayId);
+    }
+
+    return query;
   }
 
   findById(id: Timetable["id"]): Promise<Timetable | undefined> {
@@ -65,41 +84,6 @@ export class TimetableDao implements ITimetableRepository {
       .where("id", "=", id)
       .select(this.DEFAULT_SELECT_FIELDS)
       .executeTakeFirst();
-  }
-
-  async findByDate(
-    date: string,
-    pagination: Pagination,
-    sortBy: SortBy<Timetable>,
-  ): Promise<PaginatedResult<Timetable>> {
-    if (!isSunday(new Date(date))) {
-      const countQuery = this.db
-        .selectFrom("timetables")
-        .select(({ fn }) => [fn.count<number>("id").as("count")])
-        .executeTakeFirst();
-
-      const timetablesQuery = this.db
-        .selectFrom("timetables")
-        .orderBy(buildSortBy<"timetables", Timetable>(sortBy))
-        .limit(pagination.limit)
-        .offset(pagination.offset)
-        .select(this.DEFAULT_SELECT_FIELDS)
-        .execute();
-
-      const [countResult, timetablesResult] = await Promise.all([
-        countQuery,
-        timetablesQuery,
-      ]);
-      return {
-        count: countResult?.count ?? 0,
-        data: timetablesResult,
-      };
-    } else {
-      return {
-        count: 0,
-        data: [],
-      };
-    }
   }
 
   update(

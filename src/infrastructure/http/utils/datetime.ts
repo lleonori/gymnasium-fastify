@@ -43,14 +43,8 @@ export const formatTimeInSecond = (time: string): number => {
   return hourInt + minuteInt + secondInt;
 };
 
-export function isSaturday(date: Date): boolean {
-  // getDay() returns the day of the week (6 for Saturday)
-  const day = date.getDay();
-  return day === 6;
-}
-
-export function isSunday(date: Date): boolean {
-  // getDay() returns the day of the week (0 for Sunday)
-  const day = date.getDay();
-  return day === 0;
-}
+export const formatTime = (time: string): string => {
+  // Remove the trailing 'Z' and return the formatted time
+  const formattedTime = time.slice(0, -1);
+  return formattedTime;
+};
