@@ -21,7 +21,7 @@ export class WeekdayDao implements IWeekdayRepository {
 
   async findAll(
     pagination: Pagination,
-    sortBy: SortBy<Weekday>,
+    sortBy: SortBy<Weekday>
   ): Promise<PaginatedResult<Weekday>> {
     const countQuery = this.db
       .selectFrom("weekdays")
