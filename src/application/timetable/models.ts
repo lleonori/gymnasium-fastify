@@ -1,5 +1,6 @@
 export type CreateTimetable = {
-  hour: string;
+  startHour: string;
+  endHour: string;
 };
 
 export type UpdateTimetable = Partial<CreateTimetable>;

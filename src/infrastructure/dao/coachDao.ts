@@ -19,8 +19,8 @@ export class CoachDao implements ICoachRepository {
     "name",
     "surname",
     "notes",
-    "created_at as createdAt",
-    "updated_at as updatedAt",
+    "createdAt",
+    "updatedAt",
   ] satisfies ReadonlyArray<SelectExpression<DB, "coachs">>;
 
   constructor(protected readonly db: Kysely<DB>) {}

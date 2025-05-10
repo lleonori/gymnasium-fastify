@@ -17,12 +17,11 @@ import { buildSortBy } from "./utils.js";
 export class TimetableDao implements ITimetableRepository {
   protected readonly DEFAULT_SELECT_FIELDS = [
     "timetables.id",
-    "timetables.hour",
-    "timetables.created_at as createdAt",
-    "timetables.updated_at as updatedAt",
-  ] satisfies ReadonlyArray<
-    SelectExpression<DB, "timetables" | "weekday_times">
-  >;
+    "timetables.startHour",
+    "timetables.endHour",
+    "timetables.createdAt",
+    "timetables.updatedAt",
+  ] satisfies ReadonlyArray<SelectExpression<DB, "timetables">>;
 
   constructor(protected readonly db: Kysely<DB>) {}
 
@@ -41,7 +40,7 @@ export class TimetableDao implements ITimetableRepository {
   ): Promise<PaginatedResult<Timetable>> {
     let countQuery = this.db
       .selectFrom("timetables")
-      .innerJoin("weekday_times", "weekday_times.timetable_id", "timetables.id")
+      .innerJoin("weekdayTimes", "weekdayTimes.timetableId", "timetables.id")
       .select((eb) =>
         eb.fn.count<number>("timetables.id").distinct().as("count"),
       );
@@ -50,7 +49,7 @@ export class TimetableDao implements ITimetableRepository {
     let timetablesQuery = this.db
       .selectFrom("timetables")
       .distinct()
-      .innerJoin("weekday_times", "weekday_times.timetable_id", "timetables.id")
+      .innerJoin("weekdayTimes", "weekdayTimes.timetableId", "timetables.id")
       .orderBy(buildSortBy<"timetables", Timetable>(sortBy))
       .limit(pagination.limit)
       .offset(pagination.offset)
@@ -68,11 +67,11 @@ export class TimetableDao implements ITimetableRepository {
   }
 
   private applyTimetableFilters<O>(
-    query: SelectQueryBuilder<DB, "timetables" | "weekday_times", O>,
+    query: SelectQueryBuilder<DB, "timetables" | "weekdayTimes", O>,
     filterBy: FilterTimetable,
-  ): SelectQueryBuilder<DB, "timetables" | "weekday_times", O> {
+  ): SelectQueryBuilder<DB, "timetables" | "weekdayTimes", O> {
     if (filterBy.weekdayId !== null && filterBy.weekdayId !== undefined) {
-      query = query.where("weekday_times.weekday_id", "=", filterBy.weekdayId);
+      query = query.where("weekdayTimes.weekdayId", "=", filterBy.weekdayId);
     }
 
     return query;

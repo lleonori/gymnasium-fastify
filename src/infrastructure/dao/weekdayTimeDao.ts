@@ -18,7 +18,7 @@ export class WeekdayTimeDao implements IWeekdayTimeRepository {
     "weekdays.id as weekdayId",
     "weekdays.name as weekdayName",
   ] satisfies ReadonlyArray<
-    SelectExpression<DB, "weekday_times" | "weekdays" | "timetables">
+    SelectExpression<DB, "weekdayTimes" | "weekdays" | "timetables">
   >;
 
   constructor(protected readonly db: Kysely<DB>) {}
@@ -26,26 +26,26 @@ export class WeekdayTimeDao implements IWeekdayTimeRepository {
   create(weekdayTime: CreateWeekdayTime): Promise<WeekdayTime> {
     return this.db.transaction().execute(async (trx) => {
       await trx
-        .deleteFrom("weekday_times")
-        .where("weekday_id", "=", weekdayTime.weekdayId)
+        .deleteFrom("weekdayTimes")
+        .where("weekdayId", "=", weekdayTime.weekdayId)
         .execute();
 
       if (weekdayTime.timetableId.length > 0) {
         await trx
-          .insertInto("weekday_times")
+          .insertInto("weekdayTimes")
           .values(
             weekdayTime.timetableId.map((t) => ({
-              weekday_id: weekdayTime.weekdayId,
-              timetable_id: t,
+              weekdayId: weekdayTime.weekdayId,
+              timetableId: t,
             })),
           )
           .execute();
       }
 
       const weekdayTimesQuery = await trx
-        .selectFrom("weekday_times")
-        .innerJoin("weekdays", "weekdays.id", "weekday_times.weekday_id")
-        .innerJoin("timetables", "timetables.id", "weekday_times.timetable_id")
+        .selectFrom("weekdayTimes")
+        .innerJoin("weekdays", "weekdays.id", "weekdayTimes.weekdayId")
+        .innerJoin("timetables", "timetables.id", "weekdayTimes.timetableId")
         .select(() => [
           sql<WeekdayTimesHour[]>`
           array_agg(
@@ -55,7 +55,7 @@ export class WeekdayTimeDao implements IWeekdayTimeRepository {
         `.as("hour"),
           ...this.DEFAULT_SELECT_FIELDS,
         ])
-        .where("weekday_times.weekday_id", "=", weekdayTime.weekdayId)
+        .where("weekdayTimes.weekdayId", "=", weekdayTime.weekdayId)
         .groupBy("weekdays.id")
         .executeTakeFirst();
 
@@ -79,8 +79,8 @@ export class WeekdayTimeDao implements IWeekdayTimeRepository {
   ): Promise<PaginatedResult<WeekdayTime>> {
     const countQuery = await this.db
       .selectFrom("weekdays")
-      .leftJoin("weekday_times", "weekday_times.weekday_id", "weekdays.id")
-      .leftJoin("timetables", "timetables.id", "weekday_times.timetable_id")
+      .leftJoin("weekdayTimes", "weekdayTimes.weekdayId", "weekdays.id")
+      .leftJoin("timetables", "timetables.id", "weekdayTimes.timetableId")
       .select(({ fn }) => [
         fn.count<number>(sql`distinct "weekdays"."id"`).as("count"),
       ])
@@ -89,8 +89,8 @@ export class WeekdayTimeDao implements IWeekdayTimeRepository {
     const weekdayTimesQuery = await this.db
       .selectFrom("weekdays")
       .orderBy(buildSortBy<"weekdays", WeekdayTime>(sortBy))
-      .leftJoin("weekday_times", "weekday_times.weekday_id", "weekdays.id")
-      .leftJoin("timetables", "timetables.id", "weekday_times.timetable_id")
+      .leftJoin("weekdayTimes", "weekdayTimes.weekdayId", "weekdays.id")
+      .leftJoin("timetables", "timetables.id", "weekdayTimes.timetableId")
       .limit(pagination.limit)
       .offset(pagination.offset)
       .select([

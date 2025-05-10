@@ -23,8 +23,8 @@ export class BookingDao implements IBookingRepository {
     "mail",
     "day",
     "hour",
-    "created_at as createdAt",
-    "updated_at as updatedAt",
+    "createdAt",
+    "updatedAt",
   ] satisfies ReadonlyArray<SelectExpression<DB, "bookings">>;
 
   create(newBooking: CreateBooking): Promise<Booking> {

@@ -12,7 +12,7 @@
     "db:up": "docker compose --env-file .env.development up -d",
     "db:migrate": "postgrator --config postgrator-config.js",
     "db:down": "docker compose down",
-    "generate:db:types": "kysely-codegen --env-file=.env.development",
+    "generate:db:types": "kysely-codegen --camel-case --env-file=.env.development",
     "pg-pull": "docker pull postgres:$(grep POSTGRES_VERSION .env | cut -d '=' -f2)-alpine",
     "pretest": "npm run pg-pull",
     "test": "vitest",
