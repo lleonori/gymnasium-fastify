@@ -1,0 +1,1 @@
+ALTER TABLE timetables ALTER COLUMN end_hour SET NOT NULL;
