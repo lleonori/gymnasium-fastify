@@ -49,8 +49,8 @@ export class WeekdayTimeDao implements IWeekdayTimeRepository {
         .select(() => [
           sql<WeekdayTimesHour[]>`
           array_agg(
-            json_build_object('id', "timetables"."id", 'hour', "timetables"."hour")
-            ORDER BY "timetables"."hour"
+            json_build_object('id', "timetables"."id", 'hour', "timetables"."start_hour")
+            ORDER BY "timetables"."start_hour"
           )
         `.as("hour"),
           ...this.DEFAULT_SELECT_FIELDS,
@@ -101,9 +101,9 @@ export class WeekdayTimeDao implements IWeekdayTimeRepository {
         json_agg(
           json_build_object(
             'id', "timetables"."id",
-            'hour', "timetables"."hour"
+            'hour', "timetables"."start_hour"
           )
-          order by "timetables"."hour"
+          order by "timetables"."start_hour"
         )
         filter (where "timetables"."id" is not null),
         '[]'::json

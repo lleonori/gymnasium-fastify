@@ -1,4 +1,4 @@
-import { Kysely, SelectExpression, SelectQueryBuilder, sql } from "kysely";
+import { Kysely, SelectExpression, sql } from "kysely";
 import { DB } from "kysely-codegen";
 import {
   PaginatedResult,
@@ -53,7 +53,6 @@ export class BookingDao implements IBookingRepository {
     let countQuery = this.db
       .selectFrom("bookings")
       .select(({ fn }) => [fn.count<number>("id").as("count")]);
-    countQuery = this.applyBookingFilters(countQuery, filterBy);
 
     // Construct the fields to return, replacing the 'day' field with the SQL expression
     const returnFields = this.DEFAULT_SELECT_FIELDS.map((field) =>
@@ -68,7 +67,55 @@ export class BookingDao implements IBookingRepository {
       .limit(pagination.limit)
       .offset(pagination.offset)
       .select(returnFields);
-    bookingsQuery = this.applyBookingFilters(bookingsQuery, filterBy);
+
+    if (filterBy.day) {
+      countQuery = countQuery.where(
+        "bookings.day",
+        "=",
+        new Date(filterBy.day),
+      );
+    }
+
+    if (filterBy.hour) {
+      countQuery = countQuery.where("bookings.hour", "=", filterBy.hour);
+      bookingsQuery = bookingsQuery.where("bookings.hour", "=", filterBy.hour);
+    }
+
+    if (filterBy.mail) {
+      countQuery = countQuery.where("bookings.mail", "=", filterBy.mail);
+      bookingsQuery = bookingsQuery.where("bookings.mail", "=", filterBy.mail);
+    }
+
+    if (filterBy.dateFrom && filterBy.dateTo) {
+      countQuery = countQuery
+        .where("bookings.day", ">=", new Date(filterBy.dateFrom))
+        .where("bookings.day", "<=", new Date(filterBy.dateTo));
+      bookingsQuery = bookingsQuery
+        .where("bookings.day", ">=", new Date(filterBy.dateFrom))
+        .where("bookings.day", "<=", new Date(filterBy.dateTo));
+    } else if (filterBy.dateFrom) {
+      countQuery = countQuery.where(
+        "bookings.day",
+        ">=",
+        new Date(filterBy.dateFrom),
+      );
+      bookingsQuery = bookingsQuery.where(
+        "bookings.day",
+        ">=",
+        new Date(filterBy.dateFrom),
+      );
+    } else if (filterBy.dateTo) {
+      countQuery = countQuery.where(
+        "bookings.day",
+        "<=",
+        new Date(filterBy.dateTo),
+      );
+      bookingsQuery = bookingsQuery.where(
+        "bookings.day",
+        "<=",
+        new Date(filterBy.dateTo),
+      );
+    }
 
     const [countResult, bookingsResult] = await Promise.all([
       countQuery.executeTakeFirst(),
@@ -78,35 +125,6 @@ export class BookingDao implements IBookingRepository {
       count: countResult?.count ?? 0,
       data: bookingsResult,
     };
-  }
-
-  private applyBookingFilters<O>(
-    query: SelectQueryBuilder<DB, "bookings", O>,
-    filterBy: FilterBooking,
-  ): SelectQueryBuilder<DB, "bookings", O> {
-    if (filterBy.day) {
-      query = query.where("bookings.day", "=", new Date(filterBy.day));
-    }
-
-    if (filterBy.hour) {
-      query = query.where("bookings.hour", "=", filterBy.hour);
-    }
-
-    if (filterBy.mail) {
-      query = query.where("bookings.mail", "=", filterBy.mail);
-    }
-
-    if (filterBy.dateFrom && filterBy.dateTo) {
-      query = query
-        .where("bookings.day", ">=", new Date(filterBy.dateFrom))
-        .where("bookings.day", "<=", new Date(filterBy.dateTo));
-    } else if (filterBy.dateFrom) {
-      query = query.where("bookings.day", ">=", new Date(filterBy.dateFrom));
-    } else if (filterBy.dateTo) {
-      query = query.where("bookings.day", "<=", new Date(filterBy.dateTo));
-    }
-
-    return query;
   }
 
   async countBookingsForDayAndEmail(day: Date, mail: string): Promise<number> {

@@ -1,4 +1,4 @@
-import { Kysely, SelectExpression, SelectQueryBuilder } from "kysely";
+import { Kysely, SelectExpression } from "kysely";
 import { DB } from "kysely-codegen";
 import {
   PaginatedResult,
@@ -40,21 +40,32 @@ export class TimetableDao implements ITimetableRepository {
   ): Promise<PaginatedResult<Timetable>> {
     let countQuery = this.db
       .selectFrom("timetables")
-      .innerJoin("weekdayTimes", "weekdayTimes.timetableId", "timetables.id")
+      .leftJoin("weekdayTimes", "weekdayTimes.timetableId", "timetables.id")
       .select((eb) =>
         eb.fn.count<number>("timetables.id").distinct().as("count"),
       );
-    countQuery = this.applyTimetableFilters(countQuery, filterBy);
 
     let timetablesQuery = this.db
       .selectFrom("timetables")
       .distinct()
-      .innerJoin("weekdayTimes", "weekdayTimes.timetableId", "timetables.id")
+      .leftJoin("weekdayTimes", "weekdayTimes.timetableId", "timetables.id")
       .orderBy(buildSortBy<"timetables", Timetable>(sortBy))
       .limit(pagination.limit)
       .offset(pagination.offset)
       .select(this.DEFAULT_SELECT_FIELDS);
-    timetablesQuery = this.applyTimetableFilters(timetablesQuery, filterBy);
+
+    if (filterBy.weekdayId !== undefined) {
+      countQuery = countQuery.where(
+        "weekdayTimes.weekdayId",
+        "=",
+        filterBy.weekdayId,
+      );
+      timetablesQuery = timetablesQuery.where(
+        "weekdayTimes.weekdayId",
+        "=",
+        filterBy.weekdayId,
+      );
+    }
 
     const [countResult, timetablesResult] = await Promise.all([
       countQuery.executeTakeFirst(),
@@ -64,17 +75,6 @@ export class TimetableDao implements ITimetableRepository {
       count: countResult?.count ?? 0,
       data: timetablesResult,
     };
-  }
-
-  private applyTimetableFilters<O>(
-    query: SelectQueryBuilder<DB, "timetables" | "weekdayTimes", O>,
-    filterBy: FilterTimetable,
-  ): SelectQueryBuilder<DB, "timetables" | "weekdayTimes", O> {
-    if (filterBy.weekdayId !== null && filterBy.weekdayId !== undefined) {
-      query = query.where("weekdayTimes.weekdayId", "=", filterBy.weekdayId);
-    }
-
-    return query;
   }
 
   findById(id: Timetable["id"]): Promise<Timetable | undefined> {
