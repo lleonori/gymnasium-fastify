@@ -29,10 +29,10 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
       ),
     },
     async ({
-      query: { day, hour, mail, dateFrom, dateTo, offset, limit, sort },
+      query: { day, timetableId, mail, dateFrom, dateTo, offset, limit, sort },
     }) =>
       app.bookingsService.findAll(
-        { day, hour, mail, dateFrom, dateTo },
+        { day, timetableId, mail, dateFrom, dateTo },
         { offset: offset!, limit: limit! },
         decodeSort(sort!),
       ),

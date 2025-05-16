@@ -1,11 +1,6 @@
 import { FastifyInstance } from "fastify";
 import { CreateBooking } from "../../application/booking/models.js";
-import {
-  BadRequestException,
-  ForbiddenException,
-} from "../../application/commons/exceptions.js";
-import { formatTimeInSecond, getTime } from "../http/utils/datetime.js";
-import { BookingLimitHours } from "../http/utils/enums.js";
+import { BadRequestException } from "../../application/commons/exceptions.js";
 
 export const validateBookingRequest = async (
   _: FastifyInstance,
@@ -26,18 +21,5 @@ export const validateBookingRequest = async (
     throw new BadRequestException(
       "Impossibile prenotare: la data selezionata non è valida.",
     );
-  }
-
-  if (today.toDateString() === bookingDate.toDateString()) {
-    const currentTime = getTime();
-    const timeDifference =
-      formatTimeInSecond(body.hour) - formatTimeInSecond(currentTime);
-
-    if (timeDifference < BookingLimitHours.LIMIT) {
-      console.error("Errore: tempo limite scaduto.");
-      throw new ForbiddenException(
-        "Impossibile prenotare: il tempo limite è scaduto.",
-      );
-    }
   }
 };

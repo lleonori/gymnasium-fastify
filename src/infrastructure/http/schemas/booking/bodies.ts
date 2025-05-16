@@ -5,7 +5,7 @@ export const CreateBooking = Type.Object({
   fullname: Type.Union([Type.String(), Type.Null()]),
   mail: Type.String({ format: "email" }),
   day: Type.String({ format: "date" }),
-  hour: Type.String({ format: "time" }),
+  timetableId: Type.Number(),
 });
 
 export const UpdateBooking = Type.Partial(CreateBooking);
@@ -13,6 +13,8 @@ export const UpdateBooking = Type.Partial(CreateBooking);
 export const Booking = Type.Intersect([
   Type.Object({
     id: Type.Number(),
+    startHour: Type.String({ format: "time" }),
+    endHour: Type.String({ format: "time" }),
   }),
   CreateBooking,
 ]);

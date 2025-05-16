@@ -6,7 +6,7 @@ export const BookingsQuery = Type.Partial(
     Type.Object({
       mail: Type.String({ format: "email" }),
       day: Type.String({ format: "date" }),
-      hour: Type.String({ format: "time" }),
+      timetableId: Type.Number(),
       dateFrom: Type.String({ format: "date" }),
       dateTo: Type.String({ format: "date" }),
     }),

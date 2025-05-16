@@ -23,8 +23,14 @@ export class BookingService {
     return this.bookingRepository.countBookingsForDayAndEmail(day, mail);
   }
 
-  countBookingsForDayAndHour(day: Date, hour: string): Promise<number> {
-    return this.bookingRepository.countBookingsForDayAndHour(day, hour);
+  countBookingsForDayAndTimetableId(
+    day: Date,
+    timetableId: number,
+  ): Promise<number> {
+    return this.bookingRepository.countBookingsForDayAndTimetableId(
+      day,
+      timetableId,
+    );
   }
 
   async delete(id: Booking["id"]): Promise<Booking> {

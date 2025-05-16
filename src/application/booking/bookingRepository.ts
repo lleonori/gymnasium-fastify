@@ -9,6 +9,9 @@ export interface IBookingRepository {
     sortBy: SortBy<Booking>,
   ): Promise<PaginatedResult<Booking>>;
   countBookingsForDayAndEmail(day: Date, mail: string): Promise<number>;
-  countBookingsForDayAndHour(day: Date, hour: string): Promise<number>;
+  countBookingsForDayAndTimetableId(
+    day: Date,
+    timetableId: number,
+  ): Promise<number>;
   delete(id: Booking["id"]): Promise<Booking | undefined>;
 }
