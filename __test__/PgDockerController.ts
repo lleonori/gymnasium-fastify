@@ -12,7 +12,7 @@ import {
 } from "../src/infrastructure/env/dbConfig.js";
 import { createDbConnection } from "../src/infrastructure/plugins/database-connections.js";
 
-const { parsed: parsedEnv = {} } = config();
+const { parsed: parsedEnv = {} } = config({ path: ".env.development" });
 
 const CONTAINER_PREFIX = "pgDockerController";
 const PG_IMAGE = `postgres:${process.env.POSTGRES_VERSION}-alpine`;

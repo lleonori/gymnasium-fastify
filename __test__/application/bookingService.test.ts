@@ -18,7 +18,9 @@ const mockBooking: Booking = {
   fullname: "Lorenzo Leonori",
   mail: "lorenzo.leonori.93@gmail.com",
   day: "06/12/2024",
-  hour: "9:00",
+  timetableId: 1,
+  startHour: "9:00",
+  endHour: "10:30",
   createdAt: new Date(),
   updatedAt: new Date(),
 };
@@ -31,9 +33,8 @@ describe("BookingService", () => {
     mockedBookingRepository = {
       create: vi.fn(),
       findAll: vi.fn(),
-      findByMail: vi.fn(),
       countBookingsForDayAndEmail: vi.fn(),
-      countBookingsForDay: vi.fn(),
+      countBookingsForDayAndTimetableId: vi.fn(),
       delete: vi.fn(),
     };
 
@@ -52,7 +53,7 @@ describe("BookingService", () => {
       });
 
       const findAllBooking = await bookingService.findAll(
-        { fullname: "Lorenzo" },
+        { mail: "Lorenzo" },
         { limit: 0, offset: 10 },
         [["id", "asc"]],
       );
@@ -63,7 +64,7 @@ describe("BookingService", () => {
       });
       expect(mockedBookingRepository.findAll).toHaveBeenCalledOnce();
       expect(mockedBookingRepository.findAll).toHaveBeenCalledWith(
-        { fullname: "Lorenzo" },
+        { mail: "Lorenzo" },
         { limit: 0, offset: 10 },
         [["id", "asc"]],
       );
@@ -72,14 +73,13 @@ describe("BookingService", () => {
 
   describe("find by mail", () => {
     test("should find a booking by mail", async () => {
-      mockedBookingRepository.findByMail.mockResolvedValue({
+      mockedBookingRepository.findAll.mockResolvedValue({
         count: 1,
         data: [mockBooking],
       });
 
-      const findBookingByMail = await bookingService.findByMail(
-        { today: "06/12/2024", tomorrow: "07/12/2024" },
-        "lorenzo.leonori.93@gmail.com",
+      const findBookingByMail = await bookingService.findAll(
+        { mail: "lorenzo.leonori.93@gmail.com" },
         { limit: 0, offset: 10 },
         [["id", "asc"]],
       );
@@ -88,29 +88,31 @@ describe("BookingService", () => {
         count: 1,
         data: [mockBooking],
       });
-      expect(mockedBookingRepository.findByMail).toHaveBeenCalledOnce();
-      expect(mockedBookingRepository.findByMail).toHaveBeenCalledWith(
-        { today: "06/12/2024", tomorrow: "07/12/2024" },
-        "lorenzo.leonori.93@gmail.com",
+      expect(mockedBookingRepository.findAll).toHaveBeenCalledOnce();
+      expect(mockedBookingRepository.findAll).toHaveBeenCalledWith(
+        { mail: "lorenzo.leonori.93@gmail.com" },
         { limit: 0, offset: 10 },
         [["id", "asc"]],
       );
     });
   });
 
-  describe("count all bookings by day", () => {
-    test("should count all bookings by day", async () => {
-      mockedBookingRepository.countBookingsForDay.mockResolvedValue(1);
+  describe("count all bookings by day and mail", () => {
+    test("should count all bookings by day and mail", async () => {
+      mockedBookingRepository.countBookingsForDayAndEmail.mockResolvedValue(1);
 
-      const cabbd = await bookingService.countBookingsForDay(new Date());
-
-      expect(cabbd).toEqual(1);
-      expect(
-        mockedBookingRepository.countBookingsForDay,
-      ).toHaveBeenCalledOnce();
-      expect(mockedBookingRepository.countBookingsForDay).toHaveBeenCalledWith(
+      const cabbdam = await bookingService.countBookingsForDayAndEmail(
         new Date(),
+        "lorenzo.leonori.93@gmail.com",
       );
+
+      expect(cabbdam).toEqual(1);
+      expect(
+        mockedBookingRepository.countBookingsForDayAndEmail,
+      ).toHaveBeenCalledOnce();
+      expect(
+        mockedBookingRepository.countBookingsForDayAndEmail,
+      ).toHaveBeenCalledWith(new Date(), "lorenzo.leonori.93@gmail.com");
     });
   });
 
@@ -141,7 +143,7 @@ describe("BookingService", () => {
         fullname: "Lorenzo Leonori",
         mail: "lorenzo.leonori.93@gmail.com",
         day: "06/12/2024",
-        hour: "9:00",
+        timetableId: 1,
       });
 
       expect(createdBooking).toEqual(mockBooking);
@@ -150,7 +152,7 @@ describe("BookingService", () => {
         fullname: "Lorenzo Leonori",
         mail: "lorenzo.leonori.93@gmail.com",
         day: "06/12/2024",
-        hour: "9:00",
+        timetableId: 1,
       });
     });
   });

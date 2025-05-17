@@ -17,7 +17,6 @@ const mockCoach: Coach = {
   id: 1,
   name: "Lorenzo",
   surname: "Leonori",
-  image: "/asset/coach/man1.png",
   notes: "Laurea Scienze Motorie",
   createdAt: new Date(),
   updatedAt: new Date(),
@@ -94,7 +93,6 @@ describe("CoachService", () => {
       const createdCoach = await coachService.create({
         name: "Lorenzo",
         surname: "Leonori",
-        image: "/asset/coach/man1.png",
         notes: "Laurea Scienze Motorie",
       });
 
@@ -103,7 +101,6 @@ describe("CoachService", () => {
       expect(mockedCoachRepository.create).toHaveBeenCalledWith({
         name: "Lorenzo",
         surname: "Leonori",
-        image: "/asset/coach/man1.png",
         notes: "Laurea Scienze Motorie",
       });
     });
@@ -116,7 +113,6 @@ describe("CoachService", () => {
       const updateCoach = await coachService.update(1, {
         name: "Lorenzo",
         surname: "Leonori",
-        image: "/asset/coach/man1.png",
         notes: "Laurea Scienze Motorie",
       });
 
@@ -125,7 +121,6 @@ describe("CoachService", () => {
       expect(mockedCoachRepository.update).toHaveBeenCalledWith(1, {
         name: "Lorenzo",
         surname: "Leonori",
-        image: "/asset/coach/man1.png",
         notes: "Laurea Scienze Motorie",
       });
     });
@@ -137,7 +132,6 @@ describe("CoachService", () => {
         coachService.update(1, {
           name: "Lorenzo",
           surname: "Leonori",
-          image: "/asset/coach/man1.png",
           notes: "Laurea Scienze Motorie",
         }),
       ).rejects.toThrow("Coach with id 1 not found");

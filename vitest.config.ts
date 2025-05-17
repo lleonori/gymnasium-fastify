@@ -2,7 +2,7 @@ import { defineConfig } from "vitest/config";
 
 export default defineConfig(() => ({
   test: {
-    setupFiles: ["./vitest-setup.js"],
+    setupFiles: ["./vitest-setup.ts"],
     deps: {
       inline: ["@fastify/autoload"],
     },
@@ -15,8 +15,8 @@ export default defineConfig(() => ({
       statements: 90,
       reporter: ["lcov", "text"],
     },
-    include: ["__test__/**/*.test.js"],
+    include: ["__test__/**/*.test.{js,ts}"],
     environment: "node",
-    globalSetup: ["./vitest-teardown.js"],
+    globalSetup: ["./vitest-teardown.ts"],
   },
 }));

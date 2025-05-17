@@ -15,8 +15,8 @@ import {
 
 const mockTimetable: Timetable = {
   id: 1,
-  hour: "9:00",
-  isValidOnWeekend: false,
+  startHour: "9:00",
+  endHour: "10:30",
   createdAt: new Date(),
   updatedAt: new Date(),
 };
@@ -30,10 +30,8 @@ describe("TimetableService", () => {
       create: vi.fn(),
       findAll: vi.fn(),
       findById: vi.fn(),
-      findByDate: vi.fn(),
       update: vi.fn(),
       delete: vi.fn(),
-      findByHourAndIsValidOnWeekend: vi.fn(),
     };
 
     timetableService = new TimetableService(mockedTimetableRepository);
@@ -51,6 +49,7 @@ describe("TimetableService", () => {
       });
 
       const findAllTimetable = await timetableService.findAll(
+        {},
         { limit: 0, offset: 10 },
         [["id", "asc"]],
       );
@@ -61,6 +60,7 @@ describe("TimetableService", () => {
       });
       expect(mockedTimetableRepository.findAll).toHaveBeenCalledOnce();
       expect(mockedTimetableRepository.findAll).toHaveBeenCalledWith(
+        {},
         { limit: 0, offset: 10 },
         [["id", "asc"]],
       );
@@ -92,13 +92,15 @@ describe("TimetableService", () => {
       mockedTimetableRepository.create.mockResolvedValue(mockTimetable);
 
       const createdTimetable = await timetableService.create({
-        hour: "10:00",
+        startHour: "10:00",
+        endHour: "11:00",
       });
 
       expect(createdTimetable).toEqual(mockTimetable);
       expect(mockedTimetableRepository.create).toHaveBeenCalledOnce();
       expect(mockedTimetableRepository.create).toHaveBeenCalledWith({
-        hour: "10:00",
+        startHour: "10:00",
+        endHour: "11:00",
       });
     });
   });
@@ -108,22 +110,25 @@ describe("TimetableService", () => {
       mockedTimetableRepository.update.mockResolvedValue(mockTimetable);
 
       const updateTimetable = await timetableService.update(1, {
-        hour: "11:00",
+        startHour: "11:00",
+        endHour: "12:00",
       });
 
       expect(updateTimetable).toEqual(mockTimetable);
       expect(mockedTimetableRepository.update).toHaveBeenCalledOnce();
       expect(mockedTimetableRepository.update).toHaveBeenCalledWith(1, {
-        hour: "11:00",
+        startHour: "11:00",
+        endHour: "12:00",
       });
     });
 
-    test("should thrown an error if not fuond a timetable", async () => {
+    test("should thrown an error if not found a timetable", async () => {
       mockedTimetableRepository.update.mockResolvedValue(undefined);
 
       await expect(
         timetableService.update(1, {
-          hour: "13:00",
+          startHour: "13:00",
+          endHour: "14:00",
         }),
       ).rejects.toThrow("Timetable with id 1 not found");
     });
