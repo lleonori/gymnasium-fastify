@@ -30,9 +30,9 @@ describe(`PATCH /v1/coachs/{coachId}`, () => {
     coachDao = new CoachDao(pgDockerController.db);
   });
 
-  test("should edit a coach", async () => {
-    const token = process.env.TEST_AUTH0_TOKEN;
+  const token = process.env.TEST_AUTH0_TOKEN;
 
+  test("should edit a coach", async () => {
     const coach = await coachDao.create({
       name: "Mario",
       surname: "Rossi",
@@ -62,8 +62,6 @@ describe(`PATCH /v1/coachs/{coachId}`, () => {
   });
 
   test(`should return 404 if coach doesn't exist`, async () => {
-    const token = process.env.TEST_AUTH0_TOKEN;
-
     const response = await server.inject({
       method: "PATCH",
       url: `/api/v1/coach/9999`,

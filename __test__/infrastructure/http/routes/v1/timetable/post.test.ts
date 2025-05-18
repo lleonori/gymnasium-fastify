@@ -1,17 +1,9 @@
 import { FastifyInstance } from "fastify";
-import {
-  afterAll,
-  afterEach,
-  beforeAll,
-  beforeEach,
-  describe,
-  expect,
-  test,
-} from "vitest";
+import { afterAll, afterEach, beforeAll, describe, expect, test } from "vitest";
 import PgDockerController from "../../../../../PgDockerController.js";
 import { createServer } from "../../../../../utils/buildServer.js";
 
-describe(`POST /v1/coachs`, () => {
+describe(`POST /v1/timetable`, () => {
   const pgDockerController = new PgDockerController();
   let server: FastifyInstance;
 
@@ -24,30 +16,29 @@ describe(`POST /v1/coachs`, () => {
 
   afterEach(() => pgDockerController.reset());
 
-  beforeEach(() => {});
-
   const token = process.env.TEST_AUTH0_TOKEN;
 
-  test("should create a coach", async () => {
-    const coachData = {
-      name: "Mario",
-      surname: "Rossi",
-      notes: "Test",
+  test("should create a new timetable", async () => {
+    const timetableData = {
+      startHour: "09:00:00Z",
+      endHour: "10:00:00Z",
     };
 
     const response = await server.inject({
       method: "POST",
-      url: `/api/v1/coach`,
-      payload: coachData,
+      url: "/api/v1/timetable",
       headers: {
         Authorization: `Bearer ${token}`,
       },
+      payload: timetableData,
     });
 
     expect(response.statusCode).toBe(201);
-    expect(response.json()).toStrictEqual({
-      id: expect.any(Number),
-      ...coachData,
-    });
+
+    // Verifica che il formato sia HH:mm:ss senza Z
+    const { id, startHour, endHour } = response.json();
+    expect(id).toEqual(expect.any(Number));
+    expect(startHour).toMatch(/^\d{2}:\d{2}:\d{2}$/);
+    expect(endHour).toMatch(/^\d{2}:\d{2}:\d{2}$/);
   });
 });

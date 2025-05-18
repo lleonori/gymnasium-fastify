@@ -39,9 +39,9 @@ describe(`GET /v1/coachs`, () => {
     }
   });
 
-  describe("GET /", () => {
-    const token = process.env.TEST_AUTH0_TOKEN;
+  const token = process.env.TEST_AUTH0_TOKEN;
 
+  describe("GET /", () => {
     test("should return all coachs", async () => {
       const expectedResult = {
         count: 10,
@@ -115,8 +115,6 @@ describe(`GET /v1/coachs`, () => {
   });
 
   describe("GET /{coachId}", () => {
-    const token = process.env.TEST_AUTH0_TOKEN;
-
     test(`should return 404 if coach doesn't exist`, async () => {
       const response = await server.inject({
         method: "GET",
