@@ -33,6 +33,7 @@ describe("BookingService", () => {
     mockedBookingRepository = {
       create: vi.fn(),
       findAll: vi.fn(),
+      findById: vi.fn(),
       countBookingsForDayAndEmail: vi.fn(),
       countBookingsForDayAndTimetableId: vi.fn(),
       delete: vi.fn(),
