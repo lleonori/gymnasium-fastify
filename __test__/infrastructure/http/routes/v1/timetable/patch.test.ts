@@ -13,15 +13,15 @@ import PgDockerController from "../../../../../PgDockerController.js";
 import { createServer } from "../../../../../utils/buildServer.js";
 
 describe(`PATCH /v1/timetable/:timetableId`, () => {
-  const pgDockerController = new PgDockerController();
   let server: FastifyInstance;
   let timetableDao: TimetableDao;
   let timetableId: number;
+  const pgDockerController = new PgDockerController();
+  const token = process.env.TEST_AUTH0_TOKEN;
 
   beforeAll(async () => {
     await pgDockerController.setup();
     server = await createServer();
-    timetableDao = new TimetableDao(pgDockerController.db);
   });
 
   afterAll(() => server.close());
@@ -29,14 +29,14 @@ describe(`PATCH /v1/timetable/:timetableId`, () => {
   afterEach(() => pgDockerController.reset());
 
   beforeEach(async () => {
+    timetableDao = new TimetableDao(pgDockerController.db);
+
     const timetable = await timetableDao.create({
       startHour: "08:00:00Z",
       endHour: "09:00:00Z",
     });
     timetableId = timetable.id;
   });
-
-  const token = process.env.TEST_AUTH0_TOKEN;
 
   test("should update a timetable", async () => {
     const response = await server.inject({
@@ -58,7 +58,6 @@ describe(`PATCH /v1/timetable/:timetableId`, () => {
       endHour: "11:00:00",
     });
 
-    // Verifica che sia stato aggiornato nel DB
     const updated = await timetableDao.findById(timetableId);
     expect(updated).toStrictEqual({
       id: timetableId,

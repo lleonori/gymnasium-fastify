@@ -17,11 +17,11 @@ describe(`GET /v1/coachs`, () => {
   const pgDockerController = new PgDockerController();
   let server: FastifyInstance;
   let coachDao: CoachDao;
+  const token = process.env.TEST_AUTH0_TOKEN;
 
   beforeAll(async () => {
     await pgDockerController.setup();
     server = await createServer();
-    coachDao = new CoachDao(pgDockerController.db);
   });
 
   afterAll(() => server.close());
@@ -29,6 +29,8 @@ describe(`GET /v1/coachs`, () => {
   afterEach(() => pgDockerController.reset());
 
   beforeEach(async () => {
+    coachDao = new CoachDao(pgDockerController.db);
+
     // Popola la tabella coachs con 10 coach
     for (let i = 0; i < 10; i++) {
       await coachDao.create({
@@ -38,8 +40,6 @@ describe(`GET /v1/coachs`, () => {
       });
     }
   });
-
-  const token = process.env.TEST_AUTH0_TOKEN;
 
   describe("GET /", () => {
     test("should return all coachs", async () => {

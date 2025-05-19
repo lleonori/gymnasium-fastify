@@ -102,12 +102,13 @@ describe("BookingService", () => {
     test("should count all bookings by day and mail", async () => {
       mockedBookingRepository.countBookingsForDayAndEmail.mockResolvedValue(1);
 
-      const cabbdam = await bookingService.countBookingsForDayAndEmail(
-        new Date(),
-        "lorenzo.leonori.93@gmail.com",
-      );
+      const countBookingsForDayAndEmail =
+        await bookingService.countBookingsForDayAndEmail(
+          new Date(),
+          "lorenzo.leonori.93@gmail.com",
+        );
 
-      expect(cabbdam).toEqual(1);
+      expect(countBookingsForDayAndEmail).toEqual(1);
       expect(
         mockedBookingRepository.countBookingsForDayAndEmail,
       ).toHaveBeenCalledOnce();
@@ -121,18 +122,22 @@ describe("BookingService", () => {
     test("should count all bookings by day and mail", async () => {
       mockedBookingRepository.countBookingsForDayAndEmail.mockResolvedValue(1);
 
-      const cabbdam = await bookingService.countBookingsForDayAndEmail(
-        new Date(),
-        "lorenzo.leonori.93@gmail.com",
-      );
+      const now = new Date();
+      now.setMilliseconds(0);
 
-      expect(cabbdam).toEqual(1);
+      const countBookingsForDayAndEmail =
+        await bookingService.countBookingsForDayAndEmail(
+          now,
+          "lorenzo.leonori.93@gmail.com",
+        );
+
+      expect(countBookingsForDayAndEmail).toEqual(1);
       expect(
         mockedBookingRepository.countBookingsForDayAndEmail,
       ).toHaveBeenCalledOnce();
       expect(
         mockedBookingRepository.countBookingsForDayAndEmail,
-      ).toHaveBeenCalledWith(new Date(), "lorenzo.leonori.93@gmail.com");
+      ).toHaveBeenCalledWith(now, "lorenzo.leonori.93@gmail.com");
     });
   });
 

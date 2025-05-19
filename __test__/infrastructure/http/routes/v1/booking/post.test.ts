@@ -25,6 +25,8 @@ describe(`POST /v1/booking`, () => {
   let weekdayId: number;
   let weekdayName: string;
 
+  const token = process.env.TEST_AUTH0_TOKEN;
+
   beforeAll(async () => {
     await pgDockerController.setup();
     server = await createServer();
@@ -46,8 +48,6 @@ describe(`POST /v1/booking`, () => {
       weekday: "long",
     }).format(new Date(tomorrowDate));
   });
-
-  const token = process.env.TEST_AUTH0_TOKEN;
 
   test("should create a new booking", async () => {
     await pgDockerController.db

@@ -25,9 +25,18 @@ describe(`GET /v1/booking`, () => {
   let weekdayId: number;
   let weekdayName: string;
 
+  const token = process.env.TEST_AUTH0_TOKEN;
+
   beforeAll(async () => {
     await pgDockerController.setup();
     server = await createServer();
+  });
+
+  afterAll(() => server.close());
+
+  afterEach(() => pgDockerController.reset());
+
+  beforeEach(async () => {
     bookingDao = new BookingDao(pgDockerController.db);
     timetableDao = new TimetableDao(pgDockerController.db);
     weekdayTimeDao = new WeekdayTimeDao(pgDockerController.db);
@@ -38,13 +47,7 @@ describe(`GET /v1/booking`, () => {
     weekdayName = new Intl.DateTimeFormat("it-IT", {
       weekday: "long",
     }).format(new Date(tomorrowDate));
-  });
 
-  afterAll(() => server.close());
-
-  afterEach(() => pgDockerController.reset());
-
-  beforeEach(async () => {
     await pgDockerController.db
       .insertInto("weekdays")
       .values({
@@ -73,8 +76,6 @@ describe(`GET /v1/booking`, () => {
       });
     }
   });
-
-  const token = process.env.TEST_AUTH0_TOKEN;
 
   test("should return all bookings", async () => {
     const expectedResult = {

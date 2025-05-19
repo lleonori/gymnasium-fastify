@@ -16,6 +16,7 @@ describe("DELETE /v1/coachs/:coachId", () => {
   let server: FastifyInstance;
   let coachDao: CoachDao;
   const pgDockerController = new PgDockerController();
+  const token = process.env.TEST_AUTH0_TOKEN;
 
   beforeAll(async () => {
     await pgDockerController.setup();
@@ -29,8 +30,6 @@ describe("DELETE /v1/coachs/:coachId", () => {
   beforeEach(async () => {
     coachDao = new CoachDao(pgDockerController.db);
   });
-
-  const token = process.env.TEST_AUTH0_TOKEN;
 
   test("should delete a coach", async () => {
     const coach = await coachDao.create({

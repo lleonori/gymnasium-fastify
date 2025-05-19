@@ -16,6 +16,7 @@ describe(`PATCH /v1/coachs/:coachI`, () => {
   const pgDockerController = new PgDockerController();
   let server: FastifyInstance;
   let coachDao: CoachDao;
+  const token = process.env.TEST_AUTH0_TOKEN;
 
   beforeAll(async () => {
     await pgDockerController.setup();
@@ -29,8 +30,6 @@ describe(`PATCH /v1/coachs/:coachI`, () => {
   beforeEach(() => {
     coachDao = new CoachDao(pgDockerController.db);
   });
-
-  const token = process.env.TEST_AUTH0_TOKEN;
 
   test("should edit a coach", async () => {
     const coach = await coachDao.create({

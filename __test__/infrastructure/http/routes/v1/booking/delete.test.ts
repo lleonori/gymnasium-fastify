@@ -18,6 +18,7 @@ describe(`DELETE /v1/booking/:bookingId`, () => {
   let server: FastifyInstance;
   let bookingDao: BookingDao;
   let timetableDao: TimetableDao;
+  const token = process.env.TEST_AUTH0_TOKEN;
 
   beforeAll(async () => {
     await pgDockerController.setup();
@@ -32,8 +33,6 @@ describe(`DELETE /v1/booking/:bookingId`, () => {
     bookingDao = new BookingDao(pgDockerController.db);
     timetableDao = new TimetableDao(pgDockerController.db);
   });
-
-  const token = process.env.TEST_AUTH0_TOKEN;
 
   test("should delete a booking", async () => {
     const { id: timetableId } = await timetableDao.create({

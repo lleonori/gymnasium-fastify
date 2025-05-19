@@ -13,14 +13,14 @@ import PgDockerController from "../../../../../PgDockerController.js";
 import { createServer } from "../../../../../utils/buildServer.js";
 
 describe(`GET /v1/timetable`, () => {
-  const pgDockerController = new PgDockerController();
   let server: FastifyInstance;
   let timetableDao: TimetableDao;
+  const pgDockerController = new PgDockerController();
+  const token = process.env.TEST_AUTH0_TOKEN;
 
   beforeAll(async () => {
     await pgDockerController.setup();
     server = await createServer();
-    timetableDao = new TimetableDao(pgDockerController.db);
   });
 
   afterAll(() => server.close());
@@ -28,6 +28,8 @@ describe(`GET /v1/timetable`, () => {
   afterEach(() => pgDockerController.reset());
 
   beforeEach(async () => {
+    timetableDao = new TimetableDao(pgDockerController.db);
+
     // Popola la tabella timetables con 10 record
     for (let i = 0; i < 10; i++) {
       await timetableDao.create({
@@ -36,8 +38,6 @@ describe(`GET /v1/timetable`, () => {
       });
     }
   });
-
-  const token = process.env.TEST_AUTH0_TOKEN;
 
   test("should return all timetables", async () => {
     const expectedResult = {

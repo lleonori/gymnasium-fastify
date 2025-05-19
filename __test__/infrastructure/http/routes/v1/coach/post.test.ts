@@ -14,6 +14,7 @@ import { createServer } from "../../../../../utils/buildServer.js";
 describe(`POST /v1/coachs`, () => {
   const pgDockerController = new PgDockerController();
   let server: FastifyInstance;
+  const token = process.env.TEST_AUTH0_TOKEN;
 
   beforeAll(async () => {
     await pgDockerController.setup();
@@ -25,8 +26,6 @@ describe(`POST /v1/coachs`, () => {
   afterEach(() => pgDockerController.reset());
 
   beforeEach(() => {});
-
-  const token = process.env.TEST_AUTH0_TOKEN;
 
   test("should create a coach", async () => {
     const coachData = {

@@ -4,8 +4,9 @@ import PgDockerController from "../../../../../PgDockerController.js";
 import { createServer } from "../../../../../utils/buildServer.js";
 
 describe(`POST /v1/timetable`, () => {
-  const pgDockerController = new PgDockerController();
   let server: FastifyInstance;
+  const pgDockerController = new PgDockerController();
+  const token = process.env.TEST_AUTH0_TOKEN;
 
   beforeAll(async () => {
     await pgDockerController.setup();
@@ -15,8 +16,6 @@ describe(`POST /v1/timetable`, () => {
   afterAll(() => server.close());
 
   afterEach(() => pgDockerController.reset());
-
-  const token = process.env.TEST_AUTH0_TOKEN;
 
   test("should create a new timetable", async () => {
     const timetableData = {
