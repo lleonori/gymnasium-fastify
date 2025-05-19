@@ -114,7 +114,7 @@ describe(`GET /v1/coachs`, () => {
     });
   });
 
-  describe("GET /{coachId}", () => {
+  describe("GET /:coachId", () => {
     test(`should return 404 if coach doesn't exist`, async () => {
       const response = await server.inject({
         method: "GET",

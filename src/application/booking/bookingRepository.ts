@@ -8,6 +8,7 @@ export interface IBookingRepository {
     pagination: Pagination,
     sortBy: SortBy<Booking>,
   ): Promise<PaginatedResult<Booking>>;
+  findById(id: Booking["id"]): Promise<Booking | undefined>;
   countBookingsForDayAndEmail(day: Date, mail: string): Promise<number>;
   countBookingsForDayAndTimetableId(
     day: Date,

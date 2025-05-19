@@ -19,6 +19,12 @@ export class BookingService {
     return this.bookingRepository.findAll(filterBy, pagination, sortBy);
   }
 
+  async findById(id: Booking["id"]): Promise<Booking> {
+    const booking = await this.bookingRepository.findById(id);
+    this.handleNotFound(booking, id);
+    return booking;
+  }
+
   countBookingsForDayAndEmail(day: Date, mail: string): Promise<number> {
     return this.bookingRepository.countBookingsForDayAndEmail(day, mail);
   }

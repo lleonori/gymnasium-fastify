@@ -47,7 +47,7 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
         request.body.timetableId,
       );
 
-      enforceTimeLimit(timetable.startHour);
+      enforceTimeLimit(timetable.startHour, request.body.day);
 
       await enforceDailyBookingLimit(request.body.day, request.body.mail);
 
@@ -74,13 +74,12 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
     return await app.timetablesService.findById(timetableId);
   }
 
-  function enforceTimeLimit(timetableStart: string) {
+  function enforceTimeLimit(timetableStart: string, bookingDay: string) {
     const current = getTime();
     const now = new Date();
-    const bookingDate = new Date(now.toDateString());
     const today = now;
 
-    if (today.toDateString() === new Date(bookingDate).toDateString()) {
+    if (today.toDateString() === new Date(bookingDay).toDateString()) {
       const secondsUntilStart =
         formatTimeInSecond(timetableStart) - formatTimeInSecond(current);
       if (secondsUntilStart < BookingLimitHours.LIMIT) {

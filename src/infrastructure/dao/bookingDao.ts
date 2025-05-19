@@ -151,6 +151,22 @@ export class BookingDao implements IBookingRepository {
     };
   }
 
+  findById(id: Booking["id"]): Promise<Booking | undefined> {
+    // Construct the fields to return, replacing the 'day' field with the SQL expression
+    const returnFields = this.DEFAULT_SELECT_FIELDS.map((field) =>
+      field === "bookings.day"
+        ? sql<string>`to_char(bookings.day, 'YYYY-MM-DD')`.as("day")
+        : field,
+    );
+
+    return this.db
+      .selectFrom("bookings")
+      .innerJoin("timetables", "timetables.id", "bookings.timetableId")
+      .where("bookings.id", "=", id)
+      .select(returnFields)
+      .executeTakeFirst();
+  }
+
   async countBookingsForDayAndEmail(day: Date, mail: string): Promise<number> {
     const countResult = await this.db
       .selectFrom("bookings")
