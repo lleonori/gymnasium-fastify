@@ -1,3 +1,4 @@
+import { reverse } from "rambda";
 import {
   afterEach,
   beforeAll,
@@ -10,7 +11,6 @@ import { BookingDao } from "../../../src/infrastructure/dao/bookingDao.js";
 import { TimetableDao } from "../../../src/infrastructure/dao/timetableDao.js";
 import { WeekdayTimeDao } from "../../../src/infrastructure/dao/weekdayTimeDao.js";
 import PgDockerController from "../../PgDockerController.js";
-import { reverse } from "rambda";
 
 describe("BookingDao", () => {
   const pgDockerController = new PgDockerController();
@@ -18,7 +18,7 @@ describe("BookingDao", () => {
   let timetableDao: TimetableDao;
   let weekdayTimeDao: WeekdayTimeDao;
 
-  beforeAll(() => pgDockerController.setup());
+  beforeAll(async () => await pgDockerController.setup());
 
   beforeEach(async () => {
     bookingDao = new BookingDao(pgDockerController.db);
@@ -43,7 +43,11 @@ describe("BookingDao", () => {
     });
   });
 
-  afterEach(() => pgDockerController.reset());
+  afterEach(async () => await pgDockerController.reset());
+
+  // afterAll(async () => {
+  //   await pgDockerController.tearDown();
+  // });
 
   describe("create", () => {
     test("should create a booking", async () => {

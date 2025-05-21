@@ -14,13 +14,17 @@ describe("TimetableDao", () => {
   const pgDockerController = new PgDockerController();
   let timetableDao: TimetableDao;
 
-  beforeAll(() => pgDockerController.setup());
+  beforeAll(async () => await pgDockerController.setup());
 
   beforeEach(() => {
     timetableDao = new TimetableDao(pgDockerController.db);
   });
 
-  afterEach(() => pgDockerController.reset());
+  afterEach(async () => await pgDockerController.reset());
+
+  // afterAll(async () => {
+  //   await pgDockerController.tearDown();
+  // });
 
   describe("create", () => {
     test("should create a timetable", async () => {

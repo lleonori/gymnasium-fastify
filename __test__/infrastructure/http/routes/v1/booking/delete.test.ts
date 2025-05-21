@@ -25,9 +25,11 @@ describe(`DELETE /v1/booking/:bookingId`, () => {
     server = await createServer();
   });
 
-  afterAll(() => server.close());
+  afterAll(async () => {
+    if (server) await server.close();
+  });
 
-  afterEach(() => pgDockerController.reset());
+  afterEach(async () => await pgDockerController.reset());
 
   beforeEach(async () => {
     bookingDao = new BookingDao(pgDockerController.db);

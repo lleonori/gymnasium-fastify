@@ -13,9 +13,11 @@ describe(`POST /v1/timetable`, () => {
     server = await createServer();
   });
 
-  afterAll(() => server.close());
+  afterAll(async () => {
+    if (server) await server.close();
+  });
 
-  afterEach(() => pgDockerController.reset());
+  afterEach(async () => await pgDockerController.reset());
 
   test("should create a new timetable", async () => {
     const timetableData = {

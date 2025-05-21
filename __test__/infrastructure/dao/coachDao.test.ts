@@ -14,13 +14,17 @@ describe("CoachDao", () => {
   const pgDockerController = new PgDockerController();
   let coachDao: CoachDao;
 
-  beforeAll(() => pgDockerController.setup());
+  beforeAll(async () => await pgDockerController.setup());
 
   beforeEach(() => {
     coachDao = new CoachDao(pgDockerController.db);
   });
 
-  afterEach(() => pgDockerController.reset());
+  afterEach(async () => await pgDockerController.reset());
+
+  // afterAll(async () => {
+  //   await pgDockerController.tearDown();
+  // });
 
   describe("create", () => {
     test("should create a coach", async () => {

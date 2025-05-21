@@ -24,9 +24,11 @@ describe(`DELETE /v1/timetable/:timetableId`, () => {
     server = await createServer();
   });
 
-  afterAll(() => server.close());
+  afterAll(async () => {
+    if (server) await server.close();
+  });
 
-  afterEach(() => pgDockerController.reset());
+  afterEach(async () => await pgDockerController.reset());
 
   beforeEach(async () => {
     timetableDao = new TimetableDao(pgDockerController.db);

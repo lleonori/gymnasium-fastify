@@ -23,9 +23,11 @@ describe(`PATCH /v1/coachs/:coachI`, () => {
     server = await createServer();
   });
 
-  afterAll(() => server.close());
+  afterAll(async () => {
+    if (server) await server.close();
+  });
 
-  afterEach(() => pgDockerController.reset());
+  afterEach(async () => await pgDockerController.reset());
 
   beforeEach(() => {
     coachDao = new CoachDao(pgDockerController.db);
