@@ -22,7 +22,7 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
       ),
     },
     async (request) =>
-      app.coachsService.update(request.params.coachId, request.body),
+      app.coachesService.update(request.params.coachId, request.body),
   );
 };
 

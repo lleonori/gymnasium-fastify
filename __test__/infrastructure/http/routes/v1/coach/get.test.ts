@@ -13,7 +13,7 @@ import { CoachDao } from "../../../../../../src/infrastructure/dao/coachDao.js";
 import PgDockerController from "../../../../../PgDockerController.js";
 import { createServer } from "../../../../../utils/buildServer.js";
 
-describe(`GET /v1/coachs`, () => {
+describe(`GET /v1/coaches`, () => {
   const pgDockerController = new PgDockerController();
   let server: FastifyInstance;
   let coachDao: CoachDao;
@@ -33,7 +33,7 @@ describe(`GET /v1/coachs`, () => {
   beforeEach(async () => {
     coachDao = new CoachDao(pgDockerController.db);
 
-    // Popola la tabella coachs con 10 coach
+    // Popola la tabella coaches con 10 coach
     for (let i = 0; i < 10; i++) {
       await coachDao.create({
         name: `CoachName${i}`,
@@ -44,7 +44,7 @@ describe(`GET /v1/coachs`, () => {
   });
 
   describe("GET /", () => {
-    test("should return all coachs", async () => {
+    test("should return all coaches", async () => {
       const expectedResult = {
         count: 10,
         data: Array.from({ length: 10 }, (_, i) => ({

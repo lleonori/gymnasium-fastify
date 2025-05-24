@@ -16,4 +16,4 @@ export const Coach = Type.Intersect([
   CreateCoach,
 ]);
 
-export const CoachsPaginated = CommonSchemas.Bodies.PaginationResult(Coach);
+export const CoachesPaginated = CommonSchemas.Bodies.PaginationResult(Coach);

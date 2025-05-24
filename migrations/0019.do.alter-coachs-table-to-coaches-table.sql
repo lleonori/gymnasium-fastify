@@ -1,0 +1,1 @@
+ALTER TABLE coachs RENAME TO coaches;

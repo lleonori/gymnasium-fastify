@@ -11,7 +11,7 @@ import {
 import PgDockerController from "../../../../../PgDockerController.js";
 import { createServer } from "../../../../../utils/buildServer.js";
 
-describe(`POST /v1/coachs`, () => {
+describe(`POST /v1/coaches`, () => {
   const pgDockerController = new PgDockerController();
   let server: FastifyInstance;
   const token = process.env.TEST_AUTH0_TOKEN;

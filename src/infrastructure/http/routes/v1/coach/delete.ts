@@ -20,7 +20,7 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
         { relation: "and" },
       ),
     },
-    async ({ params: { coachId } }) => app.coachsService.delete(coachId),
+    async ({ params: { coachId } }) => app.coachesService.delete(coachId),
   );
 };
 

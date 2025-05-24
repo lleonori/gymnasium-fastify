@@ -26,7 +26,7 @@ import { WeekdayTimeDao } from "../dao/weekdayTimeDao.js";
 declare module "fastify" {
   interface FastifyInstance {
     bookingsService: BookingService;
-    coachsService: CoachService;
+    coachesService: CoachService;
     timetablesService: TimetableService;
     weekdayService: WeekdayService;
     weekdayTimeService: WeekdayTimeService;
@@ -38,9 +38,9 @@ export default fp(async (fastify) => {
   const bookingsService = new BookingService(bookingsRepository);
   fastify.decorate("bookingsService", bookingsService);
 
-  const coachsRepository: ICoachRepository = new CoachDao(fastify.db);
-  const coachsService = new CoachService(coachsRepository);
-  fastify.decorate("coachsService", coachsService);
+  const coachesRepository: ICoachRepository = new CoachDao(fastify.db);
+  const coachesService = new CoachService(coachesRepository);
+  fastify.decorate("coachesService", coachesService);
 
   const timetablesRepository: ITimetableRepository = new TimetableDao(
     fastify.db,

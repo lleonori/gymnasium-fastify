@@ -21,13 +21,13 @@ export class CoachDao implements ICoachRepository {
     "notes",
     "createdAt",
     "updatedAt",
-  ] satisfies ReadonlyArray<SelectExpression<DB, "coachs">>;
+  ] satisfies ReadonlyArray<SelectExpression<DB, "coaches">>;
 
   constructor(protected readonly db: Kysely<DB>) {}
 
   create(newCoach: CreateCoach): Promise<Coach> {
     return this.db
-      .insertInto("coachs")
+      .insertInto("coaches")
       .values(newCoach)
       .returning(this.DEFAULT_SELECT_FIELDS)
       .executeTakeFirstOrThrow();
@@ -38,31 +38,31 @@ export class CoachDao implements ICoachRepository {
     sortBy: SortBy<Coach>,
   ): Promise<PaginatedResult<Coach>> {
     const countQuery = this.db
-      .selectFrom("coachs")
+      .selectFrom("coaches")
       .select(({ fn }) => [fn.count<number>("id").as("count")])
       .executeTakeFirst();
 
-    const coachsQuery = this.db
-      .selectFrom("coachs")
-      .orderBy(buildSortBy<"coachs", Coach>(sortBy))
+    const coachesQuery = this.db
+      .selectFrom("coaches")
+      .orderBy(buildSortBy<"coaches", Coach>(sortBy))
       .limit(pagination.limit)
       .offset(pagination.offset)
       .select(this.DEFAULT_SELECT_FIELDS)
       .execute();
 
-    const [countResult, coachsResult] = await Promise.all([
+    const [countResult, coachesResult] = await Promise.all([
       countQuery,
-      coachsQuery,
+      coachesQuery,
     ]);
     return {
       count: countResult?.count ?? 0,
-      data: coachsResult,
+      data: coachesResult,
     };
   }
 
   findById(id: Coach["id"]): Promise<Coach | undefined> {
     return this.db
-      .selectFrom("coachs")
+      .selectFrom("coaches")
       .where("id", "=", id)
       .select(this.DEFAULT_SELECT_FIELDS)
       .executeTakeFirst();
@@ -70,7 +70,7 @@ export class CoachDao implements ICoachRepository {
 
   update(id: Coach["id"], booking: UpdateCoach): Promise<Coach | undefined> {
     return this.db
-      .updateTable("coachs")
+      .updateTable("coaches")
       .set(booking)
       .where("id", "=", id)
       .returning(this.DEFAULT_SELECT_FIELDS)
@@ -79,7 +79,7 @@ export class CoachDao implements ICoachRepository {
 
   delete(id: Coach["id"]): Promise<Coach | undefined> {
     return this.db
-      .deleteFrom("coachs")
+      .deleteFrom("coaches")
       .where("id", "=", id)
       .returning(this.DEFAULT_SELECT_FIELDS)
       .executeTakeFirst();

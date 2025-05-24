@@ -11,9 +11,9 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
     {
       schema: {
         tags: ["Coach"],
-        querystring: CoachSchemas.Queries.CoachsQuery,
+        querystring: CoachSchemas.Queries.CoachesQuery,
         response: {
-          200: CoachSchemas.Bodies.CoachsPaginated,
+          200: CoachSchemas.Bodies.CoachesPaginated,
         },
       },
       preHandler: app.auth(
@@ -29,7 +29,7 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
       ),
     },
     async ({ query: { offset, limit, sort } }) =>
-      app.coachsService.findAll(
+      app.coachesService.findAll(
         { offset: offset!, limit: limit! },
         decodeSort(sort!),
       ),

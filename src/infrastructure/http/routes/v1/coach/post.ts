@@ -21,7 +21,7 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
       ),
     },
     async (request, reply) => {
-      const newCoach = await app.coachsService.create(request.body);
+      const newCoach = await app.coachesService.create(request.body);
       return reply.status(201).send(newCoach);
     },
   );

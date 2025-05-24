@@ -58,7 +58,7 @@ describe("CoachDao", () => {
       }
     });
 
-    test("should return all coachs", async () => {
+    test("should return all coaches", async () => {
       const expectedResult = {
         count: "10",
         data: Array.from({ length: 10 }, (_, i) => ({
@@ -71,7 +71,7 @@ describe("CoachDao", () => {
         })),
       };
 
-      const coachs = await coachDao.findAll(
+      const coaches = await coachDao.findAll(
         {
           limit: 10,
           offset: 0,
@@ -79,10 +79,10 @@ describe("CoachDao", () => {
         [["id", "asc"]],
       );
 
-      expect(coachs).toStrictEqual(expectedResult);
+      expect(coaches).toStrictEqual(expectedResult);
     });
 
-    test("should return paginated coachs", async () => {
+    test("should return paginated coaches", async () => {
       const expectedResult = {
         count: "10",
         data: Array.from({ length: 5 }, (_, i) => ({
@@ -95,7 +95,7 @@ describe("CoachDao", () => {
         })),
       };
 
-      const coachs = await coachDao.findAll(
+      const coaches = await coachDao.findAll(
         {
           limit: 5,
           offset: 0,
@@ -103,10 +103,10 @@ describe("CoachDao", () => {
         [["name", "asc"]],
       );
 
-      expect(coachs).toStrictEqual(expectedResult);
+      expect(coaches).toStrictEqual(expectedResult);
     });
 
-    test("should return sorted coachs", async () => {
+    test("should return sorted coaches", async () => {
       const expectedResult = {
         count: "10",
         data: reverse(
@@ -121,7 +121,7 @@ describe("CoachDao", () => {
         ),
       };
 
-      const coachs = await coachDao.findAll(
+      const coaches = await coachDao.findAll(
         {
           limit: 10,
           offset: 0,
@@ -129,7 +129,7 @@ describe("CoachDao", () => {
         [["id", "desc"]],
       );
 
-      expect(coachs).toStrictEqual(expectedResult);
+      expect(coaches).toStrictEqual(expectedResult);
     });
   });
 

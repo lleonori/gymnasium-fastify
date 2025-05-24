@@ -12,7 +12,7 @@ import { CoachDao } from "../../../../../../src/infrastructure/dao/coachDao.js";
 import PgDockerController from "../../../../../PgDockerController.js";
 import { createServer } from "../../../../../utils/buildServer.js";
 
-describe(`PATCH /v1/coachs/:coachI`, () => {
+describe(`PATCH /v1/coaches/:coachI`, () => {
   const pgDockerController = new PgDockerController();
   let server: FastifyInstance;
   let coachDao: CoachDao;
