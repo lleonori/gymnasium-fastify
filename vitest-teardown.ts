@@ -1,4 +1,4 @@
-import PgDockerController from "./__test__/PgDockerController.js";
+import PgDockerController from "./test/PgDockerController.js";
 
 export async function setup() {
   await teardown();
