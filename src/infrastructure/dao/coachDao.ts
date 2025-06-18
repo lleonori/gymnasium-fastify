@@ -55,7 +55,7 @@ export class CoachDao implements ICoachRepository {
       coachesQuery,
     ]);
     return {
-      count: countResult?.count ?? 0,
+      count: Number(countResult?.count ?? 0),
       data: coachesResult,
     };
   }

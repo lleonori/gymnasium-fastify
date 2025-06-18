@@ -146,7 +146,7 @@ export class BookingDao implements IBookingRepository {
       bookingsQuery.execute(),
     ]);
     return {
-      count: countResult?.count ?? 0,
+      count: Number(countResult?.count ?? 0),
       data: bookingsResult,
     };
   }

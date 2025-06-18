@@ -22,7 +22,10 @@ const routes: FastifyPluginAsyncTypebox = async (app) => {
       ),
     },
     async (request) =>
-      app.timetablesService.update(request.params.timetableId, request.body),
+      app.timetableBookingManagerService.update(
+        request.params.timetableId,
+        request.body,
+      ),
   );
 };
 

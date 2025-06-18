@@ -1,11 +1,7 @@
-import { FastifyInstance } from "fastify";
 import { CreateBooking } from "../../application/booking/models.js";
 import { BadRequestException } from "../../application/commons/exceptions.js";
 
-export const validateBookingRequest = async (
-  _: FastifyInstance,
-  body: CreateBooking,
-) => {
+export const validateBookingRequest = async (body: CreateBooking) => {
   const today = new Date();
   const tomorrow = new Date(today);
   tomorrow.setDate(tomorrow.getDate() + 1);

@@ -41,7 +41,7 @@ export class WeekdayDao implements IWeekdayRepository {
       weekdaysQuery,
     ]);
     return {
-      count: countResult?.count ?? 0,
+      count: Number(countResult?.count ?? 0),
       data: weekdaysResult,
     };
   }

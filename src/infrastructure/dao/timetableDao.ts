@@ -72,7 +72,7 @@ export class TimetableDao implements ITimetableRepository {
       timetablesQuery.execute(),
     ]);
     return {
-      count: countResult?.count ?? 0,
+      count: Number(countResult?.count ?? 0),
       data: timetablesResult,
     };
   }

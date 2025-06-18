@@ -118,7 +118,7 @@ export class WeekdayTimeDao implements IWeekdayTimeRepository {
       weekdayTimesQuery,
     ]);
     return {
-      count: countResult?.count ?? 0,
+      count: Number(countResult?.count ?? 0),
       data: weekdayTimesResult,
     };
   }

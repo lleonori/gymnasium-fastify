@@ -1,15 +1,10 @@
 import { NotFoundException } from "../commons/exceptions.js";
 import { PaginatedResult, Pagination, SortBy } from "../commons/models.js";
 import { IBookingRepository } from "./bookingRepository.js";
-import { Booking, CreateBooking, FilterBooking } from "./models.js";
+import { Booking, FilterBooking } from "./models.js";
 
 export class BookingService {
   constructor(protected readonly bookingRepository: IBookingRepository) {}
-
-  async create(booking: CreateBooking): Promise<Booking> {
-    const createdBooking = await this.bookingRepository.create(booking);
-    return createdBooking;
-  }
 
   findAll(
     filterBy: FilterBooking,

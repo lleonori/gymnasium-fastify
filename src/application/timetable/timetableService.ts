@@ -1,11 +1,6 @@
 import { NotFoundException } from "../commons/exceptions.js";
 import { PaginatedResult, Pagination, SortBy } from "../commons/models.js";
-import {
-  CreateTimetable,
-  FilterTimetable,
-  Timetable,
-  UpdateTimetable,
-} from "./models.js";
+import { CreateTimetable, FilterTimetable, Timetable } from "./models.js";
 import { ITimetableRepository } from "./timetableRepository.js";
 
 export class TimetableService {
@@ -27,24 +22,6 @@ export class TimetableService {
     const timetable = await this.timetableRepository.findById(id);
     this.handleNotFound(timetable, id);
     return timetable;
-  }
-
-  async update(
-    id: Timetable["id"],
-    timetable: UpdateTimetable,
-  ): Promise<Timetable> {
-    const updatedTimetable = await this.timetableRepository.update(
-      id,
-      timetable,
-    );
-    this.handleNotFound(updatedTimetable, id);
-    return updatedTimetable;
-  }
-
-  async delete(id: Timetable["id"]): Promise<Timetable> {
-    const deletedTimetable = await this.timetableRepository.delete(id);
-    this.handleNotFound(deletedTimetable, id);
-    return deletedTimetable;
   }
 
   private handleNotFound(
