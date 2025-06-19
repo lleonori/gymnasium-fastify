@@ -2,7 +2,7 @@ export type CreateBooking = {
   fullname: string | null;
   mail: string;
   day: string;
-  timetableId: number;
+  timetableId: number | null;
 };
 
 export type Booking = {
