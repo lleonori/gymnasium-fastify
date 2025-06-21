@@ -10,9 +10,8 @@ import {
 import { validateBookingRequest } from "../../infrastructure/validations/booking.validation.js";
 import { BookingService } from "../booking/bookingService.js";
 import { IBookingRepository } from "../booking/index.js";
-import { CreateBooking, Booking } from "../booking/models.js";
+import { Booking, CreateBooking } from "../booking/models.js";
 import {
-  BadRequestException,
   ConflictException,
   ForbiddenException,
   NotFoundException,
@@ -45,11 +44,11 @@ export class TimetableBookingManagerService {
     return createdBooking;
   }
 
-  private async ensureTimetableExists(timetableId: number) {
+  private async ensureTimetableExists(timetableId: number | null) {
+    if (timetableId === null)
+      throw new ConflictException("Orario obbligatorio.");
+
     const timetable = await this.timetableService.findById(timetableId);
-    if (!timetable) {
-      throw new BadRequestException("Orario non valido.");
-    }
 
     return timetable;
   }
@@ -80,7 +79,10 @@ export class TimetableBookingManagerService {
     }
   }
 
-  private async enforceSlotCapacity(day: string, timetableId: number) {
+  private async enforceSlotCapacity(day: string, timetableId: number | null) {
+    if (timetableId === null)
+      throw new ConflictException("Orario obbligatorio.");
+
     const count = await this.bookingService.countBookingsForDayAndTimetableId(
       new Date(day),
       timetableId,

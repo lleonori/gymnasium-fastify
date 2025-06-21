@@ -57,7 +57,7 @@ describe("TimetableDao", () => {
 
     test("should return all timetables", async () => {
       const expectedResult = {
-        count: "10",
+        count: 10,
         data: Array.from({ length: 10 }, (_, i) => ({
           id: i + 1,
           startHour: `0${i}:00:00`,
@@ -78,7 +78,7 @@ describe("TimetableDao", () => {
 
     test("should return paginated timetables", async () => {
       const expectedResult = {
-        count: "10",
+        count: 10,
         data: Array.from({ length: 5 }, (_, i) => ({
           id: i + 1,
           startHour: `0${i}:00:00`,
@@ -99,7 +99,7 @@ describe("TimetableDao", () => {
 
     test("should return sorted timetables", async () => {
       const expectedResult = {
-        count: "10",
+        count: 10,
         data: reverse(
           Array.from({ length: 10 }, (_, i) => ({
             id: i + 1,

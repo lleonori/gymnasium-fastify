@@ -60,7 +60,7 @@ describe("CoachDao", () => {
 
     test("should return all coaches", async () => {
       const expectedResult = {
-        count: "10",
+        count: 10,
         data: Array.from({ length: 10 }, (_, i) => ({
           id: i + 1,
           name: `CoachName${i}`,
@@ -84,7 +84,7 @@ describe("CoachDao", () => {
 
     test("should return paginated coaches", async () => {
       const expectedResult = {
-        count: "10",
+        count: 10,
         data: Array.from({ length: 5 }, (_, i) => ({
           id: i + 1,
           name: `CoachName${i}`,
@@ -108,7 +108,7 @@ describe("CoachDao", () => {
 
     test("should return sorted coaches", async () => {
       const expectedResult = {
-        count: "10",
+        count: 10,
         data: reverse(
           Array.from({ length: 10 }, (_, i) => ({
             id: i + 1,

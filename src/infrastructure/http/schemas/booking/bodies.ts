@@ -5,7 +5,7 @@ export const CreateBooking = Type.Object({
   fullname: Type.Union([Type.String(), Type.Null()]),
   mail: Type.String({ format: "email" }),
   day: Type.String({ format: "date" }),
-  timetableId: Type.Number(),
+  timetableId: Type.Union([Type.Number(), Type.Null()]),
 });
 
 export const UpdateBooking = Type.Partial(CreateBooking);

@@ -12,12 +12,20 @@ import {
   Booking,
   BookingService,
 } from "../../src/application/booking/index.js";
+import { TimetableBookingManagerService } from "../../src/application/timetable-booking-manager/timetableBookingManagerService.js";
+import {
+  ITimetableRepository,
+  TimetableService,
+} from "../../src/application/timetable/index.js";
+import { getTodayAndTomorrow } from "../../src/infrastructure/http/utils/datetime.js";
+
+const { today } = getTodayAndTomorrow();
 
 const mockBooking: Booking = {
   id: 1,
   fullname: "Lorenzo Leonori",
   mail: "lorenzo.leonori.93@gmail.com",
-  day: "06/12/2024",
+  day: today,
   timetableId: 1,
   startHour: "9:00",
   endHour: "10:30",
@@ -27,7 +35,10 @@ const mockBooking: Booking = {
 
 describe("BookingService", () => {
   let mockedBookingRepository: Mocked<IBookingRepository>;
+  let mockedTimetableRepository: Mocked<ITimetableRepository>;
   let bookingService: BookingService;
+  let timetableService: TimetableService;
+  let timetableBookingManagerService: TimetableBookingManagerService;
 
   beforeEach(() => {
     mockedBookingRepository = {
@@ -39,7 +50,22 @@ describe("BookingService", () => {
       delete: vi.fn(),
     };
 
+    mockedTimetableRepository = {
+      create: vi.fn(),
+      findAll: vi.fn(),
+      findById: vi.fn(),
+      update: vi.fn(),
+      delete: vi.fn(),
+    };
+
     bookingService = new BookingService(mockedBookingRepository);
+    timetableService = new TimetableService(mockedTimetableRepository);
+    timetableBookingManagerService = new TimetableBookingManagerService(
+      timetableService,
+      bookingService,
+      mockedTimetableRepository,
+      mockedBookingRepository,
+    );
   });
 
   afterEach(() => {
@@ -143,12 +169,20 @@ describe("BookingService", () => {
 
   describe("create", () => {
     test("should create a booking", async () => {
+      const mockTimetable = {
+        id: 1,
+        startHour: "15:00",
+        endHour: "16:30",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+      mockedTimetableRepository.findById.mockResolvedValue(mockTimetable);
       mockedBookingRepository.create.mockResolvedValue(mockBooking);
 
-      const createdBooking = await bookingService.create({
+      const createdBooking = await timetableBookingManagerService.create({
         fullname: "Lorenzo Leonori",
         mail: "lorenzo.leonori.93@gmail.com",
-        day: "06/12/2024",
+        day: today,
         timetableId: 1,
       });
 
@@ -157,7 +191,7 @@ describe("BookingService", () => {
       expect(mockedBookingRepository.create).toHaveBeenCalledWith({
         fullname: "Lorenzo Leonori",
         mail: "lorenzo.leonori.93@gmail.com",
-        day: "06/12/2024",
+        day: today,
         timetableId: 1,
       });
     });
