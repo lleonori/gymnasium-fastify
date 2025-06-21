@@ -10,9 +10,8 @@ import {
 import { validateBookingRequest } from "../../infrastructure/validations/booking.validation.js";
 import { BookingService } from "../booking/bookingService.js";
 import { IBookingRepository } from "../booking/index.js";
-import { CreateBooking, Booking } from "../booking/models.js";
+import { Booking, CreateBooking } from "../booking/models.js";
 import {
-  BadRequestException,
   ConflictException,
   ForbiddenException,
   NotFoundException,
@@ -27,7 +26,7 @@ export class TimetableBookingManagerService {
     private readonly timetableService: TimetableService,
     private readonly bookingService: BookingService,
     private readonly timetableRepository: ITimetableRepository,
-    private readonly bookingRepository: IBookingRepository,
+    private readonly bookingRepository: IBookingRepository
   ) {}
 
   async create(booking: CreateBooking): Promise<Booking> {
@@ -45,11 +44,11 @@ export class TimetableBookingManagerService {
     return createdBooking;
   }
 
-  private async ensureTimetableExists(timetableId: number) {
+  private async ensureTimetableExists(timetableId: number | null) {
+    if (timetableId === null)
+      throw new ConflictException("Orario obbligatorio.");
+
     const timetable = await this.timetableService.findById(timetableId);
-    if (!timetable) {
-      throw new BadRequestException("Orario non valido.");
-    }
 
     return timetable;
   }
@@ -64,7 +63,7 @@ export class TimetableBookingManagerService {
         formatTimeInSecond(timetableStart) - formatTimeInSecond(current);
       if (secondsUntilStart < BookingLimitHours.LIMIT) {
         throw new ForbiddenException(
-          "Impossibile prenotare: il tempo limite è scaduto.",
+          "Impossibile prenotare: il tempo limite è scaduto."
         );
       }
     }
@@ -73,17 +72,20 @@ export class TimetableBookingManagerService {
   private async enforceDailyBookingLimit(day: string, mail: string) {
     const count = await this.bookingService.countBookingsForDayAndEmail(
       new Date(day),
-      mail,
+      mail
     );
     if (count > 0) {
       throw new ConflictException("La lezione è stata già prenotata.");
     }
   }
 
-  private async enforceSlotCapacity(day: string, timetableId: number) {
+  private async enforceSlotCapacity(day: string, timetableId: number | null) {
+    if (timetableId === null)
+      throw new ConflictException("Orario obbligatorio.");
+
     const count = await this.bookingService.countBookingsForDayAndTimetableId(
       new Date(day),
-      timetableId,
+      timetableId
     );
     if (count >= ClassBookingLimit.LIMIT) {
       throw new TooManyRequestsException("Limite di prenotazione raggiunto.");
@@ -92,7 +94,7 @@ export class TimetableBookingManagerService {
 
   async update(
     id: Timetable["id"],
-    timetable: UpdateTimetable,
+    timetable: UpdateTimetable
   ): Promise<Timetable> {
     const { today, tomorrow } = getTodayAndTomorrow();
 
@@ -103,13 +105,13 @@ export class TimetableBookingManagerService {
         dateTo: tomorrow,
       },
       { offset: 0, limit: 1 },
-      [["id", "asc"]],
+      [["id", "asc"]]
     );
 
     if (bookings.count === 0) {
       const updatedTimetable = await this.timetableRepository.update(
         id,
-        timetable,
+        timetable
       );
       this.handleNotFound(updatedTimetable, id);
       return updatedTimetable;
@@ -124,7 +126,7 @@ export class TimetableBookingManagerService {
     const bookings = await this.bookingService.findAll(
       { timetableId: id, dateFrom: today, dateTo: tomorrow },
       { offset: 0, limit: 1 },
-      [["id", "asc"]],
+      [["id", "asc"]]
     );
 
     if (bookings.count === 0) {
@@ -138,7 +140,7 @@ export class TimetableBookingManagerService {
 
   private handleNotFound(
     timetable: Timetable | undefined,
-    id: Timetable["id"],
+    id: Timetable["id"]
   ): asserts timetable is Timetable {
     if (!timetable)
       throw new NotFoundException(`Timetable with id ${id} not found`);

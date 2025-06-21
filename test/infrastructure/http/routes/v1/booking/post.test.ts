@@ -98,7 +98,7 @@ describe(`POST /v1/booking`, () => {
     });
   });
 
-  test("should return 400 if timetable does not exist", async () => {
+  test("should return 404 if timetable does not exist", async () => {
     const bookingData = {
       day: tomorrowDate,
       timetableId: 9999,
@@ -115,7 +115,7 @@ describe(`POST /v1/booking`, () => {
       payload: bookingData,
     });
 
-    expect(response.statusCode).toBe(400);
+    expect(response.statusCode).toBe(404);
   });
 
   test("should return 409 if booking already exists for user and day", async () => {

@@ -88,7 +88,7 @@ describe("BookingDao", () => {
 
     test("should return all bookings", async () => {
       const expectedResult = {
-        count: "10",
+        count: 10,
         data: Array.from({ length: 10 }, (_, i) => ({
           id: i + 1,
           day: `2024-05-${String(i + 10).padStart(2, "0")}`,
@@ -113,9 +113,10 @@ describe("BookingDao", () => {
 
       expect(bookings).toStrictEqual(expectedResult);
     });
+
     test("should return paginated bookings", async () => {
       const expectedResult = {
-        count: "10",
+        count: 10,
         data: Array.from({ length: 5 }, (_, i) => ({
           id: i + 1,
           day: `2024-05-${String(i + 10).padStart(2, "0")}`,
@@ -143,7 +144,7 @@ describe("BookingDao", () => {
 
     test("should return sorted bookings", async () => {
       const expectedResult = {
-        count: "10",
+        count: 10,
         data: reverse(
           Array.from({ length: 10 }, (_, i) => ({
             id: i + 1,

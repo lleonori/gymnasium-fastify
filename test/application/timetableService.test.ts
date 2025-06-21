@@ -12,6 +12,11 @@ import {
   Timetable,
   TimetableService,
 } from "../../src/application/timetable/index.js";
+import {
+  BookingService,
+  IBookingRepository,
+} from "../../src/application/booking/index.js";
+import { TimetableBookingManagerService } from "../../src/application/timetable-booking-manager/index.js";
 
 const mockTimetable: Timetable = {
   id: 1,
@@ -22,8 +27,11 @@ const mockTimetable: Timetable = {
 };
 
 describe("TimetableService", () => {
+  let mockedBookingRepository: Mocked<IBookingRepository>;
   let mockedTimetableRepository: Mocked<ITimetableRepository>;
+  let bookingService: BookingService;
   let timetableService: TimetableService;
+  let timetableBookingManagerService: TimetableBookingManagerService;
 
   beforeEach(() => {
     mockedTimetableRepository = {
@@ -34,7 +42,23 @@ describe("TimetableService", () => {
       delete: vi.fn(),
     };
 
+    mockedBookingRepository = {
+      create: vi.fn(),
+      findAll: vi.fn(),
+      findById: vi.fn(),
+      countBookingsForDayAndEmail: vi.fn(),
+      countBookingsForDayAndTimetableId: vi.fn(),
+      delete: vi.fn(),
+    };
+
+    bookingService = new BookingService(mockedBookingRepository);
     timetableService = new TimetableService(mockedTimetableRepository);
+    timetableBookingManagerService = new TimetableBookingManagerService(
+      timetableService,
+      bookingService,
+      mockedTimetableRepository,
+      mockedBookingRepository,
+    );
   });
 
   afterEach(() => {
@@ -107,9 +131,14 @@ describe("TimetableService", () => {
 
   describe("update", () => {
     test("should update a timetable", async () => {
+      bookingService.findAll = vi.fn().mockResolvedValue({
+        count: 0,
+        rows: [],
+      });
+
       mockedTimetableRepository.update.mockResolvedValue(mockTimetable);
 
-      const updateTimetable = await timetableService.update(1, {
+      const updateTimetable = await timetableBookingManagerService.update(1, {
         startHour: "11:00",
         endHour: "12:00",
       });
@@ -123,10 +152,15 @@ describe("TimetableService", () => {
     });
 
     test("should thrown an error if not found a timetable", async () => {
+      bookingService.findAll = vi.fn().mockResolvedValue({
+        count: 0,
+        rows: [],
+      });
+
       mockedTimetableRepository.update.mockResolvedValue(undefined);
 
       await expect(
-        timetableService.update(1, {
+        timetableBookingManagerService.update(1, {
           startHour: "13:00",
           endHour: "14:00",
         }),
@@ -136,9 +170,14 @@ describe("TimetableService", () => {
 
   describe("delete", () => {
     test("should delete a timetable", async () => {
+      bookingService.findAll = vi.fn().mockResolvedValue({
+        count: 0,
+        rows: [],
+      });
+
       mockedTimetableRepository.delete.mockResolvedValue(mockTimetable);
 
-      const deleteTimetable = await timetableService.delete(1);
+      const deleteTimetable = await timetableBookingManagerService.delete(1);
 
       expect(deleteTimetable).toEqual(mockTimetable);
       expect(mockedTimetableRepository.delete).toHaveBeenCalledOnce();
