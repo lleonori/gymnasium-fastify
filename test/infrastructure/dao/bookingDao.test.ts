@@ -1,4 +1,3 @@
-import { reverse } from "rambda";
 import {
   afterEach,
   beforeAll,
@@ -145,19 +144,17 @@ describe("BookingDao", () => {
     test("should return sorted bookings", async () => {
       const expectedResult = {
         count: 10,
-        data: reverse(
-          Array.from({ length: 10 }, (_, i) => ({
-            id: i + 1,
-            day: `2024-05-${String(i + 10).padStart(2, "0")}`,
-            timetableId: 1,
-            mail: `user${i}@test.com`,
-            fullname: `User ${i}`,
-            startHour: "09:00:00",
-            endHour: "10:00:00",
-            createdAt: expect.any(Date),
-            updatedAt: expect.any(Date),
-          })),
-        ),
+        data: Array.from({ length: 10 }, (_, i) => ({
+          id: i + 1,
+          day: `2024-05-${String(i + 10).padStart(2, "0")}`,
+          timetableId: 1,
+          mail: `user${i}@test.com`,
+          fullname: `User ${i}`,
+          startHour: "09:00:00",
+          endHour: "10:00:00",
+          createdAt: expect.any(Date),
+          updatedAt: expect.any(Date),
+        })).reverse(),
       };
 
       const bookings = await bookingDao.findAll(

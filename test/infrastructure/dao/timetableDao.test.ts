@@ -1,4 +1,3 @@
-import { reverse } from "rambda";
 import {
   afterEach,
   beforeAll,
@@ -100,15 +99,13 @@ describe("TimetableDao", () => {
     test("should return sorted timetables", async () => {
       const expectedResult = {
         count: 10,
-        data: reverse(
-          Array.from({ length: 10 }, (_, i) => ({
-            id: i + 1,
-            startHour: `0${i}:00:00`,
-            endHour: `1${i}:00:00`,
-            createdAt: expect.any(Date),
-            updatedAt: expect.any(Date),
-          })),
-        ),
+        data: Array.from({ length: 10 }, (_, i) => ({
+          id: i + 1,
+          startHour: `0${i}:00:00`,
+          endHour: `1${i}:00:00`,
+          createdAt: expect.any(Date),
+          updatedAt: expect.any(Date),
+        })).reverse(),
       };
 
       const timetables = await timetableDao.findAll(

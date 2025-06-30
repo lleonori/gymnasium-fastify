@@ -4,7 +4,6 @@ import Docker, { Container, ContainerInfo } from "dockerode";
 import { config } from "dotenv";
 import { Kysely, sql } from "kysely";
 import { DB } from "kysely-codegen";
-import { prop } from "rambda";
 import { setInterval } from "timers/promises";
 import {
   DatabaseConnectionsConfig,
@@ -56,7 +55,7 @@ export default class PgDockerController {
     await this.applyMigrations();
 
     this.tables = (await this.db.introspection.getTables())
-      .map(prop("name"))
+      .map((x) => x.name)
       .filter((name) => name !== "schemaversion");
   }
 

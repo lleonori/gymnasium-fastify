@@ -1,5 +1,4 @@
 import { FastifyInstance } from "fastify";
-import { reverse } from "rambda";
 import {
   afterAll,
   afterEach,
@@ -93,14 +92,12 @@ describe(`GET /v1/coaches`, () => {
     test("should return sorted list", async () => {
       const expectedResult = {
         count: 10,
-        data: reverse(
-          Array.from({ length: 10 }, (_, i) => ({
-            id: i + 1,
-            name: `CoachName${i}`,
-            surname: `CoachSurname${i}`,
-            notes: `Note${i}`,
-          })),
-        ),
+        data: Array.from({ length: 10 }, (_, i) => ({
+          id: i + 1,
+          name: `CoachName${i}`,
+          surname: `CoachSurname${i}`,
+          notes: `Note${i}`,
+        })).reverse(),
       };
 
       const response = await server.inject({

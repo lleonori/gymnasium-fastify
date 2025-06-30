@@ -1,4 +1,3 @@
-import { reverse } from "rambda";
 import {
   afterEach,
   beforeAll,
@@ -21,10 +20,6 @@ describe("CoachDao", () => {
   });
 
   afterEach(async () => await pgDockerController.reset());
-
-  // afterAll(async () => {
-  //   await pgDockerController.tearDown();
-  // });
 
   describe("create", () => {
     test("should create a coach", async () => {
@@ -109,16 +104,14 @@ describe("CoachDao", () => {
     test("should return sorted coaches", async () => {
       const expectedResult = {
         count: 10,
-        data: reverse(
-          Array.from({ length: 10 }, (_, i) => ({
-            id: i + 1,
-            name: `CoachName${i}`,
-            surname: `CoachSurname${i}`,
-            notes: `Note${i}`,
-            createdAt: expect.any(Date),
-            updatedAt: expect.any(Date),
-          })),
-        ),
+        data: Array.from({ length: 10 }, (_, i) => ({
+          id: i + 1,
+          name: `CoachName${i}`,
+          surname: `CoachSurname${i}`,
+          notes: `Note${i}`,
+          createdAt: expect.any(Date),
+          updatedAt: expect.any(Date),
+        })).reverse(),
       };
 
       const coaches = await coachDao.findAll(
