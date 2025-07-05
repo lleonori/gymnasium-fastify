@@ -10,11 +10,15 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 export default async function (app: FastifyInstance) {
-  app.register(import("@fastify/auth"));
   app.register(import("@fastify/cors"), {
-    origin: [/^http:\/\/localhost:\d+$/],
+    origin: [
+      /^http:\/\/localhost(:\d+)?$/,
+      /^https:\/\/neroniana-powerlifting\.pl$/,
+      /^capacitor:\/\/localhost$/,
+    ],
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
   });
+  app.register(import("@fastify/auth"));
   app.register(import("@fastify/sensible"));
   app.register(import("@fastify/swagger"));
   app.register(import("@fastify/swagger-ui"), {
