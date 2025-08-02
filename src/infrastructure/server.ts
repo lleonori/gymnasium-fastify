@@ -13,6 +13,7 @@ export default async function (app: FastifyInstance) {
   app.register(import("@fastify/cors"), {
     origin: [
       /^http:\/\/localhost(:\d+)?$/,
+      /^https:\/\/localhost(:\d+)?$/,
       /^https:\/\/neroniana-powerlifting\.pl$/,
       /^capacitor:\/\/localhost$/,
     ],
