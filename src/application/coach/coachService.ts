@@ -39,6 +39,6 @@ export class CoachService {
     coach: Coach | undefined,
     id: Coach["id"],
   ): asserts coach is Coach {
-    if (!coach) throw new NotFoundException(`Coach with id ${id} not found`);
+    if (!coach) throw new NotFoundException(`Coach con id ${id} non trovato`);
   }
 }

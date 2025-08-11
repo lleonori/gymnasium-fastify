@@ -45,6 +45,6 @@ export class BookingService {
     id: Booking["id"],
   ): asserts booking is Booking {
     if (!booking)
-      throw new NotFoundException(`Booking with id ${id} not found`);
+      throw new NotFoundException(`Prenotazione con id ${id} non trovata`);
   }
 }

@@ -213,7 +213,7 @@ export class BookingDao implements IBookingRepository {
       .executeTakeFirst();
 
     if (!bookingToDelete) {
-      throw new NotFoundException(`Booking with id ${id} not found`);
+      throw new NotFoundException(`Prenotazione con id ${id} non trovata`);
     }
 
     await this.db

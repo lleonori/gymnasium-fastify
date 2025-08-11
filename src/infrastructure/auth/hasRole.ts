@@ -5,7 +5,7 @@ export function hasRole(requiredRoles: string[]) {
   return async function (request: FastifyRequest) {
     const isActive = request.user.app_metadata.is_active;
     if (!isActive) {
-      throw new ForbiddenException(`User is not active`);
+      throw new ForbiddenException(`Utente non attivo`);
     }
 
     const userRoles = request.user.app_metadata.roles;
@@ -13,7 +13,7 @@ export function hasRole(requiredRoles: string[]) {
 
     if (!hasAllRoles) {
       throw new ForbiddenException(
-        `User does not have permission to access this resource`,
+        `L'utente non ha il permesso di accedere a questa risorsa`,
       );
     }
   };

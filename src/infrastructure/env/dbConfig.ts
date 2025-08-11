@@ -32,6 +32,6 @@ export function buildDbConfig(): DatabaseConnectionsConfig {
     return config;
   }
   throw new Error(
-    `Invalid database configuration ${JSON.stringify([...SchemaCompiler.Errors(config)])})}`,
+    `Configurazione database non valida ${JSON.stringify([...SchemaCompiler.Errors(config)])})}`,
   );
 }

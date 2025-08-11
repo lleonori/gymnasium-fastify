@@ -143,6 +143,6 @@ export class TimetableBookingManagerService {
     id: Timetable["id"],
   ): asserts timetable is Timetable {
     if (!timetable)
-      throw new NotFoundException(`Timetable with id ${id} not found`);
+      throw new NotFoundException(`Orario con id ${id} non trovato`);
   }
 }
