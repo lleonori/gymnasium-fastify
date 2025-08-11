@@ -17,5 +17,7 @@ declare namespace NodeJS {
     SSL_KEY_PATH: string;
     SSL_CERT_PATH: string;
     VITEST_WORKER_ID: string;
+    CLIENT_ID_AUTH0: string;
+    CLIENT_SECRET_AUTH0: string;
   }
 }

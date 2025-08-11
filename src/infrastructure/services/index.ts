@@ -23,6 +23,7 @@ import { TimetableDao } from "../dao/timetableDao.js";
 import { WeekdayDao } from "../dao/weekdayDao.js";
 import { WeekdayTimeDao } from "../dao/weekdayTimeDao.js";
 import { TimetableBookingManagerService } from "../../application/timetable-booking-manager/index.js";
+import { ProfileService } from "../../application/profile/index.js";
 
 declare module "fastify" {
   interface FastifyInstance {
@@ -32,6 +33,7 @@ declare module "fastify" {
     weekdayService: WeekdayService;
     weekdayTimeService: WeekdayTimeService;
     timetableBookingManagerService: TimetableBookingManagerService;
+    profileService: ProfileService;
   }
 }
 
@@ -45,7 +47,7 @@ export default fp(async (fastify) => {
   fastify.decorate("coachesService", coachesService);
 
   const timetablesRepository: ITimetableRepository = new TimetableDao(
-    fastify.db,
+    fastify.db
   );
   const timetablesService = new TimetableService(timetablesRepository);
   fastify.decorate("timetablesService", timetablesService);
@@ -55,7 +57,7 @@ export default fp(async (fastify) => {
   fastify.decorate("weekdayService", weekdayService);
 
   const weekdaysTimesRepository: IWeekdayTimeRepository = new WeekdayTimeDao(
-    fastify.db,
+    fastify.db
   );
   const weekdayTimeService = new WeekdayTimeService(weekdaysTimesRepository);
   fastify.decorate("weekdayTimeService", weekdayTimeService);
@@ -64,10 +66,13 @@ export default fp(async (fastify) => {
     fastify.timetablesService,
     fastify.bookingsService,
     timetablesRepository,
-    bookingsRepository,
+    bookingsRepository
   );
   fastify.decorate(
     "timetableBookingManagerService",
-    timetableBookingManagerService,
+    timetableBookingManagerService
   );
+
+  const profileService = new ProfileService();
+  fastify.decorate("profileService", profileService);
 });

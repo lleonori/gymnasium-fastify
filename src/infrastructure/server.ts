@@ -50,7 +50,7 @@ export default async function (app: FastifyInstance) {
     try {
       await request.jwtVerify();
     } catch {
-      throw new UnauthorizedException(`User unauthorized`);
+      throw new UnauthorizedException(`Utente non autorizzato`);
     }
   });
 }

@@ -9,7 +9,7 @@ export class BookingService {
   findAll(
     filterBy: FilterBooking,
     pagination: Pagination,
-    sortBy: SortBy<Booking>,
+    sortBy: SortBy<Booking>
   ): Promise<PaginatedResult<Booking>> {
     return this.bookingRepository.findAll(filterBy, pagination, sortBy);
   }
@@ -26,11 +26,11 @@ export class BookingService {
 
   countBookingsForDayAndTimetableId(
     day: Date,
-    timetableId: number,
+    timetableId: number
   ): Promise<number> {
     return this.bookingRepository.countBookingsForDayAndTimetableId(
       day,
-      timetableId,
+      timetableId
     );
   }
 
@@ -42,9 +42,9 @@ export class BookingService {
 
   private handleNotFound(
     booking: Booking | undefined,
-    id: Booking["id"],
+    id: Booking["id"]
   ): asserts booking is Booking {
     if (!booking)
-      throw new NotFoundException(`Booking with id ${id} not found`);
+      throw new NotFoundException(`Prenotazione con id ${id} non trovata`);
   }
 }

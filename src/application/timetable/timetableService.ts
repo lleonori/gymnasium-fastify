@@ -13,7 +13,7 @@ export class TimetableService {
   findAll(
     filterBy: FilterTimetable,
     pagination: Pagination,
-    sortBy: SortBy<Timetable>,
+    sortBy: SortBy<Timetable>
   ): Promise<PaginatedResult<Timetable>> {
     return this.timetableRepository.findAll(filterBy, pagination, sortBy);
   }
@@ -26,9 +26,9 @@ export class TimetableService {
 
   private handleNotFound(
     timetable: Timetable | undefined,
-    id: Timetable["id"],
+    id: Timetable["id"]
   ): asserts timetable is Timetable {
     if (!timetable)
-      throw new NotFoundException(`Timetable with id ${id} not found`);
+      throw new NotFoundException(`Orario con id ${id} non trovato`);
   }
 }

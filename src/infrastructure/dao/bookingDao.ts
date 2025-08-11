@@ -46,8 +46,8 @@ export class BookingDao implements IBookingRepository {
         this.DEFAULT_SELECT_FIELDS.map((field) =>
           field === "bookings.day"
             ? sql<string>`to_char(bookings.day, 'YYYY-MM-DD')`.as("day")
-            : field,
-        ),
+            : field
+        )
       )
       .where("bookings.id", "=", inserted.id)
       .executeTakeFirstOrThrow();
@@ -58,7 +58,7 @@ export class BookingDao implements IBookingRepository {
   async findAll(
     filterBy: FilterBooking,
     pagination: Pagination,
-    sortBy: SortBy<Booking>,
+    sortBy: SortBy<Booking>
   ): Promise<PaginatedResult<Booking>> {
     let countQuery = this.db
       .selectFrom("bookings")
@@ -68,7 +68,7 @@ export class BookingDao implements IBookingRepository {
     const returnFields = this.DEFAULT_SELECT_FIELDS.map((field) =>
       field === "bookings.day"
         ? sql<string>`to_char(bookings.day, 'YYYY-MM-DD')`.as("day")
-        : field,
+        : field
     );
 
     let bookingsQuery = this.db
@@ -83,12 +83,12 @@ export class BookingDao implements IBookingRepository {
       countQuery = countQuery.where(
         "bookings.timetableId",
         "=",
-        filterBy.timetableId,
+        filterBy.timetableId
       );
       bookingsQuery = bookingsQuery.where(
         "bookings.timetableId",
         "=",
-        filterBy.timetableId,
+        filterBy.timetableId
       );
     }
 
@@ -96,12 +96,12 @@ export class BookingDao implements IBookingRepository {
       countQuery = countQuery.where(
         "bookings.day",
         "=",
-        new Date(filterBy.day),
+        new Date(filterBy.day)
       );
       bookingsQuery = bookingsQuery.where(
         "bookings.day",
         "=",
-        new Date(filterBy.day),
+        new Date(filterBy.day)
       );
     }
 
@@ -121,23 +121,23 @@ export class BookingDao implements IBookingRepository {
       countQuery = countQuery.where(
         "bookings.day",
         ">=",
-        new Date(filterBy.dateFrom),
+        new Date(filterBy.dateFrom)
       );
       bookingsQuery = bookingsQuery.where(
         "bookings.day",
         ">=",
-        new Date(filterBy.dateFrom),
+        new Date(filterBy.dateFrom)
       );
     } else if (filterBy.dateTo) {
       countQuery = countQuery.where(
         "bookings.day",
         "<=",
-        new Date(filterBy.dateTo),
+        new Date(filterBy.dateTo)
       );
       bookingsQuery = bookingsQuery.where(
         "bookings.day",
         "<=",
-        new Date(filterBy.dateTo),
+        new Date(filterBy.dateTo)
       );
     }
 
@@ -156,7 +156,7 @@ export class BookingDao implements IBookingRepository {
     const returnFields = this.DEFAULT_SELECT_FIELDS.map((field) =>
       field === "bookings.day"
         ? sql<string>`to_char(bookings.day, 'YYYY-MM-DD')`.as("day")
-        : field,
+        : field
     );
 
     return this.db
@@ -172,7 +172,7 @@ export class BookingDao implements IBookingRepository {
       .selectFrom("bookings")
       .select(({ fn }) => [fn.count<number>("bookings.id").as("count")])
       .where((eb) =>
-        eb.and([eb("bookings.mail", "=", mail), eb("bookings.day", "=", day)]),
+        eb.and([eb("bookings.mail", "=", mail), eb("bookings.day", "=", day)])
       )
       .executeTakeFirst();
 
@@ -181,7 +181,7 @@ export class BookingDao implements IBookingRepository {
 
   async countBookingsForDayAndTimetableId(
     day: Date,
-    timetableId: number,
+    timetableId: number
   ): Promise<number> {
     const countResult = await this.db
       .selectFrom("bookings")
@@ -191,7 +191,7 @@ export class BookingDao implements IBookingRepository {
         eb.and([
           eb("bookings.day", "=", day),
           eb("bookings.timetableId", "=", timetableId),
-        ]),
+        ])
       )
       .executeTakeFirst();
 
@@ -206,14 +206,14 @@ export class BookingDao implements IBookingRepository {
         this.DEFAULT_SELECT_FIELDS.map((field) =>
           field === "bookings.day"
             ? sql<string>`to_char(bookings.day, 'YYYY-MM-DD')`.as("day")
-            : field,
-        ),
+            : field
+        )
       )
       .where("bookings.id", "=", id)
       .executeTakeFirst();
 
     if (!bookingToDelete) {
-      throw new NotFoundException(`Booking with id ${id} not found`);
+      throw new NotFoundException(`Prenotazione con id ${id} non trovata`);
     }
 
     await this.db
