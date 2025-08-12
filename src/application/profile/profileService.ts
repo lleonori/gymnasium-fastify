@@ -5,7 +5,7 @@ import {
   InternalServerError,
   TooManyRequestsException,
   UnauthorizedException,
-} from "../commons/exceptions";
+} from "../commons/exceptions.js";
 import { Profile } from "./models";
 
 export class ProfileService {
