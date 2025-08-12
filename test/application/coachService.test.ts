@@ -81,7 +81,7 @@ describe("CoachService", () => {
       mockedCoachRepository.findById.mockResolvedValue(undefined);
 
       await expect(coachService.findById(1)).rejects.toThrow(
-        "Coach with id 1 not found",
+        "Coach con id 1 non trovato",
       );
     });
   });
@@ -134,7 +134,7 @@ describe("CoachService", () => {
           surname: "Leonori",
           notes: "Laurea Scienze Motorie",
         }),
-      ).rejects.toThrow("Coach with id 1 not found");
+      ).rejects.toThrow("Coach con id 1 non trovato");
     });
   });
 

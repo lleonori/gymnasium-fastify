@@ -106,7 +106,7 @@ describe("TimetableService", () => {
       mockedTimetableRepository.findById.mockResolvedValue(undefined);
 
       await expect(timetableService.findById(1)).rejects.toThrow(
-        "Timetable with id 1 not found",
+        "Orario con id 1 non trovato",
       );
     });
   });
@@ -164,7 +164,7 @@ describe("TimetableService", () => {
           startHour: "13:00",
           endHour: "14:00",
         }),
-      ).rejects.toThrow("Timetable with id 1 not found");
+      ).rejects.toThrow("Orario con id 1 non trovato");
     });
   });
 
