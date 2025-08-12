@@ -14,8 +14,8 @@ export class ProfileService {
   constructor() {
     this.managementClient = new ManagementClient({
       domain: process.env.DOMAIN_AUTH0,
-      clientId: process.env.CLIENT_ID_AUTH0,
-      clientSecret: process.env.CLIENT_SECRET_AUTH0,
+      clientId: process.env.CLIENT_ID_M2M_AUTH0,
+      clientSecret: process.env.CLIENT_SECRET_M2M_AUTH0,
     });
   }
 
