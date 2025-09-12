@@ -1,5 +1,5 @@
 import dotenv from "dotenv";
-import fastify from "fastify";
+import fastify, { FastifyReply } from "fastify";
 import buildServer from "./infrastructure/server.js";
 import qs from "qs";
 import fs from "fs";
@@ -28,11 +28,21 @@ const opts = {
   logger: {
     transport: {
       target: "pino-pretty",
+      options: {
+        translateTime: "yyyy-mm-dd HH:MM:ss.l",
+      },
     },
     redact: {
       paths: ["[*].password", "[*].user"],
       censor: "***",
     },
+  },
+  customLogLevel: (res: FastifyReply, err: Error) => {
+    if (res.request.method === "OPTIONS") return "silent";
+    if (err) return "error";
+    if (res.statusCode >= 500) return "error";
+    if (res.statusCode >= 400) return "warn";
+    return "info";
   },
 };
 
