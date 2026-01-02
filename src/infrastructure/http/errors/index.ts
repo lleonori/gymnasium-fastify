@@ -14,35 +14,38 @@ export const errorHandler: FastifyInstance["errorHandler"] = function (
   request,
   reply,
 ) {
-  if (error instanceof NotFoundException) {
+  // Type guard per verificare se è un Error
+  const err = error instanceof Error ? error : new Error(String(error));
+
+  if (err instanceof NotFoundException) {
     if (request.method === "DELETE") {
       return reply.code(204).send();
     }
-    return reply.notFound(error.message);
+    return reply.notFound(err.message);
   }
 
-  if (error instanceof UnauthorizedException) {
-    return reply.unauthorized(error.message);
+  if (err instanceof UnauthorizedException) {
+    return reply.unauthorized(err.message);
   }
 
-  if (error instanceof ConflictException) {
-    return reply.conflict(error.message);
+  if (err instanceof ConflictException) {
+    return reply.conflict(err.message);
   }
 
-  if (error instanceof BadRequestException) {
-    return reply.badRequest(error.message);
+  if (err instanceof BadRequestException) {
+    return reply.badRequest(err.message);
   }
 
-  if (error instanceof InternalServerError) {
-    return reply.internalServerError(error.message);
+  if (err instanceof InternalServerError) {
+    return reply.internalServerError(err.message);
   }
 
-  if (error instanceof TooManyRequestsException) {
-    return reply.tooManyRequests(error.message);
+  if (err instanceof TooManyRequestsException) {
+    return reply.tooManyRequests(err.message);
   }
 
-  if (error instanceof ForbiddenException) {
-    return reply.forbidden(error.message);
+  if (err instanceof ForbiddenException) {
+    return reply.forbidden(err.message);
   }
 
   reply.log.error(
@@ -54,12 +57,12 @@ export const errorHandler: FastifyInstance["errorHandler"] = function (
         body: request.body,
         query: request.query,
         params: request.params,
-        stack: error.stack,
-        validation: error.validation,
+        stack: err.stack,
       },
-      error,
+      error: err,
     },
     "Unhandled error occurred.",
   );
-  return reply.internalServerError(error.message);
+
+  return reply.internalServerError(err.message || "Internal Server Error");
 };
