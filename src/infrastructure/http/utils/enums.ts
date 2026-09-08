@@ -9,6 +9,6 @@ export enum UserRoles {
 }
 
 export enum BookingLimitHours {
-  // 2 hours
-  LIMIT = 7200,
+  // 1 hours
+  LIMIT = 3600,
 }
