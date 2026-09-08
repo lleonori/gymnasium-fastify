@@ -15,7 +15,7 @@ export const TimetablesQuery = Type.Partial(
           Type.TemplateLiteral("${startHour}"),
           Type.TemplateLiteral("${startHour}.${asc|desc}"),
         ]),
-        { default: ["id.asc"] },
+        { default: ["startHour.asc"] },
       ),
     }),
   ]),
