@@ -26,7 +26,7 @@ export default class PgDockerController {
     ...{ driver: "pg" },
     ...this.dbConfig.default,
   }).reduce(
-    (acc, [key, value]) => (acc += ` --${kebabCase(key)} ${value}`),
+    (acc, [key, value]) => acc + ` --${kebabCase(key)} ${value}`,
     "--no-config",
   );
   public readonly db: Kysely<DB> = createDbConnection(this.dbConfig);
