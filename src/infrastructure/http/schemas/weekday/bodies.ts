@@ -1,4 +1,4 @@
-import { Type } from "@sinclair/typebox";
+import { Type } from "typebox";
 import CommonSchemas from "../commons/index.js";
 
 export const Weekday = Type.Intersect([

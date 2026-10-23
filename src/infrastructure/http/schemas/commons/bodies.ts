@@ -1,4 +1,4 @@
-import { TSchema, Type } from "@sinclair/typebox";
+import { TSchema, Type } from "typebox";
 
 export const PaginationResult = <Schema extends TSchema>(itemsSchema: Schema) =>
   Type.Object({

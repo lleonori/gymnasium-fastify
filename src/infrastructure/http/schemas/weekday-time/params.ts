@@ -1,4 +1,4 @@
-import { Type } from "@sinclair/typebox";
+import { Type } from "typebox";
 
 export const Date = Type.Object({
   date: Type.String({ format: "date" }), // ISO 8601 date format

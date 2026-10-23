@@ -1,4 +1,4 @@
-import { ManagementApiError, ManagementClient } from "auth0";
+import { ManagementError, ManagementClient } from "auth0";
 import {
   BadRequestException,
   ForbiddenException,
@@ -25,9 +25,9 @@ export class ProfileService {
     }
 
     try {
-      await this.managementClient.users.delete({ id: userId });
+      await this.managementClient.users.delete(userId);
     } catch (error) {
-      if (error instanceof ManagementApiError) {
+      if (error instanceof ManagementError) {
         this.handleAuthError(error);
       }
 
@@ -42,7 +42,7 @@ export class ProfileService {
     }
   }
 
-  private handleAuthError(error: ManagementApiError): never {
+  private handleAuthError(error: ManagementError): never {
     const errorMessages: Record<number, string> = {
       400: "Invalido ID utente o formato della richiesta",
       401: "Autenticazione fallita",
@@ -50,7 +50,9 @@ export class ProfileService {
       429: "Limite di richiesta superato",
     };
 
-    const message = errorMessages[error.statusCode] || "Unknown Auth0 error";
+    const message =
+      (error.statusCode && errorMessages[error.statusCode]) ||
+      "Unknown Auth0 error";
 
     switch (error.statusCode) {
       case 400:

@@ -3,8 +3,10 @@ import { defineConfig } from "vitest/config";
 export default defineConfig(() => ({
   test: {
     setupFiles: ["./vitest-setup.ts"],
-    deps: {
-      inline: ["@fastify/autoload"],
+    server: {
+      deps: {
+        inline: ["@fastify/autoload"],
+      },
     },
     coverage: {
       enabled: true,

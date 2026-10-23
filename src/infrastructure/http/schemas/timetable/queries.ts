@@ -1,4 +1,4 @@
-import { Type } from "@sinclair/typebox";
+import { Type } from "typebox";
 import PaginationSchema from "../commons/index.js";
 
 export const TimetablesQuery = Type.Partial(
@@ -10,10 +10,10 @@ export const TimetablesQuery = Type.Partial(
     Type.Object({
       sort: Type.Array(
         Type.Union([
-          Type.TemplateLiteral("${id}"),
-          Type.TemplateLiteral("${id}.${asc|desc}"),
-          Type.TemplateLiteral("${startHour}"),
-          Type.TemplateLiteral("${startHour}.${asc|desc}"),
+          Type.Literal("id"),
+          Type.TemplateLiteral("id.${'asc' | 'desc'}"),
+          Type.Literal("startHour"),
+          Type.TemplateLiteral("startHour.${'asc' | 'desc'}"),
         ]),
         { default: ["startHour.asc"] },
       ),

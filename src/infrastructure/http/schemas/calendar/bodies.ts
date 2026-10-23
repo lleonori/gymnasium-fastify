@@ -1,4 +1,4 @@
-import { Type } from "@sinclair/typebox";
+import { Type } from "typebox";
 
 export const Calendar = Type.Object({
   today: Type.String({ format: "date" }),

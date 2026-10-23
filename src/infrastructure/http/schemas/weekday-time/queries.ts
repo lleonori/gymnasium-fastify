@@ -1,4 +1,4 @@
-import { Type } from "@sinclair/typebox";
+import { Type } from "typebox";
 import PaginationSchema from "../commons/index.js";
 
 export const WeekdayTimeQuery = Type.Partial(
@@ -10,8 +10,8 @@ export const WeekdayTimeQuery = Type.Partial(
     Type.Object({
       sort: Type.Array(
         Type.Union([
-          Type.TemplateLiteral("${weekdayId}"),
-          Type.TemplateLiteral("${weekdayId}.${asc|desc}"),
+          Type.Literal("weekdayId"),
+          Type.TemplateLiteral("weekdayId.${'asc' | 'desc'}"),
         ]),
         { default: ["weekdayId.asc"] },
       ),

@@ -1,4 +1,4 @@
-import { Type } from "@sinclair/typebox";
+import { Type } from "typebox";
 import PaginationSchema from "../commons/index.js";
 
 export const BookingsQuery = Type.Partial(
@@ -14,8 +14,8 @@ export const BookingsQuery = Type.Partial(
     Type.Object({
       sort: Type.Array(
         Type.Union([
-          Type.TemplateLiteral("${id}"),
-          Type.TemplateLiteral("${id}.${asc|desc}"),
+          Type.Literal("id"),
+          Type.TemplateLiteral("id.${'asc' | 'desc'}"),
         ]),
         { default: ["id.asc"] },
       ),

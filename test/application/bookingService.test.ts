@@ -168,6 +168,16 @@ describe("BookingService", () => {
   });
 
   describe("create", () => {
+    // Blocca l'orologio alle 09:00 di oggi: la lezione delle 15:00 resta prenotabile
+    beforeEach(() => {
+      vi.useFakeTimers({ toFake: ["Date"] });
+      vi.setSystemTime(new Date(`${today}T09:00:00`));
+    });
+
+    afterEach(() => {
+      vi.useRealTimers();
+    });
+
     test("should create a booking", async () => {
       const mockTimetable = {
         id: 1,
