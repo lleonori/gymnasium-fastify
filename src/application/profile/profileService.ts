@@ -6,7 +6,7 @@ import {
   TooManyRequestsException,
   UnauthorizedException,
 } from "../commons/exceptions.js";
-import { Profile } from "./models";
+import { Profile } from "./models.js";
 
 export class ProfileService {
   private managementClient: ManagementClient;

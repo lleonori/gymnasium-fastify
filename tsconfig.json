@@ -2,8 +2,8 @@
   "compilerOptions": {
     /* Language & Environment */
     "target": "ES2022",
-    "module": "ESNext", // ESM moderno
-    "moduleResolution": "node",
+    "module": "nodenext", // ESM moderno
+    "moduleResolution": "nodenext",
     "lib": ["ES2022"],
     "allowJs": false,
     "esModuleInterop": true,
